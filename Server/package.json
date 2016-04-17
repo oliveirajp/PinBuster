@@ -1,0 +1,28 @@
+{
+  "name": "pinbuster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+        "express": "~4.0.0",
+        "body-parser": "~1.0.1"
+    },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZPaulo/PinBuster.git"
+  },
+  "keywords": [
+    "location",
+    "city",
+    "smart"
+  ],
+  "author": "pinbuster",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZPaulo/PinBuster/issues"
+  },
+  "homepage": "https://github.com/ZPaulo/PinBuster#readme"
+}
