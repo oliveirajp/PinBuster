@@ -65,6 +65,7 @@ namespace PinBuster.WinPhone
                 rootFrame.CacheSize = 1;
 
                 Xamarin.Forms.Forms.Init(e);
+				Xamarin.FormsMaps.Init();
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

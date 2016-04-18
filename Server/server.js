@@ -28,7 +28,7 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // more routes for our API will happen here
@@ -37,12 +37,31 @@ router.route('/test')
 
     // create a bear (accessed at POST http://localhost:8080/api/test)
     .post(function(req, res) {
-        
+
     })
 
     // get all the bears (accessed at GET http://localhost:8080/api/test)
     .get(function(req, res) {
         res.json(executeStatement());
+    });
+
+router.route('/pins')
+    .get(function(req, res)
+    {
+      res.json([
+        {
+          'latitude': '41.1778791',
+          'longitude': '-8.6001047',
+          'title': 'Dank',
+          'content': 'Memes'
+        },
+        {
+          'latitude': '41.1778497',
+          'longitude': '-8.6102893',
+          'title': 'TAIWAN',
+          'content': 'NUMBA ONE'
+        }
+      ]);
     });
 
 // REGISTER OUR ROUTES -------------------------------
