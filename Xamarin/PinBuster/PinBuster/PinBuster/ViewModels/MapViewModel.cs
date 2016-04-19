@@ -15,17 +15,11 @@ namespace PinBuster.ViewModels
 	{
 		public static readonly Position NullPosition = new Position(0, 0);
 
-		public List<Xamarin.Forms.Maps.Pin> MapPins;
-
-		public MapPage mapPage;
+		public ObservableCollection<PinBuster.Models.Pin> Pins = new ObservableCollection<PinBuster.Models.Pin>();
 
 		public MapViewModel ()
 		{
 			Task.Run(() => LoadPins());
-		}
-
-		public void setMapPage(MapPage mapPage) {
-			this.mapPage = mapPage;
 		}
 
 		public async Task LoadPins()
@@ -33,10 +27,8 @@ namespace PinBuster.ViewModels
 			var pins = await App.PinsManager.FetchPins ();
 
 			foreach (var pin in pins) {
-				Xamarin.Forms.Device.BeginInvokeOnMainThread ( () => {
-					this.mapPage.AddPin (pin);
-				});
-			};
+				this.Pins.Add (pin);
+			}
 		}
 	}
 }

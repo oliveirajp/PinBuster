@@ -20,9 +20,8 @@ namespace PinBuster.Pages
 
 			BindingContext = App.Locator.Map;
 
-			//App.Locator.Map.MapPins.CollectionChanged += this.HandleChange;
-
-			App.Locator.Map.setMapPage (this);
+			App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler 
+				(PinsChangedMethod);
 
 			map = new Map ();
 
@@ -55,7 +54,7 @@ namespace PinBuster.Pages
 			var distance = MapHelper.CalculateDistance(minLatitude, minLongitude,
 				maxLatitude, maxLongitude, 'M') / 2;
 
-			map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance)));
+			map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance*1.5)));
 		}
 
 		public void AddPin(PinBuster.Models.Pin pin) {
@@ -68,25 +67,27 @@ namespace PinBuster.Pages
 			this.PositionMap ();
 		}
 
-		private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+		private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			Debug.WriteLine ("ASURA SNIPER");
-
-			foreach (var x in e.NewItems)
+			if(e.Action == NotifyCollectionChangedAction.Add)
 			{
-				var pin = (Xamarin.Forms.Maps.Pin) x;
-				Debug.WriteLine (pin.Label);
-				map.Pins.Add(pin);
-				//PositionMap();
+				foreach (var pin in e.NewItems) {
+					Xamarin.Forms.Device.BeginInvokeOnMainThread ( () => {
+						this.AddPin ((PinBuster.Models.Pin) pin);
+					});
+				}
 			}
 
-			foreach (var y in e.OldItems)
+			if (e.Action == NotifyCollectionChangedAction.Replace)
 			{
-				//do something
 			}
+
+			if (e.Action == NotifyCollectionChangedAction.Remove)
+			{
+			}
+
 			if (e.Action == NotifyCollectionChangedAction.Move)
 			{
-				//do something
 			}
 		}
 
