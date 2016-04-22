@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Xamarin.Forms.Maps;
 
 namespace PinBuster.UWP
 {
@@ -59,6 +60,7 @@ namespace PinBuster.UWP
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 Xamarin.Forms.Forms.Init(e);
+                InTheHand.FormsMaps.Init(null);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

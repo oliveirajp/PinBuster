@@ -7,7 +7,6 @@ using Xamarin.Forms;
 using PinBuster.Data;
 using PinBuster.Pages;
 using PinBuster;
-
 namespace PinBuster
 {
     public class App : Application
