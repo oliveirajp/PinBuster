@@ -36,12 +36,17 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 
-//UTILIZADORES
+//////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
 
+   // console.log("nome: " + req.body.nome);
+    insertData("INSERT dbo.utilizador (nome,imagem,raio) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio);",
+        ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int]);
+
+     res.json('tentou');
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -62,8 +67,24 @@ router.route('/utilizador')
 });
 
 
+router.route('/utilizador/:utilizador_id')
+.get(function(req, res) {
+getData("SELECT * FROM dbo.utilizador WHERE utilizador_id = '" + req.params.utilizador_id+"'", function(err, rows) {
+    if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows['data'][0]);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+});
 
-//MENSAGENS
+
+/////////////////////////////////////////////////////////MENSAGENS//////////////////////////////////////////////////////////////
 router.route('/mensagem')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
@@ -88,8 +109,7 @@ router.route('/mensagem')
 });
 
 
-
-//ACHIEVEMENTS
+////////////////////////////////////////////////////////ACHIEVEMENTS//////////////////////////////////////////////////////////////
 router.route('/achievement')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
@@ -115,8 +135,7 @@ router.route('/achievement')
 });
 
 
-
-//FOLLOW
+/////////////////////////////////////////////////////////////FOLLOW////////////////////////////////////////////////////////////////
 router.route('/follow')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
@@ -142,6 +161,9 @@ router.route('/follow')
 });
 
 
+
+
+//======================================================TEDIOUS=============================================================
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
@@ -174,32 +196,6 @@ connection.on('connect', function(err) {
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 
-
-//original query
-function original(Query) {
-    request = new Request(Query, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-    var result = "";
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            if (column.value === null) {
-                console.log('NULL');
-            } else {
-                result += column.value + " ";
-            }
-        });
-        console.log("resultado: " + result);
-        result = "";
-    });
-
-    request.on('done', function(rowCount, more) {
-        console.log(rowCount + ' rows returned');
-    });
-    connection.execSql(request);
-}
 
 function getData(Query, callback){
     var connection = new Connection(config);
@@ -240,3 +236,30 @@ function getData(Query, callback){
 
 }
 
+
+
+function insertData(Query,paramName, paramValue,types) {
+//"INSERT SalesLT.Product (Name, ProductNumber, StandardCost, ListPrice, SellStartDate) OUTPUT INSERTED.ProductID VALUES (@Name, @Number, @Cost, @Price, CURRENT_TIMESTAMP);"    
+        request = new Request(Query, function(err) {
+         if (err) {
+            console.log(err);
+        }
+        });
+
+        for (i = 0; i < paramName.length; i++) { 
+            request.addParameter(paramName[i], types[i],paramValue[i]);
+        }
+        //request.addParameter('Number', TYPES.NVarChar , 'SQLEXPRESS2014');
+        //request.addParameter('Cost', TYPES.Int, 11);
+        
+        request.on('row', function(columns) {
+            columns.forEach(function(column) {
+              if (column.value === null) {
+                console.log('NULL');
+              } else {
+                console.log("Inserted -------- " + column.value);
+              }
+            });
+        });     
+        connection.execSql(request);
+    }
