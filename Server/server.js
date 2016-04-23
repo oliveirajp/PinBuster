@@ -43,17 +43,85 @@ router.route('/utilizador')
 .post(function(req, res) {
 
    // console.log("nome: " + req.body.nome);
-    insertData("INSERT dbo.utilizador (nome,imagem,raio) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio);",
-        ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int]);
+   insertData("INSERT dbo.utilizador (nome,imagem,raio) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio);",
+    ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int]);
 
-     res.json('tentou');
+   res.json('tentou');
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
 
     getData("SELECT * FROM dbo.utilizador;", function(err, rows) {
-    if (err) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+});
+
+router.route('/utilizador/:utilizador_id')
+.get(function(req, res) {
+    getData("SELECT * FROM dbo.utilizador WHERE utilizador_id = '" + req.params.utilizador_id+"'", function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows['data'][0]);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+});
+
+
+app.delete('/utilizador/:utilizador_id', function (req, res) {
+    getData("DELETE FROM dbo.utilizador WHERE utilizador_id = '" + req.params.utilizador_id+"'", function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows['data'][0]);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+});
+
+
+/////////////////////////////////////////////////////////////FOLLOW////////////////////////////////////////////////////////////////
+router.route('/follow')
+
+// create a bear (accessed at POST http://localhost:8080/api/test)
+
+.post(function(req, res) {
+
+   // console.log("nome: " + req.body.nome);
+   insertData("INSERT dbo.follow (follower,followed) OUTPUT INSERTED.follower VALUES (@follower,@followed);",
+    ['follower', 'followed'],[req.body.follower, req.body.followed], [TYPES.NVarChar, TYPES.NVarChar]);
+
+   res.json('tentou');
+})
+
+
+
+
+
+// get all the bears (accessed at GET http://localhost:8080/api/test)
+.get(function(req, res) {
+
+    getData("SELECT * FROM dbo.follow;", function(err, rows) {
+        if (err) {
         // Handle the error
         res.json(err);
     } else if (rows) {
@@ -67,14 +135,36 @@ router.route('/utilizador')
 });
 
 
-router.route('/utilizador/:utilizador_id')
+//----------------------------
+router.route('/follow/:utilizador_id')
 .get(function(req, res) {
-getData("SELECT * FROM dbo.utilizador WHERE utilizador_id = '" + req.params.utilizador_id+"'", function(err, rows) {
-    if (err) {
+    var followQuery;
+    if(req.query.f == 'follower')
+        followQuery = "SELECT * FROM dbo.follow WHERE follower = '" + req.params.utilizador_id+"'";
+    else
+        followQuery = "SELECT * FROM dbo.follow WHERE followed = '" + req.params.utilizador_id+"'";
+
+    getData(followQuery, function(err, rows) {
+        if (err) {
         // Handle the error
         res.json(err);
     } else if (rows) {
         res.json(rows['data'][0]);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+})
+
+.delete(function(req, res) {
+   getData("DELETE FROM dbo.follow WHERE followed = '" + req.query.unfollow+"' and follower = '" + req.params.utilizador_id+"'", function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json('Done');
         // Process the rows returned from the database
     } else {
         res.json(rows);
@@ -89,13 +179,34 @@ router.route('/mensagem')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
+   // console.log("nome: " + req.body.nome);
+   insertData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,utilizador_id,conteudo,localizacao) OUTPUT INSERTED.mensagem_id VALUES (@latitude,@longitude,@data,@tempo_limite,@raio,@utilizador_id,@conteudo,@localizacao);",
+    ['longitude', 'latitude', 'data', 'tempo_limite', 'raio','utilizador_id','conteudo','localizacao'],[req.body.latitude,req.body.longitude,req.body.data, req.body.tempo_limite, req.body.raio,req.body.utilizador_id,req.body.conteudo,req.body.localizacao],
+    [TYPES.Float,TYPES.Float,TYPES.NVarChar, TYPES.Int,TYPES.Int,TYPES.Int,TYPES.NVarChar,TYPES.NVarChar]);
 
+   res.json('tentou');
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
     getData("SELECT * FROM dbo.mensagem;", function(err, rows) {
-    if (err) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+});
+});
+
+router.route('/mensagem/:utilizador_id')
+.get(function(req, res) {
+    getData("SELECT * FROM dbo.mensagem WHERE utilizador_id = " + req.params.utilizador_id, function(err, rows) {
+        if (err) {
         // Handle the error
         res.json(err);
     } else if (rows) {
@@ -121,7 +232,7 @@ router.route('/achievement')
 .get(function(req, res) {
 
     getData("SELECT * FROM dbo.achievement;", function(err, rows) {
-    if (err) {
+        if (err) {
         // Handle the error
         res.json(err);
     } else if (rows) {
@@ -133,34 +244,6 @@ router.route('/achievement')
     }
 });
 });
-
-
-/////////////////////////////////////////////////////////////FOLLOW////////////////////////////////////////////////////////////////
-router.route('/follow')
-
-// create a bear (accessed at POST http://localhost:8080/api/test)
-.post(function(req, res) {
-
-})
-
-// get all the bears (accessed at GET http://localhost:8080/api/test)
-.get(function(req, res) {
-
-    getData("SELECT * FROM dbo.achievement;", function(err, rows) {
-    if (err) {
-        // Handle the error
-        res.json(err);
-    } else if (rows) {
-        res.json(rows);
-        // Process the rows returned from the database
-    } else {
-        res.json(rows);
-        // No rows returns; handle appropriately
-    }
-});
-});
-
-
 
 
 //======================================================TEDIOUS=============================================================
@@ -189,8 +272,10 @@ var config = {
 var connection = new Connection(config);
 connection.on('connect', function(err) {
     // If no error, then good to proceed.
-    console.log("Connected");
-    console.log("resposta azure: " + err);
+    if(err)
+        console.log("Resposta azure: " + err);
+    else
+        console.log("Azure - Connected");
 });
 
 var Request = require('tedious').Request;
@@ -202,7 +287,6 @@ function getData(Query, callback){
     var newdata = [];
     var dataset = {};
     connection.on('connect', function(err) {
-
         var Request = require('tedious').Request;
         var request = new Request(Query, function (err, rowCount) {
             if (err) {
@@ -218,48 +302,42 @@ function getData(Query, callback){
                 }
             }
         });
-
         request.on('row', function(columns) {
             dataset = {};
             columns.forEach(function(column) {
-            dataset[column.metadata.colName] = String(column.value).trim();
-
-         });
-
-           newdata.push(dataset);
-
+                dataset[column.metadata.colName] = String(column.value).trim();
+            });
+            newdata.push(dataset);
         });
-
         connection.execSql(request);
-
     });
-
 }
 
 
 
 function insertData(Query,paramName, paramValue,types) {
 //"INSERT SalesLT.Product (Name, ProductNumber, StandardCost, ListPrice, SellStartDate) OUTPUT INSERTED.ProductID VALUES (@Name, @Number, @Cost, @Price, CURRENT_TIMESTAMP);"    
-        request = new Request(Query, function(err) {
-         if (err) {
-            console.log(err);
-        }
-        });
+request = new Request(Query, function(err) {
+ if (err) {
+    console.log(err);
+}
+});
 
-        for (i = 0; i < paramName.length; i++) { 
-            request.addParameter(paramName[i], types[i],paramValue[i]);
-        }
+for (i = 0; i < paramName.length; i++) { 
+    //console.log(paramName[i]+"...."+ types[i]+"...."+paramValue[i]);
+    request.addParameter(paramName[i], types[i],paramValue[i]);
+}
         //request.addParameter('Number', TYPES.NVarChar , 'SQLEXPRESS2014');
         //request.addParameter('Cost', TYPES.Int, 11);
         
-        request.on('row', function(columns) {
-            columns.forEach(function(column) {
-              if (column.value === null) {
-                console.log('NULL');
-              } else {
-                console.log("Inserted -------- " + column.value);
-              }
-            });
-        });     
-        connection.execSql(request);
-    }
+request.on('row', function(columns) {
+    columns.forEach(function(column) {
+        if (column.value === null) {
+            console.log('NULL');
+            } else {
+            console.log("Inserted -------- " + column.value);
+            }
+        });
+    });     
+    connection.execSql(request);
+}
