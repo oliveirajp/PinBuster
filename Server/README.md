@@ -2,7 +2,7 @@
 
 
 ## API
-  - Api adress [http://pinbusterapitest.azurewebsites.net/api/](http://pinbusterapitest.azurewebsites.net/api/)
+  - Api address [http://pinbusterapitest.azurewebsites.net/api/](http://pinbusterapitest.azurewebsites.net/api/)
 
   - **Utilizador**
 
@@ -10,7 +10,7 @@
     
      `Resposta json:
      {"data":[{"utilizador_id":"1","nome":"teste","imagem":"imagem_teste","raio":"5000"},{.....} }
-     `
+    `
 
     - **POST utilizador**  [http://pinbusterapitest.azurewebsites.net/api/utilizador](http://pinbusterapitest.azurewebsites.net/api/utilizador)
     
