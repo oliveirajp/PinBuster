@@ -8,25 +8,25 @@
 
     - **GET utilizadores**  [http://pinbusterapitest.azurewebsites.net/api/utilizador](http://pinbusterapitest.azurewebsites.net/api/utilizador)
     
-     ```Resposta json:
+     `Resposta json:
      {"data":[{"utilizador_id":"1","nome":"teste","imagem":"imagem_teste","raio":"5000"},{.....} }
-     ```
+     `
 
 - **POST utilizador**  [http://pinbusterapitest.azurewebsites.net/api/utilizador](http://pinbusterapitest.azurewebsites.net/api/utilizador)
     
-     ```json a enviar:
+     `json a enviar:
      {nome : 'string', imagem : 'string', raio : 'int'}
-     ```
+     `
 
-     ```Resposta json:
+     `Resposta json:
      {"data": 'done' }
-     ```
+     `
 
     - **GET utilizador individual**  [http://pinbusterapitest.azurewebsites.net/api/utilizador/x](http://pinbusterapitest.azurewebsites.net/api/utilizador/6)
     
-     ```Resposta json:
+     `Resposta json:
      {"utilizador_id":"6","nome":"postName","imagem":"imagemPost","raio":"20000"}
-     ```
+     `
 
 
     - **DELETE utilizador individual**  [http://pinbusterapitest.azurewebsites.net/api/utilizador/x](http://pinbusterapitest.azurewebsites.net/api/utilizador/6)
