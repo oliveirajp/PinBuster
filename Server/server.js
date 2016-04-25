@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080; // set our port
+var port = process.env.PORT || 3000; // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -46,7 +46,10 @@ router.route('/utilizador')
    insertData("INSERT dbo.utilizador (nome,imagem,raio) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio);",
     ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int]);
 
-   res.json('tentou');
+
+   var retorno = {};
+   retorno['data'] = 'done';
+   res.json(retorno);
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -110,7 +113,9 @@ router.route('/follow')
    insertData("INSERT dbo.follow (follower,followed) OUTPUT INSERTED.follower VALUES (@follower,@followed);",
     ['follower', 'followed'],[req.body.follower, req.body.followed], [TYPES.NVarChar, TYPES.NVarChar]);
 
-   res.json('tentou');
+   var retorno = {};
+   retorno['data'] = 'done';
+   res.json(retorno);
 })
 
 
@@ -149,7 +154,7 @@ router.route('/follow/:utilizador_id')
         // Handle the error
         res.json(err);
     } else if (rows) {
-        res.json(rows['data'][0]);
+        res.json(rows);
         // Process the rows returned from the database
     } else {
         res.json(rows);
@@ -164,7 +169,9 @@ router.route('/follow/:utilizador_id')
         // Handle the error
         res.json(err);
     } else if (rows) {
-        res.json('Done');
+        var retorno = {};
+        retorno['data'] = 'done';
+        res.json(retorno);
         // Process the rows returned from the database
     } else {
         res.json(rows);
@@ -184,7 +191,9 @@ router.route('/mensagem')
     ['longitude', 'latitude', 'data', 'tempo_limite', 'raio','utilizador_id','conteudo','localizacao'],[req.body.latitude,req.body.longitude,req.body.data, req.body.tempo_limite, req.body.raio,req.body.utilizador_id,req.body.conteudo,req.body.localizacao],
     [TYPES.Float,TYPES.Float,TYPES.NVarChar, TYPES.Int,TYPES.Int,TYPES.Int,TYPES.NVarChar,TYPES.NVarChar]);
 
-   res.json('tentou');
+   var retorno = {};
+   retorno['data'] = 'done';
+   res.json(retorno);
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -226,6 +235,14 @@ router.route('/achievement')
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
 
+   // console.log("nome: " + req.body.nome);
+   insertData("INSERT dbo.achievement (cidade,descricao,nome,mensagem_id,utilizador_id) OUTPUT INSERTED.achievement_id VALUES (@cidade,@descricao,@nome,@mensagem_id,@utilizador_id);",
+    ['cidade', 'descricao', 'nome', 'mensagem_id', 'utilizador_id'],[req.body.cidade, req.body.descricao, req.body.nome, req.body.mensagem_id, req.body.utilizador_id],
+    [TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar, TYPES.Int,TYPES.Int]);
+
+   var retorno = {};
+   retorno['data'] = 'done';
+   res.json(retorno);
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -236,7 +253,9 @@ router.route('/achievement')
         // Handle the error
         res.json(err);
     } else if (rows) {
-        res.json(rows);
+        var retorno = {};
+        retorno['data'] = 'done';
+        res.json(retorno);
         // Process the rows returned from the database
     } else {
         res.json(rows);
@@ -244,6 +263,9 @@ router.route('/achievement')
     }
 });
 });
+
+
+
 
 
 //======================================================TEDIOUS=============================================================
