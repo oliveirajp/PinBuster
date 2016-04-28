@@ -35,8 +35,7 @@ namespace PinBuster.Droid
         }
         
         //---an EventHandler delegate that is called when a location is obtained
-        public event EventHandler<ILocationEventArgs>
-            locationObtained;
+        public event EventHandler<ILocationEventArgs> locationObtained;
 
         //---custom event accessor that is invoked when client subscribes to the event
         event EventHandler<ILocationEventArgs> IGetCurrentPosition.locationObtained
