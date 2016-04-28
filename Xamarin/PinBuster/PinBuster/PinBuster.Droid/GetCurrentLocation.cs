@@ -17,7 +17,7 @@ namespace PinBuster.Droid
     }
 
 
-    class GetCurrentLocation : Java.Lang.Object, CLocation, ILocationListener
+    class GetCurrentLocation : Java.Lang.Object, IGetCurrentPosition, ILocationListener
     {
         LocationManager lm;
         public void OnProviderDisabled(string provider) { }
@@ -39,7 +39,7 @@ namespace PinBuster.Droid
             locationObtained;
 
         //---custom event accessor that is invoked when client subscribes to the event
-        event EventHandler<ILocationEventArgs> CLocation.locationObtained
+        event EventHandler<ILocationEventArgs> IGetCurrentPosition.locationObtained
         {
             add
             {

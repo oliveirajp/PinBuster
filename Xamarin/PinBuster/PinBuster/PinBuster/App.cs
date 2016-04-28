@@ -12,7 +12,7 @@ namespace PinBuster
     public class App : Application
     {
 
-        CLocation loc;
+        IGetCurrentPosition loc;
 
         private readonly static Locator _locator = new Locator();
 
@@ -35,7 +35,7 @@ namespace PinBuster
         protected override void OnStart()
         {
             // Handle when your app starts
-            loc = DependencyService.Get<CLocation>();
+            loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += (object sender,
                 ILocationEventArgs e) =>
             {

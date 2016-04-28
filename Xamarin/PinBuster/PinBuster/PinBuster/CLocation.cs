@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PinBuster
 {
 
-    public interface CLocation
+    public interface IGetCurrentPosition
     {
        void IGetCurrentPosition();
        event EventHandler<ILocationEventArgs> locationObtained;
