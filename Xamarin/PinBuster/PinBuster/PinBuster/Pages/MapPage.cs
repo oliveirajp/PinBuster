@@ -25,14 +25,14 @@ namespace PinBuster.Pages
 
             map = new Map(
             MapSpan.FromCenterAndRadius(
-                    new Position(37, -122), Distance.FromMiles(0.3)))
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)))
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-
+            System.Diagnostics.Debug.WriteLine("Lat: " + App.lat);
             map.IsShowingUser = true;
 
 			var stack = new StackLayout { Spacing = 0 };

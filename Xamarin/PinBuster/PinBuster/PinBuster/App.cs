@@ -11,7 +11,7 @@ namespace PinBuster
 {
     public class App : Application
     {
-
+        static public double lat, lng;
         IGetCurrentPosition loc;
 
         private readonly static Locator _locator = new Locator();
@@ -39,9 +39,9 @@ namespace PinBuster
             loc.locationObtained += (object sender,
                 ILocationEventArgs e) =>
             {
-                var lat = e.lat;
-                var lng = e.lng;
-                System.Diagnostics.Debug.WriteLine("Lat: " + lat + " Lon: " + lng);
+                lat = e.lat;
+                lng = e.lng;
+               // System.Diagnostics.Debug.WriteLine("Lat: " + lat + " Lon: " + lng);
             };
             loc.IGetCurrentPosition();
         }
