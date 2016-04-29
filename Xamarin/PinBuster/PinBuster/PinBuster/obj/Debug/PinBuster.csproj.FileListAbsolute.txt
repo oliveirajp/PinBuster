@@ -10,5 +10,16 @@ C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug
 C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.pdb
 C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.dll.mdb
 C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll.mdb
-C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.dll.mdb
-C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll.mdb
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.pdb
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\Xamarin.Forms.Core.dll
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\Xamarin.Forms.Platform.dll
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\Xamarin.Forms.Xaml.dll
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\Xamarin.Forms.Core.xml
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\Xamarin.Forms.Xaml.xml
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.csprojResolveAssemblyReference.cache
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.dll
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.pdb
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.post.xaml.g.cs
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\obj\Debug\PinBuster.dll.mdb
+C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll.mdb
