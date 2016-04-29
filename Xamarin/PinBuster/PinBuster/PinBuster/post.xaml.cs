@@ -25,11 +25,11 @@ namespace PinBuster
             postData.Add(new KeyValuePair<string, string>("longitude", "0"));
             postData.Add(new KeyValuePair<string, string>("data", "20130210 11:11:11 PM"));
             postData.Add(new KeyValuePair<string, string>("tempo_limite", "30"));
-            postData.Add(new KeyValuePair<string, string>("raio", "50"));
+            postData.Add(new KeyValuePair<string, string>("raio", SliderRadius.Value.ToString()));
             postData.Add(new KeyValuePair<string, string>("utilizador_id", "0"));
             postData.Add(new KeyValuePair<string, string>("conteudo", PostMessage.Text));
             postData.Add(new KeyValuePair<string, string>("localizacao", "leiden"));
-            postData.Add(new KeyValuePair<string, string>("categoria","xD"));
+            postData.Add(new KeyValuePair<string, string>("categoria", CategoryPicker.Items[CategoryPicker.SelectedIndex].ToString()));
 
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -44,7 +44,20 @@ namespace PinBuster
             }
 
             PostMessage.Text = String.Empty;
+            SliderRadius.Value = 0;
+            CategoryPicker.SelectedIndex = -1;
+
         }
+
+        public void OnSliderValueChanged(Object sender, ValueChangedEventArgs e)
+        {
+            SliderValue.Text = e.NewValue.ToString("F3");
+            SliderValue.Text = "Select the desired radius: " + SliderValue.Text + " m";
+        }
+
+
+
+
     }
 
 }
