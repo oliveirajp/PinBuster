@@ -28,8 +28,9 @@ namespace PinBuster
 
 
             // The root page of your application
-            PinsManager = new PinsManager();
-            MainPage = new MapPage();
+            //PinsManager = new PinsManager();
+            //MainPage = new MapPage();
+            MainPage = new UserPage();
         }
 
         protected override void OnStart()

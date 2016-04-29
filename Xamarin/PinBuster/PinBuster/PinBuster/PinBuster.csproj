@@ -41,6 +41,10 @@
     <Compile Include="Models\Pin.cs" />
     <Compile Include="Data\PinsManager.cs" />
     <Compile Include="Locator.cs" />
+    <Compile Include="UserInfo.cs" />
+    <Compile Include="UserPage.cs" />
+    <Compile Include="UserRecentActivity.cs" />
+    <Compile Include="UserStatistics.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="Pages\MapPage.cs" />
     <Compile Include="Constants.cs" />
