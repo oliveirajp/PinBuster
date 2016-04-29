@@ -44,12 +44,18 @@ router.route('/utilizador')
 
    // console.log("nome: " + req.body.nome);
    insertData("INSERT dbo.utilizador (nome,imagem,raio) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio);",
-    ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int]);
-
-
-   var retorno = {};
-   retorno['data'] = 'done';
-   res.json(retorno);
+    ['nome', 'imagem', 'raio'],[req.body.nome, req.body.imagem, req.body.raio], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int], function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+})
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -111,16 +117,19 @@ router.route('/follow')
 
    // console.log("nome: " + req.body.nome);
    insertData("INSERT dbo.follow (follower,followed) OUTPUT INSERTED.follower VALUES (@follower,@followed);",
-    ['follower', 'followed'],[req.body.follower, req.body.followed], [TYPES.NVarChar, TYPES.NVarChar]);
-
-   var retorno = {};
-   retorno['data'] = 'done';
-   res.json(retorno);
+    ['follower', 'followed'],[req.body.follower, req.body.followed], [TYPES.NVarChar, TYPES.NVarChar], function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
 })
-
-
-
-
+})
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
@@ -187,13 +196,20 @@ router.route('/mensagem')
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
    // console.log("nome: " + req.body.nome);
-   insertData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,utilizador_id,conteudo,localizacao) OUTPUT INSERTED.mensagem_id VALUES (@latitude,@longitude,@data,@tempo_limite,@raio,@utilizador_id,@conteudo,@localizacao);",
-    ['longitude', 'latitude', 'data', 'tempo_limite', 'raio','utilizador_id','conteudo','localizacao'],[req.body.latitude,req.body.longitude,req.body.data, req.body.tempo_limite, req.body.raio,req.body.utilizador_id,req.body.conteudo,req.body.localizacao],
-    [TYPES.Float,TYPES.Float,TYPES.NVarChar, TYPES.Int,TYPES.Int,TYPES.Int,TYPES.NVarChar,TYPES.NVarChar]);
-
-   var retorno = {};
-   retorno['data'] = 'done';
-   res.json(retorno);
+   insertData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,utilizador_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES (@latitude,@longitude,@data,@tempo_limite,@raio,@utilizador_id,@conteudo,@localizacao,@categoria);",
+    ['longitude', 'latitude', 'data', 'tempo_limite', 'raio','utilizador_id','conteudo','localizacao','categoria'],[req.body.latitude,req.body.longitude,req.body.data, req.body.tempo_limite, req.body.raio,req.body.utilizador_id,req.body.conteudo,req.body.localizacao,req.body.categoria],
+    [TYPES.Float,TYPES.Float,TYPES.NVarChar, TYPES.Int,TYPES.Int,TYPES.Int,TYPES.NVarChar,TYPES.NVarChar,TYPES.NVarChar], function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+})
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -238,11 +254,18 @@ router.route('/achievement')
    // console.log("nome: " + req.body.nome);
    insertData("INSERT dbo.achievement (cidade,descricao,nome,mensagem_id,utilizador_id) OUTPUT INSERTED.achievement_id VALUES (@cidade,@descricao,@nome,@mensagem_id,@utilizador_id);",
     ['cidade', 'descricao', 'nome', 'mensagem_id', 'utilizador_id'],[req.body.cidade, req.body.descricao, req.body.nome, req.body.mensagem_id, req.body.utilizador_id],
-    [TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar, TYPES.Int,TYPES.Int]);
-
-   var retorno = {};
-   retorno['data'] = 'done';
-   res.json(retorno);
+    [TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar, TYPES.Int,TYPES.Int], function(err, rows) {
+        if (err) {
+        // Handle the error
+        res.json(err);
+    } else if (rows) {
+        res.json(rows);
+        // Process the rows returned from the database
+    } else {
+        res.json(rows);
+        // No rows returns; handle appropriately
+    }
+})
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -337,11 +360,10 @@ function getData(Query, callback){
 
 
 
-function insertData(Query,paramName, paramValue,types) {
-//"INSERT SalesLT.Product (Name, ProductNumber, StandardCost, ListPrice, SellStartDate) OUTPUT INSERTED.ProductID VALUES (@Name, @Number, @Cost, @Price, CURRENT_TIMESTAMP);"    
+function insertData(Query,paramName, paramValue,types,callback) {
 request = new Request(Query, function(err) {
  if (err) {
-    console.log(err);
+    callback(err);
 }
 });
 
@@ -355,9 +377,9 @@ for (i = 0; i < paramName.length; i++) {
 request.on('row', function(columns) {
     columns.forEach(function(column) {
         if (column.value === null) {
-            console.log('NULL');
+            callback(null, 'not done');
             } else {
-            console.log("Inserted -------- " + column.value);
+            callback(null, 'done');
             }
         });
     });     
