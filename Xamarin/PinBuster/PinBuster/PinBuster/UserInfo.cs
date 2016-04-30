@@ -11,20 +11,24 @@ namespace PinBuster
     {
         public UserInfo()
         {
-            var layout = new AbsoluteLayout();
+            var layout = new StackLayout();
 
-            var name = new Label {Text = "João Cardoso", FontSize = 20 };
-            AbsoluteLayout.SetLayoutBounds(name, new Rectangle(1, 0, 200, 25));
-            AbsoluteLayout.SetLayoutFlags(name, AbsoluteLayoutFlags.PositionProportional);
+            var logo = new Image { Aspect = Aspect.AspectFit };
+            logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
+            logo.WidthRequest = 400;
+
+            //var tela = new BoxView { BackgroundColor = Color.FromHex("dddddc"), HeightRequest = 275, WidthRequest = 1000 };
 
             var photo = new Image { Aspect = Aspect.AspectFit };
             photo.Source = ImageSource.FromResource("PinBuster.icon.png");
-            AbsoluteLayout.SetLayoutBounds(photo, new Rectangle(0, 0, 130, 130));
-            AbsoluteLayout.SetLayoutFlags(photo, AbsoluteLayoutFlags.PositionProportional);
-            
-            layout.Children.Add(name);
-            layout.Children.Add(photo);
 
+            var name = new Label { Text = "João Cardoso", FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand};
+
+            layout.Children.Add(logo);
+            //layout.Children.Add(tela);
+            layout.Children.Add(photo);
+            layout.Children.Add(name);
+            
             Content = layout;
         }
     }
