@@ -20,7 +20,6 @@ namespace PinBuster.UWP
         public MainPage()
         {
             this.InitializeComponent();
-
             LoadApplication(new PinBuster.App());
         }
     }

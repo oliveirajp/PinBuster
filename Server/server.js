@@ -367,13 +367,13 @@ request = new Request(Query, function(err) {
 }
 });
 
-for (i = 0; i < paramName.length; i++) { 
+for (i = 0; i < paramName.length; i++) {
     //console.log(paramName[i]+"...."+ types[i]+"...."+paramValue[i]);
     request.addParameter(paramName[i], types[i],paramValue[i]);
 }
         //request.addParameter('Number', TYPES.NVarChar , 'SQLEXPRESS2014');
         //request.addParameter('Cost', TYPES.Int, 11);
-        
+
 request.on('row', function(columns) {
     columns.forEach(function(column) {
         if (column.value === null) {
@@ -382,6 +382,6 @@ request.on('row', function(columns) {
             callback(null, 'done');
             }
         });
-    });     
+    });
     connection.execSql(request);
 }

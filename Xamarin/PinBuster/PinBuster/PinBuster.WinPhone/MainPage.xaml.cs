@@ -28,6 +28,8 @@ namespace PinBuster.WinPhone
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
 
+           
+
             LoadApplication(new PinBuster.App());
         }
 
