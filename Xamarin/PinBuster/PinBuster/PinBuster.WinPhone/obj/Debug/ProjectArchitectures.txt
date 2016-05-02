@@ -1,2 +1,0 @@
-C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.WinPhone\PinBuster.WinPhone.csproj;neutral
-C:\Users\Filipe Batista\Desktop\Aulas\LGP\Code\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\PinBuster.csproj;neutral
