@@ -17,3 +17,4 @@ UpgradeLog.*
 *.nib
 *.pfx
 *.dll
+Xamarin/PinBuster/PinBuster/PinBuster.Droid/Resources/Resource.Designer.cs
