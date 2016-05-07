@@ -151,4 +151,9 @@ utilizador_id : int
      {"data": 'done' }
      `
 
-
+    - **GET achievements de um utilizador**  [http://pinbusterapitest.azurewebsites.net/api/achievement/:utilizador_id](http://pinbusterapitest.azurewebsites.net/api/achievement/6)
+    
+    
+      `Resposta json:
+     {"data":[{"utilizador_id":"6","nome":"porto lindo","MessagesNeeded":"2","MessagesFound":"1"},{"utilizador_id":"6","nome":"terc","MessagesNeeded":"1","MessagesFound":"1"}]}
+     `
