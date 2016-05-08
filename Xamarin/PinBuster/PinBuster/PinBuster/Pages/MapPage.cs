@@ -16,9 +16,9 @@ namespace PinBuster.Pages
     {
 
         public Map map;
-        IGetCurrentPosition loc;
+        
 
-        public MapPage()
+        public MapPage(IGetCurrentPosition loc)
         {
 
             BindingContext = App.Locator.Map;
@@ -45,12 +45,12 @@ namespace PinBuster.Pages
 
             stack.Children.Add(map);
 
-            loc = DependencyService.Get<IGetCurrentPosition>();
+
             loc.locationObtained += (object sender,
                 ILocationEventArgs e) =>
             {
                 map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-                System.Diagnostics.Debug.WriteLine(e.lat);
+                System.Diagnostics.Debug.WriteLine("Olha aqui " + e.lat);
             };
             loc.IGetCurrentPosition();
 
