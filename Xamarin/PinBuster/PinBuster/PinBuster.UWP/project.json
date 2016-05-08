@@ -6,7 +6,7 @@
     "MvvmLightLibs": "5.3.0",
     "Newtonsoft.Json": "8.0.3",
     "Xamarin.Forms": "2.2.0.31",
-    "Xamarin.Forms.Maps": "2.2.0.31"
+    "Xamarin.Forms.Maps": "2.1.0.6529"
   },
   "frameworks": {
     "uap10.0": {}

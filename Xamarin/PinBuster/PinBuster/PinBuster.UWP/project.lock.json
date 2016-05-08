@@ -1860,17 +1860,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -3593,17 +3591,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -5284,17 +5280,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -7025,17 +7019,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -8716,17 +8708,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -10457,17 +10447,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     },
@@ -12148,17 +12136,15 @@
           "lib/uap10.0/Xamarin.Forms.Xaml.dll": {}
         }
       },
-      "Xamarin.Forms.Maps/2.2.0.31": {
+      "Xamarin.Forms.Maps/2.1.0.6529": {
         "dependencies": {
-          "Xamarin.Forms": "2.2.0.31"
+          "Xamarin.Forms": "2.1.0.6529"
         },
         "compile": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         },
         "runtime": {
-          "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll": {},
-          "lib/uap10.0/Xamarin.Forms.Maps.dll": {}
+          "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll": {}
         }
       }
     }
@@ -15950,68 +15936,27 @@
         "lib/wpa81/Xamarin.Forms.Xaml.xml"
       ]
     },
-    "Xamarin.Forms.Maps/2.2.0.31": {
-      "sha512": "2AQ5hj3R3p5QRyiw8s95+5aM6AeyheAZFjuY7yWyKRns6Vfx0u6F56bl4x0zVsHxeVeQmZoRom8I4ykxEMOxzA==",
+    "Xamarin.Forms.Maps/2.1.0.6529": {
+      "sha512": "vj81JXcyHWZiP2QxX+IBYtiZQOfNWy8TVDEk/aO9LgL6cXHQgpqMe9wm8KmOSJ/6JK0JlsFyMw6mGbuN6aPmUg==",
       "type": "package",
       "files": [
-        "Xamarin.Forms.Maps.2.2.0.31.nupkg.sha512",
+        "Xamarin.Forms.Maps.2.1.0.6529.nupkg.sha512",
         "Xamarin.Forms.Maps.nuspec",
-        "build/win81/ARM/Xamarin.Forms.Maps.WinRT.Tablet.dll",
-        "build/win81/ARM/Xamarin.Forms.Maps.WinRT.Tablet.pri",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet.dll",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet.pri",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet/FormsTextBoxStyle.xbf",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet/Resources.xbf",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet/TabletResources.xbf",
-        "build/win81/ARM/Xamarin.Forms.Platform.WinRT.Tablet/Xamarin.Forms.Platform.WinRT.Tablet.xr.xml",
-        "build/win81/Xamarin.Forms.Maps.props",
-        "build/win81/Xamarin.Forms.Maps.targets",
-        "build/win81/x64/Xamarin.Forms.Maps.WinRT.Tablet.dll",
-        "build/win81/x64/Xamarin.Forms.Maps.WinRT.Tablet.pri",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet.dll",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet.pri",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet/FormsTextBoxStyle.xbf",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet/Resources.xbf",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet/TabletResources.xbf",
-        "build/win81/x64/Xamarin.Forms.Platform.WinRT.Tablet/Xamarin.Forms.Platform.WinRT.Tablet.xr.xml",
-        "build/win81/x86/Xamarin.Forms.Maps.WinRT.Tablet.dll",
-        "build/win81/x86/Xamarin.Forms.Maps.WinRT.Tablet.pri",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet.dll",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet.pri",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet/FormsTextBoxStyle.xbf",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet/Resources.xbf",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet/TabletResources.xbf",
-        "build/win81/x86/Xamarin.Forms.Platform.WinRT.Tablet/Xamarin.Forms.Platform.WinRT.Tablet.xr.xml",
-        "lib/MonoAndroid10/Design/Xamarin.Forms.Maps.Design.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Maps.Android.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Maps.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Maps.xml",
-        "lib/MonoTouch10/Design/Xamarin.Forms.Maps.Design.dll",
         "lib/MonoTouch10/Xamarin.Forms.Maps.dll",
         "lib/MonoTouch10/Xamarin.Forms.Maps.iOS.Classic.dll",
         "lib/MonoTouch10/Xamarin.Forms.Maps.xml",
-        "lib/WP80/Design/Xamarin.Forms.Maps.Design.dll",
         "lib/WP80/Xamarin.Forms.Maps.WP8.dll",
         "lib/WP80/Xamarin.Forms.Maps.dll",
         "lib/WP80/Xamarin.Forms.Maps.xml",
-        "lib/Xamarin.iOS10/Design/Xamarin.Forms.Maps.Design.dll",
         "lib/Xamarin.iOS10/Xamarin.Forms.Maps.dll",
         "lib/Xamarin.iOS10/Xamarin.Forms.Maps.iOS.dll",
         "lib/Xamarin.iOS10/Xamarin.Forms.Maps.xml",
-        "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Design/Xamarin.Forms.Maps.Design.dll",
         "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.dll",
         "lib/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Xamarin.Forms.Maps.xml",
-        "lib/uap10.0/Design/Xamarin.Forms.Maps.Design.dll",
-        "lib/uap10.0/Xamarin.Forms.Maps.UWP.dll",
-        "lib/uap10.0/Xamarin.Forms.Maps.UWP.pri",
-        "lib/uap10.0/Xamarin.Forms.Maps.dll",
-        "lib/win81/Design/Xamarin.Forms.Maps.Design.dll",
-        "lib/win81/Xamarin.Forms.Maps.dll",
-        "lib/win81/Xamarin.Forms.Maps.xml",
-        "lib/wpa81/Design/Xamarin.Forms.Maps.Design.dll",
-        "lib/wpa81/Xamarin.Forms.Maps.WinRT.Phone.dll",
-        "lib/wpa81/Xamarin.Forms.Maps.WinRT.Phone.pri",
-        "lib/wpa81/Xamarin.Forms.Maps.dll"
+        "tools/Xamarin.Forms.Maps.Design.dll"
       ]
     }
   },
@@ -16023,7 +15968,7 @@
       "MvvmLightLibs >= 5.3.0",
       "Newtonsoft.Json >= 8.0.3",
       "Xamarin.Forms >= 2.2.0.31",
-      "Xamarin.Forms.Maps >= 2.2.0.31"
+      "Xamarin.Forms.Maps >= 2.1.0.6529"
     ],
     "UAP,Version=v10.0": []
   }
