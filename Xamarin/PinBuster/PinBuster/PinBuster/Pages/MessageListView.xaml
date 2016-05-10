@@ -9,7 +9,7 @@
           <ListView ItemsSource="{Binding All_M}">
             <ListView.ItemTemplate>
               <DataTemplate>
-                <ImageCell Text="{Binding Title}" Detail="{Binding Description}" ImageSource="{Binding Image}">
+                <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
                   <ImageCell.ContextActions>
                     <MenuItem Text="Mais" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
                     <MenuItem Text="Delete" IsDestructive="true" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
@@ -28,7 +28,7 @@
           <ListView ItemsSource="{Binding Secret_M}">
             <ListView.ItemTemplate>
               <DataTemplate>
-                <ImageCell Text="{Binding Title}" Detail="{Binding Description}" ImageSource="{Binding Image}">
+                <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
                   <ImageCell.ContextActions>
                     <MenuItem Text="Mais" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
                     <MenuItem Text="Delete" IsDestructive="true" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
@@ -47,7 +47,7 @@
           <ListView ItemsSource="{Binding Review_M}">
             <ListView.ItemTemplate>
               <DataTemplate>
-                <ImageCell Text="{Binding Title}" Detail="{Binding Description}" ImageSource="{Binding Image}">
+                <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
                   <ImageCell.ContextActions>
                     <MenuItem Text="Mais" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
                     <MenuItem Text="Delete" IsDestructive="true" Clicked="MenuItemClicked" CommandParameter="{Binding .}"></MenuItem>
