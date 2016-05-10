@@ -56,12 +56,12 @@
      `Resposta json:
      {"data": 'done' }
      `
-    - **GET utilizadores seguidos por utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower)
+    - **GET utilizadores seguidos por face id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower)
     
      `Resposta json:
      {"data":[{"follower":"6","followed":"1"}]}
      `
-    - **GET utilizadores que seguem utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed)
+    - **GET utilizadores que seguem face_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed)
     
      `Resposta json:
      {"data":[{"follower":"1","followed":"6"}]}
@@ -82,7 +82,7 @@
     
     
       `Resposta json:
-     {"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (GMT Standard Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto","categoria":"normal","nome":"null","imagem":"null"},{...}]}
+     {"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (GMT Standard Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto","categoria":"normal","nome":"nome","imagem":"pathnome"},{...}]}
      `
 
     - **POST mensagem**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
