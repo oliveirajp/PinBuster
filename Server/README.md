@@ -25,7 +25,7 @@
     - **GET utilizador individual**  [http://pinbusterapitest.azurewebsites.net/api/utilizador/x](http://pinbusterapitest.azurewebsites.net/api/utilizador/6)
     
      `Resposta json:
-     {"utilizador_id":"6","nome":"postName","imagem":"imagemPost","raio":"20000"}
+     {"utilizador_id":"6","nome":"postName","imagem":"imagemPost","raio":"20000","face_id":"6"}
      `
 
 
@@ -50,24 +50,24 @@
     - **POST follow**  [http://pinbusterapitest.azurewebsites.net/api/follow](http://pinbusterapitest.azurewebsites.net/api/follow)
     
      `json a enviar:
-     {"follower" : int,"followed" : int}
+     {"follower" : string,"followed" : string}
      `
 
      `Resposta json:
      {"data": 'done' }
      `
-    - **GET utilizadores seguidos por utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?f=follower](http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?f=follower)
+    - **GET utilizadores seguidos por utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=follower)
     
      `Resposta json:
      {"data":[{"follower":"6","followed":"1"}]}
      `
-    - **GET utilizadores que seguem utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?f=followed](http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?f=followed)
+    - **GET utilizadores que seguem utilizador_ id**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?f=followed)
     
      `Resposta json:
      {"data":[{"follower":"1","followed":"6"}]}
      `
 
-    - **DELETE follow de utilizador_ id a um outro utilizador**  [http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?unfollow=id](http://pinbusterapitest.azurewebsites.net/api/follow/:utilizador_id?unfollow=id)
+    - **DELETE follow de utilizador_ id a um outro utilizador**  [http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?unfollow=id](http://pinbusterapitest.azurewebsites.net/api/follow/:face_id?unfollow=id)
     
      `Resposta json:
      {"data": 'done' }
@@ -78,7 +78,12 @@
 
 
   - **Mensagem**
-
+- **GET mensagens com informação do utilizador**  [http://pinbusterapitest.azurewebsites.net/api/message_user](http://pinbusterapitest.azurewebsites.net/api/message_user)
+    
+    
+      `Resposta json:
+     {"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (GMT Standard Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto","categoria":"normal","nome":"null","imagem":"null"},{...}]}
+     `
 
     - **POST mensagem**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
     
@@ -89,7 +94,7 @@
 "data" : "20130210 11:11:11 PM",
 "tempo_limite" : 100000,
 "raio" : 1500,
-"utilizador_id" : 5,
+"face_id" : "5",
 "conteudo" : "á espera da camisola",
 "localizacao" : "Porto"
 }
@@ -102,15 +107,15 @@
     - **GET mensagens**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
     
      `Resposta json:
-     {"data":[{"mensagem_id":"2","latitude":"41.177489","longitude":"-8.598343","data":"Mon Jun 18 2012 10:34:09 GMT+0000 (Coordinated Universal Time)","tempo_limite":"0","raio":"1000","utilizador_id":"6","conteudo":"Feupinha","localizacao":"Porto"},{....}]}
+     {"data":[{"mensagem_id":"2","latitude":"41.177489","longitude":"-8.598343","data":"Mon Jun 18 2012 10:34:09 GMT+0000 (Coordinated Universal Time)","tempo_limite":"0","raio":"1000","face_id":"6","conteudo":"Feupinha","localizacao":"Porto"},{....}]}
      `
 
 
 
-    - **GET mensagens de utilizador_id**  [http://pinbusterapitest.azurewebsites.net/api/mensagem/:utilizador_ id](http://pinbusterapitest.azurewebsites.net/api/mensagem/:utilizador_id)
+    - **GET mensagens de face_id**  [http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id](http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id)
     
      `Resposta json:
-{"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (Coordinated Universal Time)","tempo_limite":"100000","raio":"1500","utilizador_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto"},{....}]}
+{"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (Coordinated Universal Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto"},{....}]}
      `
 
 
@@ -131,7 +136,7 @@
 descricao   : 'string',
 nome   : 'string',
 mensagem_id  : int,
-utilizador_id : int
+face_id : string
 },{...}]}
      `
 
@@ -142,8 +147,7 @@ utilizador_id : int
 "cidade"  : 'string',
 descricao   : 'string',
 nome   : 'string',
-mensagem_id  : int,
-utilizador_id : int
+face_id  : string
 }
      `
 
@@ -151,9 +155,9 @@ utilizador_id : int
      {"data": 'done' }
      `
 
-    - **GET achievements de um utilizador**  [http://pinbusterapitest.azurewebsites.net/api/achievement/:utilizador_id](http://pinbusterapitest.azurewebsites.net/api/achievement/6)
+    - **GET achievements de um utilizador**  [http://pinbusterapitest.azurewebsites.net/api/achievement/:face_id](http://pinbusterapitest.azurewebsites.net/api/achievement/6)
     
     
       `Resposta json:
-     {"data":[{"utilizador_id":"6","nome":"porto lindo","MessagesNeeded":"2","MessagesFound":"1"},{"utilizador_id":"6","nome":"terc","MessagesNeeded":"1","MessagesFound":"1"}]}
+     {"data":[{"face_id":"6","nome":"porto lindo","MessagesNeeded":"2","MessagesFound":"1"},{"face_id":"6","nome":"terc","MessagesNeeded":"1","MessagesFound":"1"}]}
      `
