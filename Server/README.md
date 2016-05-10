@@ -15,7 +15,7 @@
     - **POST utilizador**  [http://pinbusterapitest.azurewebsites.net/api/utilizador](http://pinbusterapitest.azurewebsites.net/api/utilizador)
     
      `json a enviar:
-     {nome : 'string', imagem : 'string', raio : 'int'}
+     {nome : 'string', imagem : 'string', raio : 'int', face_id : 'string'}
      `
 
      `Resposta json:
