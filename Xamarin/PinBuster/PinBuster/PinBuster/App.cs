@@ -28,16 +28,9 @@ namespace PinBuster
         {
 
 
-            // The root page of your application
-            //PinsManager = new PinsManager();
-            //MainPage = new MapPage();
-           // MainPage = new UserPage();
-           // PinsManager = new PinsManager();
-            //MainPage = new MessageListView();
-            PinsManager = new PinsManager();
             loc = DependencyService.Get<IGetCurrentPosition>();
-            //MainPage = new MapPage(loc);
-
+            // The root page of your application
+            PinsManager = new PinsManager();
             MainPage = new MasterDetail(loc);
         }
 

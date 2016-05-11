@@ -12,6 +12,7 @@ namespace PinBuster.Pages
     public class MenuPage : ContentPage
     {
 
+
         public Action<Page> OnMenuSelect
         {
             get;
@@ -21,7 +22,6 @@ namespace PinBuster.Pages
         public MenuPage(IGetCurrentPosition loc)
         {
             Title = "Menu";
-            Icon = "menu.png";
 
             Padding = new Thickness(10, 20);
 
@@ -39,6 +39,7 @@ namespace PinBuster.Pages
                 ItemsSource = categories,
                 ItemTemplate = dataTemplate
             };
+
 
             listView.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
                 if (OnMenuSelect != null)
