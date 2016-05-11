@@ -11,8 +11,7 @@ namespace PinBuster
 {
     public class App : Application
     {
-        static public double lat, lng;
-        IGetCurrentPosition loc;
+      
 
         private readonly static Locator _locator = new Locator();
 
@@ -23,6 +22,8 @@ namespace PinBuster
             get { return _locator; }
         }
 
+        public IGetCurrentPosition loc;
+
         public App()
         {
 
@@ -30,20 +31,15 @@ namespace PinBuster
             // The root page of your application
            // PinsManager = new PinsManager();
             MainPage = new PinBuster.Pages.MessageListView();
+            PinsManager = new PinsManager();
+            loc = DependencyService.Get<IGetCurrentPosition>();
+            //MainPage = new MapPage(loc);
         }
 
         protected override void OnStart()
         {
             // Handle when your app starts
-            loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained += (object sender,
-                ILocationEventArgs e) =>
-            {
-                lat = e.lat;
-                lng = e.lng;
-               // System.Diagnostics.Debug.WriteLine("Lat: " + lat + " Lon: " + lng);
-            };
-            loc.IGetCurrentPosition();
+            
         }
 
         protected override void OnSleep()
@@ -53,7 +49,7 @@ namespace PinBuster
 
         protected override void OnResume()
         {
-            System.Diagnostics.Debug.WriteLine("teste1");
+            
         }
     }
 }
