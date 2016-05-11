@@ -9,7 +9,6 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<application android:label="PinBuster" android:icon="@drawable/icon">
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCAJBXkrhqz91_xiN1zAIKWCncDuac2D_g" />
-  </application>
-  
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCAJBXkrhqz91_xiN1zAIKWCncDuac2D_g" />
+	</application>
 </manifest>

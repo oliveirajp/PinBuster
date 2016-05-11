@@ -29,9 +29,11 @@ namespace PinBuster
 
 
             // The root page of your application
+           // PinsManager = new PinsManager();
+            MainPage = new PinBuster.Pages.MessageListView();
             PinsManager = new PinsManager();
             loc = DependencyService.Get<IGetCurrentPosition>();
-            MainPage = new MapPage(loc);
+            //MainPage = new MapPage(loc);
         }
 
         protected override void OnStart()

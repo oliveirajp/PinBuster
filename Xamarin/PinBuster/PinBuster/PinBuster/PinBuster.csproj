@@ -36,6 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Models\MessageListModel.cs" />
+    <Compile Include="Pages\DetailMessageList.xaml.cs">
+      <DependentUpon>DetailMessageList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="post.xaml.cs">
       <DependentUpon>post.xaml</DependentUpon>
     </Compile>
@@ -44,10 +48,14 @@
     <Compile Include="Models\Pin.cs" />
     <Compile Include="Data\PinsManager.cs" />
     <Compile Include="Locator.cs" />
+    <Compile Include="Data\Utilities.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="Pages\MapPage.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="MapHelper.cs" />
+    <Compile Include="Pages\MessageListView.xaml.cs">
+      <DependentUpon>MessageListView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />
@@ -100,5 +108,24 @@
       <HintPath>..\..\packages\Xamarin.Forms.Maps.2.1.0.6529\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\MessageListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\DetailMessageList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Page Include="Pages\DetailMessageList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MessageListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>
