@@ -11,7 +11,6 @@
         <Label Text="Name:" FontSize="Medium" HorizontalOptions="FillAndExpand" />
         <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold" />
       </StackLayout>
-      ...
       <Button x:Name="dismissButton" Text="Dismiss" Clicked="OnDismissButtonClicked" />
     </StackLayout>
   </ContentPage.Content>
