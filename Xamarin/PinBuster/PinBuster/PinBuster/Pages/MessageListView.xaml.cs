@@ -33,9 +33,9 @@ namespace PinBuster.Pages
                     foreach (var msg in lista_mensagens.data)
                     {
                         _viewModel.All_M.Add(msg);
-                        if(msg.Categoria == "segredo")
+                        if(msg.Categoria == "Secret")
                             _viewModel.Secret_M.Add(msg);
-                        else if (msg.Categoria == "review")
+                        else if (msg.Categoria == "Review")
                             _viewModel.Review_M.Add(msg);
                     }
                     
@@ -69,8 +69,9 @@ namespace PinBuster.Pages
             }
             else
             {
-                DisplayAlert("Informações", item.Conteudo, "Ok");
+                DisplayAlert("Message Information", item.Nome + "\n" +item.Conteudo + "\n" + item.Data, "Ok");
             }
         }
+
     }
 }
