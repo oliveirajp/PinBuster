@@ -7,13 +7,13 @@ using Xamarin.Forms;
 
 namespace PinBuster
 {
-    class UserStatistics : ContentPage
+    class UserAchievements : ContentPage
     {
-        public UserStatistics()
+        public UserAchievements()
         {
             var stack = new StackLayout();
 
-            var name = new Label { Text = "Aqui vai ter gráficos", FontSize = 20 };
+            var name = new Label { Text = "Aqui vai ter os premios", FontSize = 20 };
            
             stack.Children.Add(name);
             Content = stack;

@@ -37,14 +37,15 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="CLocation.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Pages\UserAchievements.cs" />
+    <Compile Include="Pages\UserInfo.cs" />
+    <Compile Include="Pages\UserPage.cs" />
+    <Compile Include="Pages\UserRecentActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Pin.cs" />
     <Compile Include="Data\PinsManager.cs" />
     <Compile Include="Locator.cs" />
-    <Compile Include="UserInfo.cs" />
-    <Compile Include="UserPage.cs" />
-    <Compile Include="UserRecentActivity.cs" />
-    <Compile Include="UserStatistics.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="Pages\MapPage.cs" />
     <Compile Include="Constants.cs" />

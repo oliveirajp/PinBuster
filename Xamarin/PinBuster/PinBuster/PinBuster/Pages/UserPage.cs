@@ -14,14 +14,14 @@ namespace PinBuster
             var UserInfo = new NavigationPage(new UserInfo());
             UserInfo.Title = "Info";
 
-            var Statistics = new NavigationPage(new UserStatistics());
-            Statistics.Title = "Statistics";
+            var Achievements = new NavigationPage(new UserAchievements());
+            Achievements.Title = "Achievements";
 
             var RecentActivity = new NavigationPage(new UserRecentActivity());
             RecentActivity.Title = "RecentActivity";
 
             Children.Add(UserInfo);
-            Children.Add(Statistics);
+            Children.Add(Achievements);
             Children.Add(RecentActivity);
 
         }
