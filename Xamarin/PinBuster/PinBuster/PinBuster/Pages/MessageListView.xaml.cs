@@ -85,6 +85,7 @@ namespace PinBuster.Pages
                 var temp_Item = (Message_i)e.SelectedItem;
                 var Message_Page = new DetailMessageList(temp_Item); // so the new page shows correct data
                  Navigation.PushAsync(Message_Page);
+                ((ListView)sender).SelectedItem = null;
             }
         }
 

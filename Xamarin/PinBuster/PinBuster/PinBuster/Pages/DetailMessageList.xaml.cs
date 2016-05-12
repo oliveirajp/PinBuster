@@ -14,12 +14,6 @@ namespace PinBuster.Pages
         public DetailMessageList(Message_i temp_Item)
         {
             var layout = new RelativeLayout();
-            /*
-            var overlay = new Image()
-            {
-                Aspect = Aspect.AspectFill,
-                Source = new FileImageSource() { File = temp_Item.Imagem }
-            }; */
 
             var picture = new Image()
             {
@@ -35,17 +29,28 @@ namespace PinBuster.Pages
                 FontFamily = Device.OnPlatform("HelveticaNeue-Medium", "sans-serif", "")
             };
 
-            var tagline = new Label() { Text = temp_Item.Localizacao };
-
-            var scovilleLabel = new Label()
+            var titulo_localizacao = new Label()
             {
-                Text = "Conteudo:",
+                Text = "Localização:",
                 FontSize = 15,
                 TextColor = Color.FromHex("#B7A19B"),
                 FontFamily = Device.OnPlatform("HelveticaNeue-CondensedBlack", "sans-serif-condensed", "")
             };
 
-            var scoville = new Label()
+
+            var localizacao = new Label() { Text = temp_Item.Localizacao };
+            var latitude = new Label() { Text = "Latitude: " + temp_Item.Latitude.ToString(), FontSize = 13 };
+            var longitude = new Label() { Text = "Longitude: "+ temp_Item.Longitude.ToString(), FontSize = 13};
+
+            var titulo_conteudo = new Label()
+            {
+                Text = "Mensagem " + temp_Item.Categoria + " :",
+                FontSize = 15,
+                TextColor = Color.FromHex("#B7A19B"),
+                FontFamily = Device.OnPlatform("HelveticaNeue-CondensedBlack", "sans-serif-condensed", "")
+            };
+
+            var conteudo = new Label()
             {
                 Text = temp_Item.Conteudo,
                 FontSize = 20,
@@ -59,9 +64,12 @@ namespace PinBuster.Pages
                 HorizontalOptions = LayoutOptions.StartAndExpand,
                 Children = {
             name,
-            tagline,
-            scovilleLabel,
-            scoville,
+            titulo_conteudo,
+            conteudo,
+            titulo_localizacao,
+            localizacao,
+            latitude,
+            longitude
         }
             };
 
@@ -90,18 +98,7 @@ namespace PinBuster.Pages
                     return parent.Height;
                 })
             );
-
-        /*    layout.Children.Add(
-                overlay,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => {
-                    return parent.Width;
-                }),
-                Constraint.RelativeToParent((parent) => {
-                    return parent.Height;
-                })
-            ); */
+            
 
             Content = layout;
         }
