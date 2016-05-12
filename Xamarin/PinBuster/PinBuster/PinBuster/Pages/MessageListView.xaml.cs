@@ -56,6 +56,7 @@ namespace PinBuster.Pages
             Task.Run(() => LoadInfo());
             this.BindingContext = this._viewModel;
         
+
         }
 
         public void MenuItemClicked(object sender, EventArgs e)
@@ -70,6 +71,20 @@ namespace PinBuster.Pages
             else
             {
                 DisplayAlert("Message Information", item.Nome + "\n" +item.Conteudo + "\n" + item.Data, "Ok");
+            }
+        }
+
+        void OnSelection(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+            {
+                return; //ItemSelected is called on deselection, which results in SelectedItem being set to null
+            }
+            else
+            {
+                var temp_Item = (Message_i)e.SelectedItem;
+                var Message_Page = new DetailMessageList(temp_Item); // so the new page shows correct data
+                 Navigation.PushAsync(Message_Page);
             }
         }
 
