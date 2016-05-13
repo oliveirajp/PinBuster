@@ -6,7 +6,7 @@
     <ContentPage Title="All Messages" Padding="0, 20, 0, 0">
       <ContentPage.Content>
         <StackLayout>
-          <ListView ItemsSource="{Binding All_M}">
+          <ListView ItemsSource="{Binding All_M}" ItemSelected="OnSelection">
             <ListView.ItemTemplate>
               <DataTemplate>
                 <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
@@ -25,7 +25,7 @@
     <ContentPage Title="Secret Messages" Padding="0, 20, 0, 0">
       <ContentPage.Content>
         <StackLayout>
-          <ListView ItemsSource="{Binding Secret_M}">
+          <ListView ItemsSource="{Binding Secret_M}" ItemSelected="OnSelection">
             <ListView.ItemTemplate>
               <DataTemplate>
                 <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
@@ -44,7 +44,7 @@
     <ContentPage Title="Review Messages" Padding="0, 20, 0, 0">
       <ContentPage.Content>
         <StackLayout>
-          <ListView ItemsSource="{Binding Review_M}">
+          <ListView ItemsSource="{Binding Review_M}" ItemSelected="OnSelection">
             <ListView.ItemTemplate>
               <DataTemplate>
                 <ImageCell Text="{Binding Nome}" Detail="{Binding Conteudo}" ImageSource="{Binding Imagem}">
