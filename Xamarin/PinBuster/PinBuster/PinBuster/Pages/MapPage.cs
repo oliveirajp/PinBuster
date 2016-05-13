@@ -87,7 +87,7 @@ namespace PinBuster.Pages
             this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
             {
                 Position = new Position(pin.latitude, pin.longitude),
-                Address = pin.content,
+                Address = pin.mensagem,
                 Label = pin.title,
                 Type = PinType.Place
             });
