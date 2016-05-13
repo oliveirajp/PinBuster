@@ -12,94 +12,115 @@ using System.Collections.Specialized;
 
 namespace PinBuster.Pages
 {
-	public class MapPage : ContentPage {
+    public class MapPage : ContentPage
+    {
 
-		public Map map;
-		
-		public MapPage() {
+        public Map map;
+        
 
-			BindingContext = App.Locator.Map;
+        public MapPage(IGetCurrentPosition loc)
+        {
 
-			App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler 
-				(PinsChangedMethod);
+            BindingContext = App.Locator.Map;
+
+            App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
+                (PinsChangedMethod);
 
             map = new Map(
             MapSpan.FromCenterAndRadius(
-                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)))
+                    new Position(0, 0), Distance.FromMiles(0.3)))
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            System.Diagnostics.Debug.WriteLine("Lat: " + App.lat);
             map.IsShowingUser = true;
 
-			var stack = new StackLayout { Spacing = 0 };
+            var stack = new StackLayout { Spacing = 0 };
 
-			map.VerticalOptions = LayoutOptions.FillAndExpand;
-			map.HeightRequest = 100;
-			map.WidthRequest = 960;
+            map.VerticalOptions = LayoutOptions.FillAndExpand;
+            map.HeightRequest = 100;
+            map.WidthRequest = 960;
 
-			stack.Children.Add(map);
-			Content = stack;
-		}
+            stack.Children.Add(map);
 
-		private void PositionMap()
-		{
-			var mapPins = map.Pins;
+            try
+            {
+               loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                {
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
+                };
+                loc.IGetCurrentPosition();
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
+           
 
-			if (mapPins == null || !mapPins.Any()) return;
+            Content = stack;
+        }
 
-			var centerPosition = new Position(mapPins.Average(x => x.Position.Latitude), mapPins.Average(x => x.Position.Longitude));
+        private void PositionMap()
+        {
+            var mapPins = map.Pins;
 
-			var minLongitude = mapPins.Min(x => x.Position.Longitude);
-			var minLatitude = mapPins.Min(x => x.Position.Latitude);
+            if (mapPins == null || !mapPins.Any()) return;
 
-			var maxLongitude = mapPins.Max(x => x.Position.Longitude);
-			var maxLatitude = mapPins.Max(x => x.Position.Latitude);
+            var centerPosition = new Position(mapPins.Average(x => x.Position.Latitude), mapPins.Average(x => x.Position.Longitude));
 
-			var distance = MapHelper.CalculateDistance(minLatitude, minLongitude,
-				maxLatitude, maxLongitude, 'M') / 2;
+            var minLongitude = mapPins.Min(x => x.Position.Longitude);
+            var minLatitude = mapPins.Min(x => x.Position.Latitude);
 
-			map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance*1.5)));
-		}
+            var maxLongitude = mapPins.Max(x => x.Position.Longitude);
+            var maxLatitude = mapPins.Max(x => x.Position.Latitude);
 
-		public void AddPin(PinBuster.Models.Pin pin) {
-			this.map.Pins.Add (new Xamarin.Forms.Maps.Pin {
-				Position = new Position(pin.latitude, pin.longitude),
-				Address = pin.content,
-				Label = pin.title,
-				Type = PinType.Place
-			});
-			this.PositionMap ();
-		}
+            var distance = MapHelper.CalculateDistance(minLatitude, minLongitude,
+                maxLatitude, maxLongitude, 'M') / 2;
 
-		private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			if(e.Action == NotifyCollectionChangedAction.Add)
-			{
-				foreach (var pin in e.NewItems) {
-					Xamarin.Forms.Device.BeginInvokeOnMainThread ( () => {
-						this.AddPin ((PinBuster.Models.Pin) pin);
-					});
-				}
-			}
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance * 1.5)));
+        }
 
-			if (e.Action == NotifyCollectionChangedAction.Replace)
-			{
-			}
+        public void AddPin(PinBuster.Models.Pin pin)
+        {
+            this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
+            {
+                Position = new Position(pin.latitude, pin.longitude),
+                Address = pin.content,
+                Label = pin.title,
+                Type = PinType.Place
+            });
+            this.PositionMap();
+        }
 
-			if (e.Action == NotifyCollectionChangedAction.Remove)
-			{
-			}
+        private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var pin in e.NewItems)
+                {
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    {
+                        this.AddPin((PinBuster.Models.Pin)pin);
+                    });
+                }
+            }
 
-			if (e.Action == NotifyCollectionChangedAction.Move)
-			{
-			}
-		}
+            if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+            }
 
-	}
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Move)
+            {
+            }
+        }
+
+    }
 }
 
 
