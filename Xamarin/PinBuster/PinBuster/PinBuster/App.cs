@@ -26,8 +26,6 @@ namespace PinBuster
 
         public App()
         {
-
-
             loc = DependencyService.Get<IGetCurrentPosition>();
             // The root page of your application
             PinsManager = new PinsManager();
