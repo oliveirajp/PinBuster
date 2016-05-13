@@ -12,6 +12,7 @@ namespace PinBuster.Models
 		public int face_id { get; set; }
 		public string categoria { get; set; }
 		public int tempo_limite { get; set; }
+		public DateTime data { get; set; }
 
 		public Pin (string title, string mensagem, double latitude, double longitude)
 		{

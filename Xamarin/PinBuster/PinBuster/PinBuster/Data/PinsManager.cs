@@ -36,12 +36,14 @@ namespace PinBuster.Data
 					var content = await response.Content.ReadAsStringAsync ();
 					var contentJson = JObject.Parse(content);
 					foreach(JObject msg in contentJson["data"]) {
-						Debug.WriteLine(msg);
 						Pin newPin = new Pin("Titulo", (string) msg["conteudo"], (double) msg["latitude"], (double) msg["longitude"]);
 						newPin.raio = (int) msg["raio"];
 						newPin.face_id = (int) msg["face_id"];
 						newPin.tempo_limite = (int) msg["tempo_limite"];
 						newPin.categoria = (string) msg["categoria"];
+						string date = (string) msg["data"];
+						string formattedDate = date.Substring(0, 24);
+						newPin.data = DateTime.Parse(formattedDate); 
 						Pins.Add(newPin);
 					}
 					Debug.WriteLine(Pins);
