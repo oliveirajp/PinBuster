@@ -45,14 +45,19 @@ namespace PinBuster.Pages
 
             stack.Children.Add(map);
 
-
-            loc.locationObtained += (object sender,
-                ILocationEventArgs e) =>
+            try
             {
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-                System.Diagnostics.Debug.WriteLine("Olha aqui " + e.lat);
-            };
-            loc.IGetCurrentPosition();
+               loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                {
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
+                };
+                loc.IGetCurrentPosition();
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
+           
 
             Content = stack;
         }
@@ -82,7 +87,7 @@ namespace PinBuster.Pages
             this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
             {
                 Position = new Position(pin.latitude, pin.longitude),
-                Address = pin.content,
+                Address = pin.mensagem,
                 Label = pin.title,
                 Type = PinType.Place
             });

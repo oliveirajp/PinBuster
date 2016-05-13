@@ -212,7 +212,7 @@ router.route('/mensagem')
 .get(function(req, res) {
     var mensagemQuery = "";
     if (Object.keys(req.query).length === 0)
-        mensagemQuery = "SELECT * FROM dbo.mensagem;";
+        mensagemQuery = "SELECT data FROM dbo.mensagem;";
     else
         mensagemQuery = "SELECT * FROM dbo.mensagem WHERE categoria = '" + req.query.categoria + "'";
 
@@ -311,6 +311,26 @@ router.route('/message_user')
 .get(function(req, res) {
 
     getData("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id" , function(err, rows) {
+        if (err) {
+            // Handle the error
+            res.json(err);
+        } else if (rows) {
+            res.json(rows);
+            // Process the rows returned from the database
+        } else {
+            res.json(rows);
+            // No rows returns; handle appropriately
+        }
+    });
+});
+
+
+
+///////////////////////////////////d/////////////////////PARA PERFIL //////////////////////////////////////////////////////////////
+router.route('/perfil_info/:face_id')
+.get(function(req, res) {
+
+    getData("SELECT (SELECT COUNT(*) FROM dbo.mensagem WHERE face_id = '" + req.params.face_id + "') AS nr_mensagens, (SELECT COUNT(*) FROM dbo.follow WHERE followed = '" + req.params.face_id + "') AS nr_followers, (SELECT COUNT(*) FROM dbo.follow WHERE follower = '" + req.params.face_id + "') as nr_followed" , function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);

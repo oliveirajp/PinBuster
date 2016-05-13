@@ -7,17 +7,17 @@ using Xamarin.Forms;
 
 namespace PinBuster
 {
-    class UserPage : TabbedPage
+    public partial class UserPage : TabbedPage
     {
         public UserPage()
         {
-            var UserInfo = new NavigationPage(new UserInfo());
+            var UserInfo = new UserInfo();
             UserInfo.Title = "Info";
 
-            var Achievements = new NavigationPage(new UserAchievements());
+            var Achievements = new UserAchievements();
             Achievements.Title = "Achievements";
 
-            var RecentActivity = new NavigationPage(new UserRecentActivity());
+            var RecentActivity = new UserRecentActivity();
             RecentActivity.Title = "RecentActivity";
 
             Children.Add(UserInfo);

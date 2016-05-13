@@ -43,9 +43,9 @@ namespace PinBuster
                     {
                     var layout = new StackLayout();
 
-                    var logo = new Image { Aspect = Aspect.AspectFit };
-                    logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
-                    logo.RelScaleTo(0.3);
+                    //var logo = new Image { Aspect = Aspect.AspectFit };
+                    //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
+                    //logo.RelScaleTo(0.3);
 
                     var photo = new Image { Aspect = Aspect.AspectFit };
                     photo.Source = user.imagem;
@@ -66,7 +66,7 @@ namespace PinBuster
                     grid.Children.Add(new Label { Text = "2 Followed" }, 2, 0);
                     grid.Children.Add(new Label { Text = "15 Messages" }, 3, 0);
 
-                    layout.Children.Add(logo);
+                   // layout.Children.Add(logo);
                     layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
                     layout.Children.Add(photo);
                     layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
