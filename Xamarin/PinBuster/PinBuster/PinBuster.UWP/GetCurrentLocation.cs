@@ -17,7 +17,7 @@ namespace PinBuster.UWP
 
     class GetCurrentLocation : IGetCurrentPosition
     {
-        
+
         public event EventHandler<ILocationEventArgs> locationObtained;
 
         event EventHandler<ILocationEventArgs> IGetCurrentPosition.locationObtained
@@ -34,14 +34,39 @@ namespace PinBuster.UWP
 
         public async void IGetCurrentPosition()
         {
-            var geoLocator = new Geolocator { MovementThreshold = 1 };
-            geoLocator.DesiredAccuracy = PositionAccuracy.High;
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
 
-            geoLocator.PositionChanged += OnPositionChanged;
+                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
+                    var geoLocator = new Geolocator { MovementThreshold = 1 };
+                    geoLocator.DesiredAccuracy = PositionAccuracy.High;
 
-            Geoposition pos = await geoLocator.GetGeopositionAsync();
+                    // Subscribe to StatusChanged event to get updates of location status changes
 
-            UpdateLocationData(pos);
+                    geoLocator.PositionChanged += OnPositionChanged;
+
+                    try
+                    {
+                        // Carry out the operation
+                        Geoposition pos = await geoLocator.GetGeopositionAsync();
+                        UpdateLocationData(pos);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    }
+                    break;
+                    
+                case GeolocationAccessStatus.Denied:
+                    System.Diagnostics.Debug.WriteLine("Error: location permission denied");
+                    break;
+
+                case GeolocationAccessStatus.Unspecified:
+                    System.Diagnostics.Debug.WriteLine("Error: unspecified");
+                    break;
+            }
 
         }
 
