@@ -18,7 +18,7 @@ namespace PinBuster.Pages
         public Map map;
         
 
-        public MapPage(IGetCurrentPosition loc)
+        public MapPage()
         {
 
             BindingContext = App.Locator.Map;
@@ -47,17 +47,16 @@ namespace PinBuster.Pages
 
             try
             {
-               loc.locationObtained += (object sender, ILocationEventArgs e) =>
+               App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
                 {
                     map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
                 };
-                loc.IGetCurrentPosition();
             }
             catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + e);
             }
-           
+
 
             Content = stack;
         }

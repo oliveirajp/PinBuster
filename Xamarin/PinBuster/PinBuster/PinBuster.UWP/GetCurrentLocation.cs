@@ -40,9 +40,10 @@ namespace PinBuster.UWP
                 case GeolocationAccessStatus.Allowed:
 
                     // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
-                    var geoLocator = new Geolocator { MovementThreshold = 1 };
+                    var geoLocator = new Geolocator { };
+                    geoLocator.ReportInterval = 3000;
                     geoLocator.DesiredAccuracy = PositionAccuracy.High;
-
+                    
                     // Subscribe to StatusChanged event to get updates of location status changes
 
                     geoLocator.PositionChanged += OnPositionChanged;
@@ -58,7 +59,7 @@ namespace PinBuster.UWP
                         System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
                     }
                     break;
-                    
+
                 case GeolocationAccessStatus.Denied:
                     System.Diagnostics.Debug.WriteLine("Error: location permission denied");
                     break;
@@ -86,8 +87,20 @@ namespace PinBuster.UWP
                 LocationEventArgs args = new LocationEventArgs();
                 args.lat = pos.Coordinate.Point.Position.Latitude;
                 args.lng = pos.Coordinate.Point.Position.Longitude;
-                locationObtained(this, args);
+                try
+                {
+                    locationObtained(this, args);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error: " + e);
+                }
             };
+        }
+
+        ~GetCurrentLocation()
+        {
+            System.Diagnostics.Debug.WriteLine("MEGATESTEashdgjashgdjhasgjdas");
         }
     }
 }

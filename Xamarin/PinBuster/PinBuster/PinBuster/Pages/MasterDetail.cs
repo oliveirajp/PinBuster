@@ -10,9 +10,9 @@ namespace PinBuster.Pages
 {
     public class MasterDetail : MasterDetailPage
     {
-        public MasterDetail(IGetCurrentPosition loc)
+        public MasterDetail()
         {          
-            var menuPage = new MenuPage(loc);
+            var menuPage = new MenuPage();
             menuPage.OnMenuSelect = (categoryPage) => {
                 Detail = new NavigationPage(categoryPage);
                 IsPresented = false;

@@ -71,7 +71,6 @@ namespace PinBuster.Droid
             {
                 locationProvider = string.Empty;
             }
-            Log.Debug(null, "Using " + locationProvider + ".");
 
             lm.RequestLocationUpdates(locationProvider, 2000, 1, this);
         }

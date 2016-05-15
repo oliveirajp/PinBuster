@@ -22,14 +22,18 @@ namespace PinBuster
             get { return _locator; }
         }
 
-        public IGetCurrentPosition loc;
+        public static IGetCurrentPosition loc;
+        public static ContentPage mapPage;
 
         public App()
         {
             loc = DependencyService.Get<IGetCurrentPosition>();
+            loc.IGetCurrentPosition();
+
             // The root page of your application
             PinsManager = new PinsManager();
-            MainPage = new MasterDetail(loc);
+            mapPage = new MapPage();
+            MainPage = new MasterDetail();
         }
 
         protected override void OnStart()
