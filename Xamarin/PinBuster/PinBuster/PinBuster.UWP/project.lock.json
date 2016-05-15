@@ -11,6 +11,14 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
+        }
+      },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
         "dependencies": {
           "Xamarin.Forms.Maps": "2.1.0.6529"
@@ -1881,6 +1889,14 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
+        }
+      },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
         "dependencies": {
           "Xamarin.Forms.Maps": "2.1.0.6529"
@@ -3612,6 +3628,14 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
+        }
+      },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
         "dependencies": {
           "Xamarin.Forms.Maps": "2.1.0.6529"
@@ -5299,6 +5323,14 @@
         },
         "runtime": {
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
+        }
+      },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
         }
       },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
@@ -7040,6 +7072,14 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
+        }
+      },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
         "dependencies": {
           "Xamarin.Forms.Maps": "2.1.0.6529"
@@ -8727,6 +8767,14 @@
         },
         "runtime": {
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
+        }
+      },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
         }
       },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
@@ -10468,6 +10516,14 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/win8/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/win8/Facebook.dll": {}
+        }
+      },
       "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
         "dependencies": {
           "Xamarin.Forms.Maps": "2.1.0.6529"
@@ -12161,8 +12217,37 @@
         "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.pdb"
       ]
     },
+    "Facebook/7.0.6": {
+      "sha512": "D9nlWZb88S4U+eh1pUDQ+AkSkiht6m0eFpxKFddZnQSSFTnncvDMBEnNODy4fOIOjWQIiOXRVbuY04jCPyWqkw==",
+      "type": "package",
+      "files": [
+        "Facebook.7.0.6.nupkg.sha512",
+        "Facebook.nuspec",
+        "LICENSE.txt",
+        "lib/net35-client/Facebook.dll",
+        "lib/net35-client/Facebook.xml",
+        "lib/net40-client/Facebook.dll",
+        "lib/net40-client/Facebook.xml",
+        "lib/net45/Facebook.dll",
+        "lib/net45/Facebook.xml",
+        "lib/portable-win81+wpa81/Facebook.dll",
+        "lib/portable-win81+wpa81/Facebook.xml",
+        "lib/sl5/Facebook.dll",
+        "lib/sl5/Facebook.xml",
+        "lib/win8/Facebook.dll",
+        "lib/win8/Facebook.xml",
+        "lib/wp71/Facebook.dll",
+        "lib/wp71/Facebook.xml",
+        "lib/wp8/Facebook.dll",
+        "lib/wp8/Facebook.xml",
+        "lib/wp81/Facebook.dll",
+        "lib/wp81/Facebook.xml",
+        "readme.txt",
+        "serializers/JsonNetSerializer.cs"
+      ]
+    },
     "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
-      "sha512": "zz+3PFKJDF7kdysaSNHd1+inimK1AHB3ramunGaSU376N6emxS+XFu+zbO9950Np0wFc71kCrXVPNnel7zJxkQ==",
+      "sha512": "x4e/EtF9jifEJdNGf7g5EqQ41C06i5Lk9h92huwayyDAh2mfk13rWQdQYr0ard370luhXPm5ALPGy53ZsRXDIA==",
       "type": "package",
       "files": [
         "InTheHand.Forms.Maps.Platform.WinRT.2.1.16.419.nupkg.sha512",
@@ -15841,7 +15926,7 @@
       ]
     },
     "Xamarin.Forms.Maps/2.1.0.6529": {
-      "sha512": "5+FHWZuM+kpNz1c4IZEuLNO1vtW+cGKuqaN4QcOMOnw9Q8NLpoaM0z8gf2vMp/+677ElT4PWSmd/KjCdcHNMNA==",
+      "sha512": "vj81JXcyHWZiP2QxX+IBYtiZQOfNWy8TVDEk/aO9LgL6cXHQgpqMe9wm8KmOSJ/6JK0JlsFyMw6mGbuN6aPmUg==",
       "type": "package",
       "files": [
         "Xamarin.Forms.Maps.2.1.0.6529.nupkg.sha512",
@@ -15866,6 +15951,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Facebook >= 7.0.6",
       "InTheHand.Forms.Maps.Platform.WinRT >= 2.1.16.419",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0",
       "Microsoft.Net.Http >= 2.2.29",

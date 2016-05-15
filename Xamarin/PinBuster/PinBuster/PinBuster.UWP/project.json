@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "Facebook": "7.0.6",
     "InTheHand.Forms.Maps.Platform.WinRT": "2.1.16.419",
     "Microsoft.Net.Http": "2.2.29",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
