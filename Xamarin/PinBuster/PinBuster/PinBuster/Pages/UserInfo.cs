@@ -53,6 +53,10 @@ namespace PinBuster
                         {
                             IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
                             DeleteCredentials.IDeleteCredentials();
+                            DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
+
+                            // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
+
                         };
 
                         var photo = new Image { Aspect = Aspect.AspectFit };

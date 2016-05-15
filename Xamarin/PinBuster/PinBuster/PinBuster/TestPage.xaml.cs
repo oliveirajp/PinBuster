@@ -63,9 +63,9 @@ namespace PinBuster
         {
             //IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
             // DeleteCredentials.IDeleteCredentials();
+            
             App.NavigateToApp();
-
-            NavigationPage.PopToRootAsync();
+            
 
 
             //await App.Current.MainPage.Navigation.PushAsync(new LoginPage());

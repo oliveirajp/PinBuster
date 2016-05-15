@@ -39,8 +39,14 @@ namespace PinBuster
                         String userID = getCredentials.IGetCredentials()[0];
                         Debug.WriteLine("user id after saving:" + userID);
 
-                        L.Navigation.PushModalAsync(new TestPage(LoginName, LoginID));
-                        L.Navigation.RemovePage(L);
+                        if (Device.OS == TargetPlatform.Windows)
+                        {
+                             App.NavigateToProfile(LoginName,LoginID).Wait();
+
+                            // L.Navigation.PushModalAsync(new TestPage(LoginName, LoginID));
+                            //L.Navigation.RemovePage(L);
+                        }
+
 
                     }
                 }

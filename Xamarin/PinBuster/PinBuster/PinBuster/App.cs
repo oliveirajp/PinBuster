@@ -51,11 +51,13 @@ namespace PinBuster
             String userID = getCredentials.IGetCredentials()[0];
             String userName = getCredentials.IGetCredentials()[1];
 
-            IGetCurrentPosition loctemp;
-            loctemp = DependencyService.Get<IGetCurrentPosition>();
-            PinsManager = new PinsManager();
+            await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
 
-            await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+           // IGetCurrentPosition loctemp;
+            //loctemp = DependencyService.Get<IGetCurrentPosition>();
+            //PinsManager = new PinsManager();
+
+            //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
 
         public async static Task NavigateToApp()
@@ -63,7 +65,10 @@ namespace PinBuster
             IGetCurrentPosition loctemp;
             loctemp = DependencyService.Get<IGetCurrentPosition>();
             PinsManager = new PinsManager();
-            await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+            App.Current.MainPage = new MasterDetail(loctemp);
+            
+
+           // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
 
         IFacebookLogin face;
