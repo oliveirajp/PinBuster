@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Diagnostics;
-
+using static PinBuster.App;
 
 namespace PinBuster
 {
@@ -43,11 +43,19 @@ namespace PinBuster
                     {
                     var layout = new StackLayout();
 
-                    //var logo = new Image { Aspect = Aspect.AspectFit };
-                    //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
-                    //logo.RelScaleTo(0.3);
+                        //var logo = new Image { Aspect = Aspect.AspectFit };
+                        //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
+                        //logo.RelScaleTo(0.3);
 
-                    var photo = new Image { Aspect = Aspect.AspectFit };
+                        var bLogout = new Button { Text = "Logout" };
+                       
+                        bLogout.Clicked += async delegate
+                        {
+                            IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
+                            DeleteCredentials.IDeleteCredentials();
+                        };
+
+                        var photo = new Image { Aspect = Aspect.AspectFit };
                     photo.Source = user.imagem;
                     photo.WidthRequest = 150;
                     photo.HeightRequest = 150;
@@ -71,6 +79,7 @@ namespace PinBuster
                     layout.Children.Add(photo);
                     layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
                     layout.Children.Add(name);
+                        layout.Children.Add(bLogout);
                     layout.Children.Add(grid);
 
                     Content = layout;

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PinBuster.LoginPage"
+             Title="Login"
+             BackgroundColor="White">
+
+
+  <StackLayout BackgroundColor="White" Padding="10"
+               VerticalOptions="Center">
+
+
+
+
+    <Image Source="http://i.imgur.com/Ba40aKv.png" />
+
+    <Grid VerticalOptions="Center" Padding="20">
+      <Label Text="Welcome to PinBuster" TextColor="Gray" FontSize="30" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
+    </Grid>
+
+    <Grid Padding="20, 20,20, 20">
+      <Button Text="Log in with Facebook" TextColor="White" BackgroundColor="#3b5998" Clicked="NavigateButton"/>
+    </Grid>
+  </StackLayout>
+</ContentPage>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="#3b5998"
+             x:Class="PinBuster.Login">
+  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  <Button Text="Click me" x:Name="ButtonFace" Clicked="ChangeUsername"/>
+  <ActivityIndicator Color="White" IsRunning="true" />
+</ContentPage>
