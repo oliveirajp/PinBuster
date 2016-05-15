@@ -77,6 +77,7 @@ namespace PinBuster.Droid
        
         ~GetCurrentLocation()
         {
+            System.Diagnostics.Debug.WriteLine("MEGATESTEashdgjashgdjhasgjdas");
             lm.RemoveUpdates(this);
         }
     }

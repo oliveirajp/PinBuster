@@ -16,7 +16,8 @@ namespace PinBuster.Pages
     {
 
         public Map map;
-        
+        public bool update;
+        public Position updPos;
 
         public MapPage()
         {
@@ -36,6 +37,7 @@ namespace PinBuster.Pages
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
             map.IsShowingUser = true;
+            update = true;
 
             var stack = new StackLayout { Spacing = 0 };
 
@@ -47,12 +49,14 @@ namespace PinBuster.Pages
 
             try
             {
-               App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
-                {
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-                };
+                App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                 {
+                     updPos = new Position(e.lat, e.lng);
+                     if (update)
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(updPos, Distance.FromMiles(0.1)));
+                 };
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + e);
             }
