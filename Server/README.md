@@ -78,12 +78,42 @@
 
 
   - **Mensagem**
-- **GET mensagens com informação do utilizador**  [http://pinbusterapitest.azurewebsites.net/api/message_user](http://pinbusterapitest.azurewebsites.net/api/message_user)
+     - **GET mensagens com informação do utilizador**  [http://pinbusterapitest.azurewebsites.net/api/message_user](http://pinbusterapitest.azurewebsites.net/api/message_user)
+    
+    
+      `Resposta json:
+     {"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (GMT Standard Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto","categoria":"normal","nome":"nome","imagem":"pathnome"},{...}]}
+
+
+     - **GET mensagens com informação do utilizador dentro de raio**  [http://pinbusterapitest.azurewebsites.net/api/message_user?latitude=long&longitude=long&raio=km](http://pinbusterapitest.azurewebsites.net/api/message_user?latitude=41.209673&longitude=-8.365637&raio=30)
     
     
       `Resposta json:
      {"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (GMT Standard Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto","categoria":"normal","nome":"nome","imagem":"pathnome"},{...}]}
      `
+
+    
+
+    - **GET mensagens**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
+    
+     `Resposta json:
+     {"data":[{"mensagem_id":"2","latitude":"41.177489","longitude":"-8.598343","data":"Mon Jun 18 2012 10:34:09 GMT+0000 (Coordinated Universal Time)","tempo_limite":"0","raio":"1000","face_id":"6","conteudo":"Feupinha","localizacao":"Porto"},{....}]}
+     `
+
+     - **GET mensagens dentro de reaio**  [http://pinbusterapitest.azurewebsites.net/api/mensagem?latitude=long&longitude=long&raio=km](http://pinbusterapitest.azurewebsites.net/api/mensagem?latitude=41.209673&longitude=-8.365637&raio=30)
+    
+     `Resposta json:
+     {"data":[{"mensagem_id":"2","latitude":"41.177489","longitude":"-8.598343","data":"Mon Jun 18 2012 10:34:09 GMT+0000 (Coordinated Universal Time)","tempo_limite":"0","raio":"1000","face_id":"6","conteudo":"Feupinha","localizacao":"Porto"},{....}]}
+     `
+
+
+
+    - **GET mensagens de face_id**  [http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id](http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id)
+    
+     `Resposta json:
+{"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (Coordinated Universal Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto"},{....}]}
+     `
+
 
     - **POST mensagem**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
     
@@ -103,23 +133,6 @@
      `Resposta json:
      {"data": 'done' }
      `
-
-    - **GET mensagens**  [http://pinbusterapitest.azurewebsites.net/api/mensagem](http://pinbusterapitest.azurewebsites.net/api/mensagem)
-    
-     `Resposta json:
-     {"data":[{"mensagem_id":"2","latitude":"41.177489","longitude":"-8.598343","data":"Mon Jun 18 2012 10:34:09 GMT+0000 (Coordinated Universal Time)","tempo_limite":"0","raio":"1000","face_id":"6","conteudo":"Feupinha","localizacao":"Porto"},{....}]}
-     `
-
-
-
-    - **GET mensagens de face_id**  [http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id](http://pinbusterapitest.azurewebsites.net/api/mensagem/:face_id)
-    
-     `Resposta json:
-{"data":[{"mensagem_id":"7","latitude":"-8.597355","longitude":"41.1756418","data":"Sun Feb 10 2013 23:11:11 GMT+0000 (Coordinated Universal Time)","tempo_limite":"100000","raio":"1500","face_id":"5","conteudo":"Ã¡ espera da camisola","localizacao":"Porto"},{....}]}
-     `
-
-
-
 
 
 
@@ -160,4 +173,14 @@ face_id  : string
     
       `Resposta json:
      {"data":[{"face_id":"6","nome":"porto lindo","MessagesNeeded":"2","MessagesFound":"1"},{"face_id":"6","nome":"terc","MessagesNeeded":"1","MessagesFound":"1"}]}
+     `
+
+
+  - **Perfil** - falta implementar algumas coisas, nao esta tudo a funcionar
+
+  - **GET Perfil Stats de um utilizador**  [http://pinbusterapitest.azurewebsites.net/api/perfil_info/:face_id](http://pinbusterapitest.azurewebsites.net/api/perfil_info/6)
+    
+    
+      `Resposta json:
+     {"data":[{"nr_mensagens":"5","nr_followers":"1","nr_followed":"4"}]}
      `

@@ -36,6 +36,13 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 
+
+function updateTimeLimits() {
+  console.log(new Date);
+}
+
+setInterval(updateTimeLimits, 60 * 1000);
+
 //////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
 
@@ -334,7 +341,25 @@ router.route('/achievement/:face_id')
 ///////////////////////////////////d/////////////////////MESSAGES WITH USER INFO//////////////////////////////////////////////////////////////
 router.route('/message_user')
 .get(function(req, res) {
-
+    if(req.query.latitude && req.query.longitude && req.query.raio)
+    {
+        getDataRaio("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id",req.query.latitude,req.query.longitude,req.query.raio, function(err, rows) {
+            if (err) {
+            // Handle the error
+            //console.log("Err :" + err);
+            res.json(err);
+        } else if (rows) {
+            //console.log("Normal :" + rows);
+            res.json(rows);
+            // Process the rows returned from the database
+        } else {
+            //console.log("Else :" + rows);
+            res.json(rows);
+            // No rows returns; handle appropriately
+        }
+    });
+    }
+    else{
     getData("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id" , function(err, rows) {
         if (err) {
             // Handle the error
@@ -347,6 +372,7 @@ router.route('/message_user')
             // No rows returns; handle appropriately
         }
     });
+    }
 });
 
 
