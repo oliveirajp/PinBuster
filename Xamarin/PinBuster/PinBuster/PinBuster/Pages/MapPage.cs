@@ -9,6 +9,7 @@ using Xamarin.Forms.Maps;
 using PinBuster.ViewModels;
 using GalaSoft.MvvmLight.Helpers;
 using System.Collections.Specialized;
+using PinBuster;
 
 namespace PinBuster.Pages
 {
@@ -16,7 +17,20 @@ namespace PinBuster.Pages
     {
 
         public Map map;
-        
+
+        Label label;
+        int clickTotal = 0;
+
+        double lng = 0;
+        double lat = 0;
+
+        void postmessageaction(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(lat);
+            System.Diagnostics.Debug.WriteLine(lng);
+
+            Navigation.PushModalAsync(new post(lat,lng));
+        }
 
         public MapPage(IGetCurrentPosition loc)
         {
@@ -25,6 +39,8 @@ namespace PinBuster.Pages
 
             App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
                 (PinsChangedMethod);
+
+
 
             map = new Map(
             MapSpan.FromCenterAndRadius(
@@ -37,31 +53,80 @@ namespace PinBuster.Pages
             };
             map.IsShowingUser = true;
 
-            var stack = new StackLayout { Spacing = 0 };
+      
+
+            Button button = new Button
+            {
+                Text = "Pin it here!",
+                Font = Font.SystemFontOfSize(NamedSize.Large),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            button.Clicked += postmessageaction;
+
+
+            var stack = new RelativeLayout {  };
 
             map.VerticalOptions = LayoutOptions.FillAndExpand;
             map.HeightRequest = 100;
             map.WidthRequest = 960;
 
-            stack.Children.Add(map);
+            stack.Children.Add(map, Constraint.RelativeToParent((parent) => {
+                return parent.X;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Y * .15;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Height;
+            }));
+
+            stack.Children.Add(button, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X + parent.Width/2 - parent.Width * 0.5 * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y * .15;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width*0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+
 
             try
             {
-               loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                loc.locationObtained += (object sender, ILocationEventArgs e) =>
                 {
                     map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
+
+                    System.Diagnostics.Debug.WriteLine("Dentro do try lat:" + e.lat);
+                    System.Diagnostics.Debug.WriteLine("Dentro do try lng:" + e.lng);
+
+                    lat = e.lat;
+                    lng = e.lng;
                 };
                 loc.IGetCurrentPosition();
+
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + e);
             }
-           
+
+
+
 
             Content = stack;
         }
 
+     
         private void PositionMap()
         {
             var mapPins = map.Pins;

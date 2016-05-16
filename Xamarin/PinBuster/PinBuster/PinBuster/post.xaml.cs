@@ -11,9 +11,16 @@ namespace PinBuster
 {
     public partial class post : ContentPage
     {
-        public post()
+        double currentLat = 0;
+        double currentLon = 0;
+
+
+        public post(double lat, double lon)
         {
+            currentLat = lat;
+            currentLon = lon;
             InitializeComponent();
+       
         }
 
         private void Button_OnClicked(object sender, EventArgs e)
@@ -21,8 +28,10 @@ namespace PinBuster
 
             var postData = new List<KeyValuePair<string, string>>();
 
-            postData.Add(new KeyValuePair<string, string>("latitude", "0"));
-            postData.Add(new KeyValuePair<string, string>("longitude", "0"));
+            postData.Add(new KeyValuePair<string, string>("face_id", "1"));
+            postData.Add(new KeyValuePair<string, string>("nome", "dummy"));
+            postData.Add(new KeyValuePair<string, string>("latitude", currentLat.ToString()));
+            postData.Add(new KeyValuePair<string, string>("longitude", currentLon.ToString()));
             postData.Add(new KeyValuePair<string, string>("data", "20130210 11:11:11 PM"));
             postData.Add(new KeyValuePair<string, string>("tempo_limite", "30"));
             postData.Add(new KeyValuePair<string, string>("raio", SliderRadius.Value.ToString()));
@@ -30,6 +39,9 @@ namespace PinBuster
             postData.Add(new KeyValuePair<string, string>("conteudo", PostMessage.Text));
             postData.Add(new KeyValuePair<string, string>("localizacao", "leiden"));
             postData.Add(new KeyValuePair<string, string>("categoria", CategoryPicker.Items[CategoryPicker.SelectedIndex].ToString()));
+            postData.Add(new KeyValuePair<string, string>("imagem", "dummy"));
+
+
 
             using (var client = new System.Net.Http.HttpClient())
             {
