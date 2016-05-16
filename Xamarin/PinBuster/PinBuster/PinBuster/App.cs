@@ -89,7 +89,7 @@ namespace PinBuster
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
             }
-            Debug.WriteLine("user id after saving:" + userID);
+          //  Debug.WriteLine("user id after saving:" + userID);
 
 
             if (userID == null)

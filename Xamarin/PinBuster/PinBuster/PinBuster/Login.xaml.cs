@@ -29,7 +29,7 @@ namespace PinBuster
                     loginID = value;
                     if (loginID != "")
                     {
-                        Debug.WriteLine("Changed");
+                      //  Debug.WriteLine("Changed");
 
 
                         ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
@@ -37,7 +37,7 @@ namespace PinBuster
 
                         IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
                         String userID = getCredentials.IGetCredentials()[0];
-                        Debug.WriteLine("user id after saving:" + userID);
+                      //  Debug.WriteLine("user id after saving:" + userID);
 
                         if (Device.OS == TargetPlatform.Windows)
                         {
@@ -76,7 +76,7 @@ namespace PinBuster
 
             if (Device.OS == TargetPlatform.Windows)
             {
-                Debug.WriteLine("antes");
+              //  Debug.WriteLine("antes");
                 face.IFacebookLogin();
             }
 
@@ -91,7 +91,7 @@ namespace PinBuster
         {
             while (loginID != "" && loginName != "")
             {
-                System.Diagnostics.Debug.WriteLine("Not");
+               // System.Diagnostics.Debug.WriteLine("Not");
             }
           //  await Navigation.PushAsync(new TestPage(loginName, loginID));
         }

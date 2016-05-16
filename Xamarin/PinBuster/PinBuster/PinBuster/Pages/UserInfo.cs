@@ -58,13 +58,17 @@ namespace PinBuster
                             // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
                         };
+                        //how to get credentials
+                        IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+                        String userID = getCredentials.IGetCredentials()[0];
+                        String userName = getCredentials.IGetCredentials()[1];
 
                         var photo = new Image { Aspect = Aspect.AspectFit };
-                    photo.Source = user.imagem;
+                        photo.Source = "http://graph.facebook.com/" + userID + "/picture?type=square";
                     photo.WidthRequest = 150;
                     photo.HeightRequest = 150;
 
-                    var name = new Label { Text = user.nome, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                    var name = new Label { Text = userName, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
 
                     var grid = new Grid();
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });

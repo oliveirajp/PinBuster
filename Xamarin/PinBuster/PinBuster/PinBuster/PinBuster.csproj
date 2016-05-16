@@ -63,8 +63,8 @@
     <Compile Include="Data\PinsManager.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Data\Utilities.cs" />
-    <Compile Include="TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
+    <Compile Include="AfterLogin.xaml.cs">
+      <DependentUpon>AfterLogin.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="Pages\MapPage.cs" />
@@ -156,7 +156,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestPage.xaml">
+    <EmbeddedResource Include="AfterLogin.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
