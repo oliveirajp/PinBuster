@@ -23,11 +23,20 @@ namespace PinBuster
         }
 
         public IGetCurrentPosition loc;
+        public static double lat,lng;
 
         public App()
         {
             loc = DependencyService.Get<IGetCurrentPosition>();
             // The root page of your application
+            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                lat = e.lat;
+                lng = e.lng;
+
+            };
+            loc.IGetCurrentPosition();
+
             PinsManager = new PinsManager();
             MainPage = new MasterDetail(loc);
         }

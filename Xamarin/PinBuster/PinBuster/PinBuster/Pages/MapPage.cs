@@ -21,15 +21,12 @@ namespace PinBuster.Pages
         Label label;
         int clickTotal = 0;
 
-        double lng = 0;
-        double lat = 0;
-
         void postmessageaction(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(lat);
-            System.Diagnostics.Debug.WriteLine(lng);
+            System.Diagnostics.Debug.WriteLine(App.lat);
+            System.Diagnostics.Debug.WriteLine(App.lng);
 
-            Navigation.PushModalAsync(new post(lat,lng));
+            Navigation.PushModalAsync(new post(App.lat,App.lng));
         }
 
         public MapPage(IGetCurrentPosition loc)
@@ -104,12 +101,7 @@ namespace PinBuster.Pages
                 loc.locationObtained += (object sender, ILocationEventArgs e) =>
                 {
                     map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-
-                    System.Diagnostics.Debug.WriteLine("Dentro do try lat:" + e.lat);
-                    System.Diagnostics.Debug.WriteLine("Dentro do try lng:" + e.lng);
-
-                    lat = e.lat;
-                    lng = e.lng;
+                    
                 };
                 loc.IGetCurrentPosition();
 
