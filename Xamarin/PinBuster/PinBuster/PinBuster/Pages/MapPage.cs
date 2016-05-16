@@ -9,6 +9,7 @@ using Xamarin.Forms.Maps;
 using PinBuster.ViewModels;
 using GalaSoft.MvvmLight.Helpers;
 using System.Collections.Specialized;
+using PinBuster.Data;
 
 namespace PinBuster.Pages
 {
@@ -16,8 +17,9 @@ namespace PinBuster.Pages
     {
 
         public Map map;
-        public bool update;
+        public bool update, test;
         public Position updPos;
+        Button recenterBtn;
 
         public MapPage()
         {
@@ -39,21 +41,21 @@ namespace PinBuster.Pages
             map.IsShowingUser = true;
             update = true;
 
-            var stack = new StackLayout { Spacing = 0 };
-
-            map.VerticalOptions = LayoutOptions.FillAndExpand;
             map.HeightRequest = 100;
             map.WidthRequest = 960;
 
-            stack.Children.Add(map);
+            test = false;
 
             try
             {
                 App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
                  {
-                     updPos = new Position(e.lat, e.lng);
-                     if (update)
-                         map.MoveToRegion(MapSpan.FromCenterAndRadius(updPos, Distance.FromMiles(0.1)));
+                     //updPos = new Position(e.lat, e.lng);
+                     //if (update)
+                     //{
+                     //    map.MoveToRegion(MapSpan.FromCenterAndRadius(updPos, Distance.FromMiles(0.1)));
+                     //}
+                     map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
                  };
             }
             catch (Exception e)
@@ -61,9 +63,58 @@ namespace PinBuster.Pages
                 System.Diagnostics.Debug.WriteLine("Error: " + e);
             }
 
+            map.PropertyChanged += SpanChanged;
+
+            recenterBtn = new Button
+            {
+                Text = "Re-Center",
+                Font = Font.SystemFontOfSize(NamedSize.Micro),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+            recenterBtn.Clicked += OnRecenterClicked;
+            recenterBtn.IsEnabled = false;
+            recenterBtn.IsVisible = false;
+
+
+            var stack = new StackLayout
+            {
+                Spacing = 0,
+                Children =
+                {
+                    //new PanContainer
+                    //{
+                    //   Content = map,
+                    //   VerticalOptions =LayoutOptions.FillAndExpand
+                    //}
+                  map,recenterBtn
+                 }
+            };
+
 
             Content = stack;
         }
+
+        private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "VisibleRegion")
+            {
+                //update = false;
+                recenterBtn.IsEnabled = true;
+                recenterBtn.IsVisible = true;
+            }
+        }
+
+        private void OnRecenterClicked(object sender, EventArgs e)
+        {
+            update = true;
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+
+            recenterBtn.IsEnabled = false;
+            recenterBtn.IsVisible = false;
+        }
+
 
         private void PositionMap()
         {
@@ -87,7 +138,7 @@ namespace PinBuster.Pages
 
         public void AddPin(PinBuster.Models.Pin pin)
         {
-            this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
+            this.map.Pins.Add(new Pin
             {
                 Position = new Position(pin.latitude, pin.longitude),
                 Address = pin.mensagem,
@@ -124,6 +175,7 @@ namespace PinBuster.Pages
         }
 
     }
+
 }
 
 

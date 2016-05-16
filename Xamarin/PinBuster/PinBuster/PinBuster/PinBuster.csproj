@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Data\MapPan.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MessageListModel.cs" />
     <Compile Include="Pages\DetailMessageList.xaml.cs">
