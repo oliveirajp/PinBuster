@@ -1,31 +1,29 @@
 ﻿using Facebook;
+using Newtonsoft.Json.Linq;
 using PinBuster.UWP;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.Security.Authentication.Web;
-using Windows.Security.Credentials;
-using static PinBuster.Login;
+using static PinBuster.App;
+using Xamarin.Forms;
 
-
-
-[assembly: Xamarin.Forms.Dependency(typeof(FacebookUWP))]
-
-
+[assembly: Xamarin.Forms.Dependency(typeof(FacebookFriends))]
 
 namespace PinBuster.UWP
 {
-    class FacebookUWP : IFacebookLogin
+    class FacebookFriends : IFacebookFriends
     {
-        void IFacebookLogin.IFacebookLogin()
-        {
-            // throw new NotImplementedException();
+        StackLayout layoutPublic;
 
+        public void IFacebookFriends(StackLayout layout)
+        {
+            layoutPublic = layout;
             IFacebookLogin();
         }
 
@@ -34,7 +32,7 @@ namespace PinBuster.UWP
             //Facebook app id
             var clientId = "536841529832251";
             //Facebook permissions
-            var scope = "public_profile, email,user_friends";
+            var scope = "public_profile, email";
 
             var redirectUri = "http://www.facebook.com/connect/login_success.html";
             var fb = new FacebookClient();
@@ -78,9 +76,7 @@ namespace PinBuster.UWP
                     Debug.WriteLine(".." + token);
 
 
-                    GetData(token, "me");
-                    GetData(token, "me/friends");
-
+                    GetData(token, "me?fields=friends");
                     //AccessToken = access_token.Value;
                     //TokenExpiry = DateTime.Now.AddSeconds(double.Parse(expires_in.Value));
 
@@ -98,32 +94,30 @@ namespace PinBuster.UWP
             FacebookClient fbclient = new FacebookClient(AccessToken);
             try
             {
-                var res = await fbclient.GetTaskAsync(task);//me/feed
-                String data = res.ToString();
-                Debug.WriteLine("Data:" + data);
 
-                // var bob = JObject.Parse(data);
+                using (var httpClient = new HttpClient())
+                {
+                    var json2 = await httpClient.GetStringAsync("https://graph.facebook.com/me/friends?access_token="+ AccessToken);
+                    
+                    //Debug.WriteLine("datafromjson" + json2.ToString());
+                    //var jsonObject = Windows.Data.Json.JsonObject.Parse(json2);
+                    JObject friendListJson = JObject.Parse(json2.ToString());
+                    List<string> strinArrayList = new List<string>();
 
-                // Debug.WriteLine("Data:" + bob["id"]);
-                var json = Windows.Data.Json.JsonObject.Parse(data);
-                var jsonId = json["id"];
-                String id = jsonId.ToString().Substring(1, jsonId.ToString().Length - 2);
-                jsonId = json["name"];
-                String name = jsonId.ToString().Substring(1, jsonId.ToString().Length - 2);
+                    foreach (var friend in friendListJson["data"].Children())
+                    {
+                        String id=friend["id"].ToString().Replace("\"", "");
+                        String name=friend["name"].ToString().Replace("\"", "");
+                        var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                        layoutPublic.Children.Add(nameLabel);
+                    }
+                    
 
+                   // Debug.WriteLine("name:" + jsonName.ToString());
+                   // Now parse with JSON.Net
+                }
 
-                Debug.WriteLine("Profile information:" + name + ";" + id);
-
-                var vault = new PasswordVault();
-                Login.authFacebook.LoginName = name;
-                Login.authFacebook.LoginID = id;
-                Login.loginID = id;
-                Login.loginName = name;
-
-                Debug.WriteLine("here in Face");
-
-                /*IDictionary<string, object> o3 = (IDictionary<string, object>)await fbclient.GetTaskAsync(task);
-                JsonObject o2 = (JsonObject) await fbclient.GetTaskAsync(task);*/
+                
             }
             catch (Exception e)
             {
@@ -131,6 +125,6 @@ namespace PinBuster.UWP
             }
         }
 
-
+        
     }
 }

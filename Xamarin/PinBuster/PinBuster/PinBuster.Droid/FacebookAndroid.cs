@@ -51,6 +51,13 @@ namespace PinBuster.Droid
                     var id = obj["id"].ToString().Replace("\"", "");
                     var name = obj["name"].ToString().Replace("\"", "");
 
+                    var request2 = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me/friends"), null, eventArgs.Account);
+                    var response2 = await request2.GetResponseAsync();
+                    var obj2 = JObject.Parse(response2.GetResponseText());
+
+                    System.Diagnostics.Debug.WriteLine(obj2.ToString());
+
+
                     await App.NavigateToProfile(string.Format(name), string.Format(id));
 
                     System.Diagnostics.Debug.WriteLine(obj.ToString());

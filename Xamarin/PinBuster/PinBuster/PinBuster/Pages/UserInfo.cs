@@ -48,7 +48,9 @@ namespace PinBuster
                         //logo.RelScaleTo(0.3);
 
                         var bLogout = new Button { Text = "Logout" };
-                       
+                        var bFollowers = new Button { Text = "Followers from Facebook" };
+
+
                         bLogout.Clicked += async delegate
                         {
                             IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
@@ -58,6 +60,8 @@ namespace PinBuster
                             // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
                         };
+
+                        
                         //how to get credentials
                         IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
                         String userID = getCredentials.IGetCredentials()[0];
@@ -88,10 +92,20 @@ namespace PinBuster
                     layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
                     layout.Children.Add(name);
                         layout.Children.Add(bLogout);
-                    layout.Children.Add(grid);
+                        layout.Children.Add(bFollowers);
+
+                        layout.Children.Add(grid);
 
                     Content = layout;
-                   });
+
+
+                        bFollowers.Clicked += async delegate
+                        {
+                            IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
+                            FacebookFriends.IFacebookFriends(layout);
+
+                        };
+                    });
                 }
             }
             catch (Exception ex)

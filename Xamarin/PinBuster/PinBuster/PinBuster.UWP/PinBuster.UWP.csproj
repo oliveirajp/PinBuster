@@ -97,6 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Credentials.cs" />
+    <Compile Include="FacebookFriends.cs" />
     <Compile Include="FacebookUWP.cs" />
     <Compile Include="GetCurrentLocation.cs" />
     <Compile Include="MainPage.xaml.cs">

@@ -39,6 +39,9 @@ namespace PinBuster
         public interface IFacebookLogin
         {void IFacebookLogin();}
 
+        public interface IFacebookFriends
+        { void IFacebookFriends(StackLayout layout); }
+
         public async static Task NavigateToProfile(string name, string id)
         {
             
