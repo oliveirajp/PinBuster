@@ -26,6 +26,8 @@ namespace PinBuster
         public static double lat, lng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
+        public static TabbedPage listView;
+        public static string town;
 
         public App()
         {
@@ -42,6 +44,7 @@ namespace PinBuster
             // The root page of your application
             PinsManager = new PinsManager();
             mapPage = new MapPage();
+            listView = new MessageListView();
             MainPage = new MasterDetail();
             
         }

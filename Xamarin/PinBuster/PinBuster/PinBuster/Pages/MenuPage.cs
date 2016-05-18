@@ -26,7 +26,7 @@ namespace PinBuster.Pages
             Padding = new Thickness(10, 20);
 
             var categories = new List<Menu>() {
-            new Menu("Pin list", () => new MessageListView()),
+            new Menu("Pin list", () => App.listView),
             new Menu("Map", () => App.mapPage),
             new Menu("Profile", () => new UserPage()),
         };

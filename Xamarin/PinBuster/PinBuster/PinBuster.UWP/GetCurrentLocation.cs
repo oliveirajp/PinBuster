@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Services.Maps;
 using Windows.UI.Core;
 
 namespace PinBuster.UWP
@@ -17,9 +18,8 @@ namespace PinBuster.UWP
 
     class GetCurrentLocation : IGetCurrentPosition
     {
-
         public event EventHandler<ILocationEventArgs> locationObtained;
-
+        LocationEventArgs args;
         event EventHandler<ILocationEventArgs> IGetCurrentPosition.locationObtained
         {
             add
@@ -43,7 +43,7 @@ namespace PinBuster.UWP
                     var geoLocator = new Geolocator { };
                     geoLocator.ReportInterval = 3000;
                     geoLocator.DesiredAccuracy = PositionAccuracy.High;
-                    
+
                     // Subscribe to StatusChanged event to get updates of location status changes
 
                     geoLocator.PositionChanged += OnPositionChanged;
@@ -52,6 +52,7 @@ namespace PinBuster.UWP
                     {
                         // Carry out the operation
                         Geoposition pos = await geoLocator.GetGeopositionAsync();
+                        args = new LocationEventArgs();
                         UpdateLocationData(pos);
                     }
                     catch (Exception ex)
@@ -84,9 +85,9 @@ namespace PinBuster.UWP
         {
             if (pos != null)
             {
-                LocationEventArgs args = new LocationEventArgs();
                 args.lat = pos.Coordinate.Point.Position.Latitude;
                 args.lng = pos.Coordinate.Point.Position.Longitude;
+              
                 try
                 {
                     locationObtained(this, args);
@@ -100,7 +101,6 @@ namespace PinBuster.UWP
 
         ~GetCurrentLocation()
         {
-            System.Diagnostics.Debug.WriteLine("MEGATESTEashdgjashgdjhasgjdas");
         }
     }
 }

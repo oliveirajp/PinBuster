@@ -18,10 +18,9 @@ namespace PinBuster.Pages
     {
 
         public Map map;
-        public bool update, test;
-        public Position updPos;
+        public bool update, isCentering;
         Button recenterBtn;
-
+        public IEnumerable<String> town;
         public MapPage()
         {
 
@@ -41,9 +40,9 @@ namespace PinBuster.Pages
             map.MoveToRegion(
             MapSpan.FromCenterAndRadius(
                     new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
-            update = true;
 
-            test = false;
+            update = true;
+            isCentering = true;
 
             try
             {
@@ -51,9 +50,13 @@ namespace PinBuster.Pages
                  {
                      if (update)
                      {
-                         test = true;
-                         Device.StartTimer(new TimeSpan(0, 0, 1), () => { test = false; return false; });
-                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+                         isCentering = true;
+                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
+                         if (App.town == null)
+                         {
+                             setTown();
+                         }
                      }
                  };
             }
@@ -89,11 +92,22 @@ namespace PinBuster.Pages
 
             Content = stack;
         }
-        
+
+        async private void setTown()
+        {
+            var geo = new Geocoder();
+            town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
+            parseTown(town.First());
+        }
+
+        private void parseTown(string first)
+        {           
+            App.town = first.Split(' ')[0];
+        }
 
         private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "VisibleRegion" && !test)
+            if (e.PropertyName == "VisibleRegion" && !isCentering)
             {
                 update = false;
                 recenterBtn.IsEnabled = true;
@@ -103,7 +117,7 @@ namespace PinBuster.Pages
 
         private void OnRecenterClicked(object sender, EventArgs e)
         {
-            update = test = true;
+            update = isCentering = true;
             
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
 
@@ -141,7 +155,7 @@ namespace PinBuster.Pages
                 Label = pin.title,
                 Type = PinType.Place
             });
-            this.PositionMap();
+           // this.PositionMap();
         }
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
