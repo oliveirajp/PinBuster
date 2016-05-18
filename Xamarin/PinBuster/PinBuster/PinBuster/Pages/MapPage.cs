@@ -21,7 +21,6 @@ namespace PinBuster.Pages
         public bool update, test;
         public Position updPos;
         Button recenterBtn;
-        private int time;
 
         public MapPage()
         {
@@ -50,15 +49,10 @@ namespace PinBuster.Pages
             {
                 App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
                  {
-                     //updPos = new Position(e.lat, e.lng);
-                     //if (update)
-                     //{
-                     //    map.MoveToRegion(MapSpan.FromCenterAndRadius(updPos, Distance.FromMiles(0.1)));
-                     //}
                      if (update)
                      {
                          test = true;
-                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { test = false; return false; });
+                         Device.StartTimer(new TimeSpan(0, 0, 1), () => { test = false; return false; });
                          map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
                      }
                  };
@@ -88,11 +82,6 @@ namespace PinBuster.Pages
                 Spacing = 0,
                 Children =
                 {
-                    //new PanContainer
-                    //{
-                    //   Content = map,
-                    //   VerticalOptions =LayoutOptions.FillAndExpand
-                    //}
                   map,recenterBtn
                  }
             };
