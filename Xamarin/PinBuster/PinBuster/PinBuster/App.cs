@@ -24,10 +24,13 @@ namespace PinBuster
 
         public static IGetCurrentPosition loc;
         public static double lat, lng;
+        public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
 
         public App()
         {
+            lat = 0;
+            lng = 0;
             loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += (object sender, ILocationEventArgs e) =>
             {
@@ -40,6 +43,7 @@ namespace PinBuster
             PinsManager = new PinsManager();
             mapPage = new MapPage();
             MainPage = new MasterDetail();
+            
         }
 
         protected override void OnStart()

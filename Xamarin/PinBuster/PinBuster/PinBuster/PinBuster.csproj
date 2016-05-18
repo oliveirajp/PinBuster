@@ -39,6 +39,7 @@
     <Compile Include="Data\MapPan.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MessageListModel.cs" />
+    <Compile Include="Pages\CustomMap.cs" />
     <Compile Include="Pages\DetailMessageList.xaml.cs">
       <DependentUpon>DetailMessageList.xaml</DependentUpon>
     </Compile>

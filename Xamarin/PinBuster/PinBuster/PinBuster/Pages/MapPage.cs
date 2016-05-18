@@ -10,6 +10,7 @@ using PinBuster.ViewModels;
 using GalaSoft.MvvmLight.Helpers;
 using System.Collections.Specialized;
 using PinBuster.Data;
+using System.Threading;
 
 namespace PinBuster.Pages
 {
@@ -20,6 +21,7 @@ namespace PinBuster.Pages
         public bool update, test;
         public Position updPos;
         Button recenterBtn;
+        private int time;
 
         public MapPage()
         {
@@ -29,20 +31,18 @@ namespace PinBuster.Pages
             App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
                 (PinsChangedMethod);
 
-            map = new Map(
-            MapSpan.FromCenterAndRadius(
-                    new Position(0, 0), Distance.FromMiles(0.3)))
+            map = new CustomMap
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            map.IsShowingUser = true;
-            update = true;
 
-            map.HeightRequest = 100;
-            map.WidthRequest = 960;
+            map.MoveToRegion(
+            MapSpan.FromCenterAndRadius(
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
+            update = true;
 
             test = false;
 
@@ -55,7 +55,12 @@ namespace PinBuster.Pages
                      //{
                      //    map.MoveToRegion(MapSpan.FromCenterAndRadius(updPos, Distance.FromMiles(0.1)));
                      //}
-                     map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
+                     if (update)
+                     {
+                         test = true;
+                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { test = false; return false; });
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+                     }
                  };
             }
             catch (Exception e)
@@ -95,12 +100,13 @@ namespace PinBuster.Pages
 
             Content = stack;
         }
+        
 
         private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "VisibleRegion")
+            if (e.PropertyName == "VisibleRegion" && !test)
             {
-                //update = false;
+                update = false;
                 recenterBtn.IsEnabled = true;
                 recenterBtn.IsVisible = true;
             }
@@ -108,7 +114,8 @@ namespace PinBuster.Pages
 
         private void OnRecenterClicked(object sender, EventArgs e)
         {
-            update = true;
+            update = test = true;
+            
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
 
             recenterBtn.IsEnabled = false;
