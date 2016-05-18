@@ -38,10 +38,21 @@ router.get('/', function(req, res) {
 
 
 function updateTimeLimits() {
-  console.log(new Date);
+  getData("", function(err, rows) {
+        if (err) {
+            // Handle the error
+            console.log("Err: "+err);
+        } else if (rows) {
+            console.log("Sucess: " +rows);
+            // Process the rows returned from the database
+        } else {
+            console.log("Meh" + rows);
+            // No rows returns; handle appropriately
+        }
+    });
 }
 
-setInterval(updateTimeLimits, 60 * 1000);
+setInterval(updateTimeLimits, 30 * 1000);
 
 //////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
@@ -50,7 +61,7 @@ router.route('/utilizador')
 .post(function(req, res) {
 
     // console.log("nome: " + req.body.nome);
-    insertData("INSERT dbo.utilizador (nome,imagem,raio,face_id) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio,@face_id);", ['nome', 'imagem', 'raio','face_id'], [req.body.nome, req.body.imagem, req.body.raio,req.body.face_id], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int, TYPES.NVarChar], function(err, rows) {
+    insertData("INSERT dbo.utilizador (nome,imagem,raio,face_id) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio,@face_id)", ['nome', 'imagem', 'raio','face_id'], [req.body.nome, req.body.imagem, req.body.raio,req.body.face_id], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int, TYPES.NVarChar], function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
@@ -61,13 +72,18 @@ router.route('/utilizador')
             res.json(rows);
             // No rows returns; handle appropriately
         }
-    })
+    });
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
+    var queryUtilizador = "";
+    if(req.query.searchName)
+    queryUtilizador = "SELECT * FROM dbo.utilizador WHERE nome LIKE '%" + req.query.searchName+ "%'";
+else
+    queryUtilizador = "SELECT * FROM dbo.utilizador;";
 
-    getData("SELECT * FROM dbo.utilizador;", function(err, rows) {
+    getData(queryUtilizador, function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
