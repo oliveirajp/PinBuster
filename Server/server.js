@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
 
 
 function updateTimeLimits() {
-  getData("", function(err, rows) {
+  getData("DELETE FROM dbo.mensagem WHERE tempo_limite != 0 and DATEADD(minute,tempo_limite,data) < CURRENT_TIMESTAMP", function(err, rows) {
         if (err) {
             // Handle the error
             console.log("Err: "+err);
