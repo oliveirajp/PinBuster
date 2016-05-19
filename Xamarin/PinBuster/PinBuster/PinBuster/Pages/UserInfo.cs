@@ -42,13 +42,13 @@ namespace PinBuster
 
                       Device.BeginInvokeOnMainThread(() =>
                     {
-                    var layout = new StackLayout();
+                    var layout = new StackLayout() { VerticalOptions = LayoutOptions.FillAndExpand };
 
                         //var logo = new Image { Aspect = Aspect.AspectFit };
                         //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
                         //logo.RelScaleTo(0.3);
 
-                        var bLogout = new Button { Text = "Logout" };
+                        var bLogout = new Button { Text = "Logout", BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions=LayoutOptions.End };
                         var bFollowers = new Button { Text = "Followers from Facebook" };
 
 
@@ -94,12 +94,15 @@ namespace PinBuster
                     layout.Children.Add(photo);
                     layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
                     layout.Children.Add(name);
-                        layout.Children.Add(bLogout);
-                        layout.Children.Add(bFollowers);
-
                         layout.Children.Add(grid);
 
-                    Content = layout;
+                        layout.Children.Add(bFollowers);
+                        layout.Children.Add(bLogout);
+
+
+
+
+                        Content = layout;
 
 
                         bFollowers.Clicked += async delegate
@@ -133,6 +136,8 @@ namespace PinBuster
 
         static void InsertFollowers()
         {
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String userid = getCredentials.IGetCredentials()[0];
             ISaveAndLoad FacebookFriends = DependencyService.Get<ISaveAndLoad>();
             //  FacebookFriends.DeleteFile("followers2.txt");
             FacebookFriends.SaveText("followers2.txt", "");
@@ -153,7 +158,7 @@ namespace PinBuster
                 try
                 {
 
-
+                   
                     JObject friendListJson = JObject.Parse(result);
                     List<string> strinArrayList = new List<string>();
 
@@ -162,7 +167,30 @@ namespace PinBuster
                         String id = friend["id"].ToString().Replace("\"", "");
                         String name = friend["name"].ToString().Replace("\"", "");
                         var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                        Button button=new Button { Text="Follow", HorizontalOptions = LayoutOptions.CenterAndExpand};
+                        button.Clicked += delegate
+                        {
+                            var postData = new List<KeyValuePair<string, string>>();
+                            postData.Add(new KeyValuePair<string, string>("follower", id));
+                            postData.Add(new KeyValuePair<string, string>("followed", userid));
+
+
+                            /*PUT ON THE DATABASE*/
+                                    using (var client = new System.Net.Http.HttpClient())
+                                    {
+                                        client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net/api/follow");
+                                        var content = new System.Net.Http.FormUrlEncodedContent(postData);
+                                        var result2 = client.PostAsync("api/follow", content).Result;
+                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
+                                        Debug.WriteLine(resultContent);
+                                        // NomeUser.Text = resultContent;
+                                    }
+                                
+
+                            
+                        };
                         layoutPublic.Children.Add(nameLabel);
+                        layoutPublic.Children.Add(button);
                     }
                     tcs.SetResult(null);
                 }
