@@ -10,6 +10,8 @@ using static PinBuster.App;
 
 namespace PinBuster
 {
+   
+
     public partial class FacebookFriends : ContentPage
     {
         public static string loginID;
@@ -28,12 +30,7 @@ namespace PinBuster
                 set
                 {
                     loginID = value;
-                    if (loginID != "")
-                    {
-                        Debug.WriteLine("About to do a popsync");
-                        L.Navigation.PopAsync();
-
-                    }
+                    
                 }
             }
         }
@@ -41,39 +38,48 @@ namespace PinBuster
 
 
         public static Auth authFacebook;
+        public static FacebookFriends l;
+        private StackLayout layout;
+
         public FacebookFriends()
         {
-            Task t = new Task(LoadData);
-            InitializeComponent();
-            t.Start();
-
-            Debug.WriteLine("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeereeeeeeeeeeeeee");
-
-            loginID = "";
-            loginName = "";
-            textFriends = "";
-            authFacebook = new Auth();
-            authFacebook.LoginID = "";
-            authFacebook.LoginName = "";
-            authFacebook.L = this;
-
-           // IFacebookLogin face = DependencyService.Get<IFacebookLogin>();
-            //face.IFacebookLogin();
-            Auth a = new Auth();
-            Debug.WriteLine("oooooooooooooooooooooooooooooooooo");
-          
-;
+           
+            
 
         }
 
-
-
-       static void  LoadData()
+        public FacebookFriends(StackLayout layout)
         {
-            while (textFriends=="")
+            this.layout = layout;
+            l = this;
+            //Followers.Default.L = this;
+            //followers.L = this;
+            //followers.followers = "ola";
+
+            Task t = new Task(LoadData);
+            InitializeComponent();
+            t.Start();
+        }
+
+        static void  LoadData()
+        {
+            ISaveAndLoad FacebookFriends = DependencyService.Get<ISaveAndLoad>();
+          //  FacebookFriends.DeleteFile("followers2.txt");
+            FacebookFriends.SaveText("followers2.txt", "");
+            String result = FacebookFriends.LoadText("followers2.txt");
+
+            while (result == "")
             {
-                Debug.WriteLine("---");
+                 result = FacebookFriends.LoadText("followers2.txt");
+                Debug.WriteLine("result no ciclo"+result);
+                int milliseconds = 100;
+                Task.Delay(milliseconds).Wait();
             }
+            Debug.WriteLine("here2222222222222222222222222222222222222222222222222222222222222");
+            // Debug.WriteLine("result:" + result);
+            
+            l.Navigation.PopModalAsync();
+
         }
 
     }

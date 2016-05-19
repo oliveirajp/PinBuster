@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using static PinBuster.App;
+using Newtonsoft.Json.Linq;
 
 namespace PinBuster
 {
@@ -17,7 +18,7 @@ namespace PinBuster
     {
         public User user { get; set; }
         HttpClient client;
-
+        public static StackLayout layoutPublic;
         public UserInfo()
         {
 
@@ -54,7 +55,7 @@ namespace PinBuster
                         bLogout.Clicked += async delegate
                         {
 
-                        
+                            
                             IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
                             DeleteCredentials.IDeleteCredentials();
                             DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
@@ -112,7 +113,11 @@ namespace PinBuster
                             }
                             else
                             {
-                                await Navigation.PushModalAsync(new FacebookFriends());
+                                layoutPublic = layout;
+
+                                Task t = new Task(InsertFollowers);
+                                await Navigation.PushModalAsync(new FacebookFriends(layout));
+                                t.Start();
 
 
                             }
@@ -124,6 +129,50 @@ namespace PinBuster
             {
                 Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
+        }
+
+        static void InsertFollowers()
+        {
+            ISaveAndLoad FacebookFriends = DependencyService.Get<ISaveAndLoad>();
+            //  FacebookFriends.DeleteFile("followers2.txt");
+            FacebookFriends.SaveText("followers2.txt", "");
+            String result = FacebookFriends.LoadText("followers2.txt");
+
+            while (result == "")
+            {
+                result = FacebookFriends.LoadText("followers2.txt");
+                Debug.WriteLine("result no ciclo" + result);
+                int milliseconds = 100;
+                Task.Delay(2000).Wait();
+            }
+            Debug.WriteLine("666666666666666666666666666666");
+            // Debug.WriteLine("result:" + result);
+            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+
+
+                    JObject friendListJson = JObject.Parse(result);
+                    List<string> strinArrayList = new List<string>();
+
+                    foreach (var friend in friendListJson["data"].Children())
+                    {
+                        String id = friend["id"].ToString().Replace("\"", "");
+                        String name = friend["name"].ToString().Replace("\"", "");
+                        var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                        layoutPublic.Children.Add(nameLabel);
+                    }
+                    tcs.SetResult(null);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+          
+
         }
     }
 }

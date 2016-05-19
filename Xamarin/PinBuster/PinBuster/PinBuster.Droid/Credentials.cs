@@ -13,12 +13,14 @@ using PinBuster.Droid;
 using static PinBuster.App;
 using Xamarin.Auth;
 using Xamarin.Forms;
+using System.IO;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Credentials))]
 [assembly: Xamarin.Forms.Dependency(typeof(GetCredentials))]
 [assembly: Xamarin.Forms.Dependency(typeof(DeleteCredentials))]
 
 
+[assembly: Dependency(typeof(SaveAndLoad))]
 
 
 namespace PinBuster.Droid
@@ -105,4 +107,31 @@ namespace PinBuster.Droid
 
     }
 
+    
+        public class SaveAndLoad : ISaveAndLoad
+        {
+            public void SaveText(string filename, string text)
+            {
+                var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                var filePath = Path.Combine(documentsPath, filename);
+                System.IO.File.WriteAllText(filePath, text);
+          
+            }
+            public string LoadText(string filename)
+            {
+                var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                var filePath = Path.Combine(documentsPath, filename);
+                return System.IO.File.ReadAllText(filePath);
+            }
+
+        public void DeleteFile(string filename)
+        {
+            var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var filePath = Path.Combine(documentsPath, filename);
+            System.IO.File.Delete(filePath);
+        }
+    }
+
+    
 }
+

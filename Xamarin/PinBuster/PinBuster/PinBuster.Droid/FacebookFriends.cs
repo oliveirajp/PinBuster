@@ -15,7 +15,7 @@ using static PinBuster.App;
 using Xamarin.Auth;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms.Platform.Android;
-
+using System.IO;
 
 [assembly: ExportRenderer(typeof(PinBuster.FacebookFriends), typeof(PinBuster.Droid.FacebookFriends))]
 
@@ -57,7 +57,14 @@ namespace PinBuster.Droid
                     var request2 = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me/friends"), null, eventArgs.Account);
                     var response2 = await request2.GetResponseAsync();
                     var obj2 = JObject.Parse(response2.GetResponseText());
-                    
+
+                    var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+                    var filename = Path.Combine(documents, "followers2.txt");
+                    File.WriteAllText(filename, obj2.ToString());
+
+
+
+
                     System.Diagnostics.Debug.WriteLine(obj2.ToString());
 
                     //activity.Finish();

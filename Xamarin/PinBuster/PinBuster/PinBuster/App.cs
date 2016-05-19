@@ -42,6 +42,12 @@ namespace PinBuster
         public interface IFacebookFriends
         { void IFacebookFriends(StackLayout layout); }
 
+        public interface ISaveAndLoad
+        { void SaveText(string filename, string tex);
+            string LoadText(string filename);
+            void DeleteFile(string filename);
+        }
+
         public async static Task NavigateToProfile(string name, string id)
         {
             
