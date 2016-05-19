@@ -43,11 +43,11 @@ namespace PinBuster.Data
                     lista_mensagens = (Pins_L)Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof(Pins_L));
 
 
-                    foreach (var x in App.listView._viewModel.All_M)
-                    {
-                        if (!lista_mensagens.data.Contains(x))
-                            App.listView._viewModel.All_M.Remove(x);
-                    }
+                    //foreach (var x in App.listView._viewModel.All_M)
+                    //{
+                    //    if (!lista_mensagens.data.Contains(x))
+                    //        App.listView._viewModel.All_M.Remove(x);
+                    //}
 
                     foreach (var msg in lista_mensagens.data)
                     {

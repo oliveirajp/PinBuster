@@ -17,7 +17,7 @@ namespace PinBuster.Pages
     public class MapPage : ContentPage
     {
 
-        public Map map;
+        public CustomMap map;
         public bool update, isCentering;
         Button recenterBtn;
         public IEnumerable<String> town;
@@ -26,8 +26,7 @@ namespace PinBuster.Pages
 
             BindingContext = App.Locator.Map;
 
-            App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
-                (PinsChangedMethod);
+            //App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
 
             map = new CustomMap
             {
@@ -148,13 +147,16 @@ namespace PinBuster.Pages
 
         public void AddPin(PinBuster.Models.Pin pin)
         {
-            this.map.Pins.Add(new Pin
+            var pinToAdd = (new Pin
             {
                 Position = new Position(pin.Latitude, pin.Longitude),
                 Address = pin.Conteudo,
                 Label = pin.Nome,
                 Type = PinType.Place
             });
+            pin.ActualPin = pinToAdd;
+            map.CustomPins.Add(pin);
+            map.Pins.Add(pin.ActualPin);
            // this.PositionMap();
         }
 
