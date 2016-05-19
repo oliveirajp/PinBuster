@@ -2,8 +2,8 @@
 
 namespace PinBuster.Models
 {
-	public class Pin
-	{
+    public class Pin : IEquatable<Pin>
+    {
         string mensagem_id;
         public string Mensagem_id
         {
@@ -172,7 +172,10 @@ namespace PinBuster.Models
                 imagem = value;
             }
         }
-        
-	}
-}
 
+        public bool Equals(Pin other)
+        {
+            return this.conteudo == other.conteudo && this.face_id == other.Face_id;
+        }
+    }
+}

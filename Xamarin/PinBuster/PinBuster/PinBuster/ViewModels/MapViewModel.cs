@@ -25,21 +25,30 @@ namespace PinBuster.ViewModels
         public async Task LoadPins()
         {
             var pins = await App.pinsManager.FetchPins();
-            if (Pins.Count > 0)
-                foreach (var x in Pins)
-                {
-                    if (!pins.Contains(x))
-                        Pins.Remove(x);
-                }
             if (pins != null)
-                foreach (var pin in pins)
+                try
                 {
-                    if (!Pins.Contains(pin))
-                        Pins.Add(pin);
+                    List<PinBuster.Models.Pin> myList = new List<PinBuster.Models.Pin>(Pins);
+                    if (myList.Count > 0)
+                        foreach (var x in myList)
+                        {
+                            if (!pins.Contains(x))
+                                Pins.Remove(x);
+
+                        }
+                    if (pins.Count > 0)
+                        foreach (var pin in pins)
+                        {
+                            if (!Pins.Contains(pin))
+                                Pins.Add(pin);
+                        }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@@@@@@ERROR {0}", ex.Message);
                 }
 
             System.Diagnostics.Debug.WriteLine(Pins.Count);
         }
     }
 }
-
