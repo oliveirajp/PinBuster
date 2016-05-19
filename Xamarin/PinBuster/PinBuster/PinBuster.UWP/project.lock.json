@@ -12162,7 +12162,7 @@
       ]
     },
     "InTheHand.Forms.Maps.Platform.WinRT/2.1.16.419": {
-      "sha512": "zz+3PFKJDF7kdysaSNHd1+inimK1AHB3ramunGaSU376N6emxS+XFu+zbO9950Np0wFc71kCrXVPNnel7zJxkQ==",
+      "sha512": "x4e/EtF9jifEJdNGf7g5EqQ41C06i5Lk9h92huwayyDAh2mfk13rWQdQYr0ard370luhXPm5ALPGy53ZsRXDIA==",
       "type": "package",
       "files": [
         "InTheHand.Forms.Maps.Platform.WinRT.2.1.16.419.nupkg.sha512",
@@ -15742,7 +15742,7 @@
       ]
     },
     "Xamarin.Forms/2.1.0.6529": {
-      "sha512": "TJkPXQk1HyHqmMEuFn+3DSEb/9yQKND45Qwt8Jz8BHI1Kh4nAMLnXlgp/akPmyXDdqCcK1m7E9mSpe2kA6Od+g==",
+      "sha512": "lHvfEGdk9P8PtPUDH5wAR0L8ZSbov3LwWDvN1mx2UzYNd1zm4WwAHyK2h5XknE90KA+6JgyIuTTfDvxgz0rlLA==",
       "type": "package",
       "files": [
         "Xamarin.Forms.2.1.0.6529.nupkg.sha512",
