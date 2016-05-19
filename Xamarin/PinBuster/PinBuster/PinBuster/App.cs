@@ -7,6 +7,9 @@ using Xamarin.Forms;
 using PinBuster.Data;
 using PinBuster.Pages;
 using PinBuster;
+using System.Threading.Tasks;
+using Xamarin.Forms.Maps;
+
 namespace PinBuster
 {
     public class App : Application
@@ -15,7 +18,7 @@ namespace PinBuster
 
         private readonly static Locator _locator = new Locator();
 
-        public static PinsManager PinsManager { get; private set; }
+        public static PinsManager pinsManager { get; private set; }
 
         public static Locator Locator
         {
@@ -26,7 +29,7 @@ namespace PinBuster
         public static double lat, lng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
-        public static TabbedPage listView;
+        public static MessageListView listView;
         public static string town;
 
         public App()
@@ -38,11 +41,12 @@ namespace PinBuster
             {
                 lat = e.lat;
                 lng = e.lng;
+                Locator.Map.LoadPins();
             };
             loc.IGetCurrentPosition();
 
             // The root page of your application
-            PinsManager = new PinsManager();
+            pinsManager = new PinsManager();
             mapPage = new MapPage();
             listView = new MessageListView();
             MainPage = new MasterDetail();

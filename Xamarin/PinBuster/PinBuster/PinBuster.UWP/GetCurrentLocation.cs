@@ -42,6 +42,7 @@ namespace PinBuster.UWP
                     // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
                     var geoLocator = new Geolocator { };
                     geoLocator.ReportInterval = 3000;
+                    geoLocator.MovementThreshold = 10;
                     geoLocator.DesiredAccuracy = PositionAccuracy.High;
 
                     // Subscribe to StatusChanged event to get updates of location status changes

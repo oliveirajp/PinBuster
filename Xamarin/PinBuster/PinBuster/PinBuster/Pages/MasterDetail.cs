@@ -20,7 +20,6 @@ namespace PinBuster.Pages
             
             Master = menuPage;
             MasterBehavior = MasterBehavior.Popover;
-            //Detail = new NavigationPage(new MapPage(loc));
             Detail = new NavigationPage(App.mapPage);
         }
     }

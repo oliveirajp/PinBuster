@@ -150,9 +150,9 @@ namespace PinBuster.Pages
         {
             this.map.Pins.Add(new Pin
             {
-                Position = new Position(pin.latitude, pin.longitude),
-                Address = pin.mensagem,
-                Label = pin.title,
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
                 Type = PinType.Place
             });
            // this.PositionMap();

@@ -27,7 +27,6 @@ namespace PinBuster.UWP
             base.OnElementChanged(e);
             if (e.OldElement != null)
             {
-                nativeMap.ManipulationCompleted-= OnMapElementOut;
                 nativeMap.Children.Clear();
                 nativeMap = null;
             }
@@ -37,16 +36,11 @@ namespace PinBuster.UWP
                 var formsMap = (CustomMap)e.NewElement;
                 nativeMap = Control as MapControl;
                 nativeMap.Children.Clear();
-                nativeMap.ManipulationCompleted += OnMapElementOut;
 
             }
 
         }
 
-        private void OnMapElementOut(object sender, ManipulationCompletedRoutedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("testetas");
-        }
     }
 }
 

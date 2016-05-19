@@ -11,25 +11,35 @@ using PinBuster.Pages;
 
 namespace PinBuster.ViewModels
 {
-	public class MapViewModel : ViewModelBase
-	{
-		public static readonly Position NullPosition = new Position(0, 0);
+    public class MapViewModel : ViewModelBase
+    {
+        public static readonly Position NullPosition = new Position(0, 0);
 
-		public ObservableCollection<PinBuster.Models.Pin> Pins = new ObservableCollection<PinBuster.Models.Pin>();
+        public ObservableCollection<PinBuster.Models.Pin> Pins = new ObservableCollection<PinBuster.Models.Pin>();
 
-		public MapViewModel ()
-		{
-			Task.Run(() => LoadPins());
-		}
+        public MapViewModel()
+        {
+            Task.Run(() => LoadPins());
+        }
 
-		public async Task LoadPins()
-		{
-			var pins = await App.PinsManager.FetchPins ();
+        public async Task LoadPins()
+        {
+            var pins = await App.pinsManager.FetchPins();
+            if (Pins.Count > 0)
+                foreach (var x in Pins)
+                {
+                    if (!pins.Contains(x))
+                        Pins.Remove(x);
+                }
+            if (pins != null)
+                foreach (var pin in pins)
+                {
+                    if (!Pins.Contains(pin))
+                        Pins.Add(pin);
+                }
 
-			foreach (var pin in pins) {
-				this.Pins.Add (pin);
-			}
-		}
-	}
+            System.Diagnostics.Debug.WriteLine(Pins.Count);
+        }
+    }
 }
 

@@ -24,6 +24,7 @@ namespace PinBuster.Data
             string r ="";
 
             var uri = new Uri(string.Format(url_base + api_path, string.Empty));
+            System.Diagnostics.Debug.WriteLine(uri);
 
             try
             {
