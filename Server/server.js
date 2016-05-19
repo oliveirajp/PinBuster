@@ -36,6 +36,24 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 
+
+function updateTimeLimits() {
+  getData("DELETE FROM dbo.mensagem WHERE tempo_limite != 0 and DATEADD(minute,tempo_limite,data) < CURRENT_TIMESTAMP", function(err, rows) {
+        if (err) {
+            // Handle the error
+            console.log("Err: "+err);
+        } else if (rows) {
+            console.log("Sucess: " +rows);
+            // Process the rows returned from the database
+        } else {
+            console.log("Meh" + rows);
+            // No rows returns; handle appropriately
+        }
+    });
+}
+
+setInterval(updateTimeLimits, 30 * 1000);
+
 //////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
 
@@ -43,7 +61,7 @@ router.route('/utilizador')
 .post(function(req, res) {
 
     // console.log("nome: " + req.body.nome);
-    insertData("INSERT dbo.utilizador (nome,imagem,raio,face_id) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio,@face_id);", ['nome', 'imagem', 'raio','face_id'], [req.body.nome, req.body.imagem, req.body.raio,req.body.face_id], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int, TYPES.NVarChar], function(err, rows) {
+    insertData("INSERT dbo.utilizador (nome,imagem,raio,face_id) OUTPUT INSERTED.utilizador_id VALUES (@nome,@imagem,@raio,@face_id)", ['nome', 'imagem', 'raio','face_id'], [req.body.nome, req.body.imagem, req.body.raio,req.body.face_id], [TYPES.NVarChar, TYPES.NVarChar, TYPES.Int, TYPES.NVarChar], function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
@@ -54,13 +72,18 @@ router.route('/utilizador')
             res.json(rows);
             // No rows returns; handle appropriately
         }
-    })
+    });
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
+    var queryUtilizador = "";
+    if(req.query.searchName)
+    queryUtilizador = "SELECT * FROM dbo.utilizador WHERE nome LIKE '%" + req.query.searchName+ "%'";
+else
+    queryUtilizador = "SELECT * FROM dbo.utilizador;";
 
-    getData("SELECT * FROM dbo.utilizador;", function(err, rows) {
+    getData(queryUtilizador, function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
@@ -75,9 +98,9 @@ router.route('/utilizador')
 });
 
 router.route('/utilizador/:face_id')
-    .get(function(req, res) {
-        getData("SELECT * FROM dbo.utilizador WHERE face_id = '" + req.params.face_id + "'", function(err, rows) {
-            if (err) {
+.get(function(req, res) {
+    getData("SELECT * FROM dbo.utilizador WHERE face_id = '" + req.params.face_id + "'", function(err, rows) {
+        if (err) {
                 // Handle the error
                 res.json(err);
             } else if (rows) {
@@ -88,7 +111,7 @@ router.route('/utilizador/:face_id')
                 // No rows returns; handle appropriately
             }
         });
-    });
+});
 
 
 app.delete('/utilizador/:face_id', function(req, res) {
@@ -149,15 +172,15 @@ router.route('/follow')
 
 //----------------------------
 router.route('/follow/:face_id')
-    .get(function(req, res) {
-        var followQuery;
-        if (req.query.f == 'follower')
-            followQuery = "SELECT * FROM dbo.follow WHERE follower = '" + req.params.face_id + "'";
-        else
-            followQuery = "SELECT * FROM dbo.follow WHERE followed = '" + req.params.face_id + "'";
+.get(function(req, res) {
+    var followQuery;
+    if (req.query.f == 'follower')
+        followQuery = "SELECT * FROM dbo.follow WHERE follower = '" + req.params.face_id + "'";
+    else
+        followQuery = "SELECT * FROM dbo.follow WHERE followed = '" + req.params.face_id + "'";
 
-        getData(followQuery, function(err, rows) {
-            if (err) {
+    getData(followQuery, function(err, rows) {
+        if (err) {
                 // Handle the error
                 res.json(err);
             } else if (rows) {
@@ -168,7 +191,7 @@ router.route('/follow/:face_id')
                 // No rows returns; handle appropriately
             }
         });
-    })
+})
 
 .delete(function(req, res) {
     getData("DELETE FROM dbo.follow WHERE followed = '" + req.query.unfollow + "' and follower = '" + req.params.face_id + "'", function(err, rows) {
@@ -211,30 +234,55 @@ router.route('/mensagem')
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
     var mensagemQuery = "";
-    if (Object.keys(req.query).length === 0)
-        mensagemQuery = "SELECT data FROM dbo.mensagem;";
-    else
-        mensagemQuery = "SELECT * FROM dbo.mensagem WHERE categoria = '" + req.query.categoria + "'";
-
-
-    getData(mensagemQuery, function(err, rows) {
-        if (err) {
+    
+    if(req.query.latitude && req.query.longitude && req.query.raio)
+    {
+        mensagemQuery = "SELECT * FROM dbo.mensagem;";
+        getDataRaio(mensagemQuery,req.query.latitude,req.query.longitude,req.query.raio, function(err, rows) {
+            if (err) {
             // Handle the error
+            //console.log("Err :" + err);
             res.json(err);
         } else if (rows) {
+            //console.log("Normal :" + rows);
             res.json(rows);
             // Process the rows returned from the database
         } else {
+            //console.log("Else :" + rows);
             res.json(rows);
             // No rows returns; handle appropriately
         }
     });
+    }
+    else{
+        if(req.query.categoria)
+            mensagemQuery = "SELECT * FROM dbo.mensagem WHERE categoria = '" + req.query.categoria + "'";
+        else if (Object.keys(req.query).length === 0)
+            mensagemQuery = "SELECT * FROM dbo.mensagem;";
+
+        getData(mensagemQuery, function(err, rows) {
+        if (err) {
+            // Handle the error
+            //console.log("Err :" + err);
+            res.json(err);
+        } else if (rows) {
+            //console.log("Normal :" + rows);
+            res.json(rows);
+            // Process the rows returned from the database
+        } else {
+            //console.log("Else :" + rows);
+            res.json(rows);
+            // No rows returns; handle appropriately
+        }
+    });
+    }
+
 });
 
 router.route('/mensagem/:face_id')
-    .get(function(req, res) {
-        getData("SELECT * FROM dbo.mensagem WHERE face_id = " + req.params.face_id, function(err, rows) {
-            if (err) {
+.get(function(req, res) {
+    getData("SELECT * FROM dbo.mensagem WHERE face_id = " + req.params.face_id, function(err, rows) {
+        if (err) {
                 // Handle the error
                 res.json(err);
             } else if (rows) {
@@ -245,7 +293,7 @@ router.route('/mensagem/:face_id')
                 // No rows returns; handle appropriately
             }
         });
-    });
+});
 
 
 ////////////////////////////////////////////////////////ACHIEVEMENTS//////////////////////////////////////////////////////////////
@@ -309,7 +357,25 @@ router.route('/achievement/:face_id')
 ///////////////////////////////////d/////////////////////MESSAGES WITH USER INFO//////////////////////////////////////////////////////////////
 router.route('/message_user')
 .get(function(req, res) {
-
+    if(req.query.latitude && req.query.longitude && req.query.raio)
+    {
+        getDataRaio("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id",req.query.latitude,req.query.longitude,req.query.raio, function(err, rows) {
+            if (err) {
+            // Handle the error
+            //console.log("Err :" + err);
+            res.json(err);
+        } else if (rows) {
+            //console.log("Normal :" + rows);
+            res.json(rows);
+            // Process the rows returned from the database
+        } else {
+            //console.log("Else :" + rows);
+            res.json(rows);
+            // No rows returns; handle appropriately
+        }
+    });
+    }
+    else{
     getData("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id" , function(err, rows) {
         if (err) {
             // Handle the error
@@ -322,6 +388,7 @@ router.route('/message_user')
             // No rows returns; handle appropriately
         }
     });
+    }
 });
 
 
@@ -381,6 +448,7 @@ var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 
 
+// getData Normal
 function getData(Query, callback) {
     var connection = new Connection(config);
     var newdata = [];
@@ -414,6 +482,7 @@ function getData(Query, callback) {
 
 
 
+//Fazer posts
 function insertData(Query, paramName, paramValue, types, callback) {
     request = new Request(Query, function(err) {
         if (err) {
@@ -439,3 +508,90 @@ function insertData(Query, paramName, paramValue, types, callback) {
     });
     connection.execSql(request);
 }
+
+
+
+
+// getData Com distancia
+function getDataRaio(Query,lat,lon,raio,callback) {
+    var connection = new Connection(config);
+    var newdata = [];
+    var dataset = {};
+    connection.on('connect', function(err) {
+        var Request = require('tedious').Request;
+        var request = new Request(Query, function(err, rowCount) {
+            if (err) {
+                console.log("Erro :" + err);
+                callback(err);
+            } else {
+                if (rowCount < 1) {
+                    dataset['data'] = false;
+                    callback(null,dataset);
+                } else {
+                    dataset = {};
+                    dataset['data'] = newdata;
+                    callback(null,dataset);
+                }
+            }
+        });
+        request.on('row', function(columns) {
+            dataset = {};
+            columns.forEach(function(column) {
+
+                dataset[column.metadata.colName] = String(column.value).trim();
+            });
+
+            var dist = findDistance(dataset['latitude'],dataset['longitude'],lat,lon);
+            console.log("Distancia: " + dist + " Loc: " + dataset['localizacao'] + " Lat: " + dataset['latitude'] + " Lon: " + dataset['longitude']);
+            if(dist < raio)
+                newdata.push(dataset);
+        });
+        connection.execSql(request);
+    });
+}
+
+
+/* main function */
+function findDistance(t1, n1, t2, n2) {
+
+var Rm = 3961; // mean radius of the earth (miles) at 39 degrees from the equator
+var Rk = 6373; // mean radius of the earth (km) at 39 degrees from the equator
+var  lat1, lon1, lat2, lon2, dlat, dlon, a, c, dm, dk, mi, km;
+
+        // get values for lat1, lon1, lat2, and lon2
+
+        // convert coordinates to radians
+        lat1 = deg2rad(t1);
+        lon1 = deg2rad(n1);
+        lat2 = deg2rad(t2);
+        lon2 = deg2rad(n2);
+        
+        // find the differences between the coordinates
+        dlat = lat2 - lat1;
+        dlon = lon2 - lon1;
+        
+        // here's the heavy lifting
+        a  = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2);
+        c  = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); // great circle distance in radians
+
+        dk = c * Rk; // great circle distance in km
+        
+        // round the results down to the nearest 1/1000
+        km = round(dk);
+        
+        // display the result
+        return km;
+    }
+    
+    
+    // convert degrees to radians
+    function deg2rad(deg) {
+        rad = deg * Math.PI/180; // radians = degrees * pi/180
+        return rad;
+    }
+    
+    
+    // round to the nearest 1/1000
+    function round(x) {
+        return Math.round( x * 1000) / 1000;
+    }
