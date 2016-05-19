@@ -178,7 +178,7 @@ namespace PinBuster
                             /*PUT ON THE DATABASE*/
                                     using (var client = new System.Net.Http.HttpClient())
                                     {
-                                        client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net/api/follow");
+                                        client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
                                         var content = new System.Net.Http.FormUrlEncodedContent(postData);
                                         var result2 = client.PostAsync("api/follow", content).Result;
                                         string resultContent = result2.Content.ReadAsStringAsync().Result;
