@@ -53,6 +53,8 @@ namespace PinBuster
 
                         bLogout.Clicked += async delegate
                         {
+
+                        
                             IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
                             DeleteCredentials.IDeleteCredentials();
                             DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
@@ -101,9 +103,19 @@ namespace PinBuster
 
                         bFollowers.Clicked += async delegate
                         {
-                            IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
-                            FacebookFriends.IFacebookFriends(layout);
+                            
 
+                            if (Device.OS == TargetPlatform.Windows)
+                            {
+                                IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
+                                FacebookFriends.IFacebookFriends(layout);
+                            }
+                            else
+                            {
+                                await Navigation.PushModalAsync(new FacebookFriends());
+
+
+                            }
                         };
                     });
                 }

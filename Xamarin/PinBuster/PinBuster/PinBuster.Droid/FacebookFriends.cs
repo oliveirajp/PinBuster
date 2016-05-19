@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +9,22 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using PinBuster.Droid;
 using Xamarin.Forms;
+using static PinBuster.App;
 using Xamarin.Auth;
-using Xamarin.Forms.Platform.Android;
 using Newtonsoft.Json.Linq;
+using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(PinBuster.Login), typeof(PinBuster.Droid.FacebookAndroid))]
+
+[assembly: ExportRenderer(typeof(PinBuster.FacebookFriends), typeof(PinBuster.Droid.FacebookFriends))]
 
 namespace PinBuster.Droid
 {
-    [Activity(Label = "FacebookAndroid")]
-    public class FacebookAndroid : PageRenderer
+    [Activity(Label = "FacebookFriends")]
+    public class FacebookFriends : PageRenderer
     {
-        public FacebookAndroid()
+        public FacebookFriends()
         {
             System.Diagnostics.Debug.WriteLine("android-----------");
 
@@ -53,9 +54,19 @@ namespace PinBuster.Droid
                     var id = obj["id"].ToString().Replace("\"", "");
                     var name = obj["name"].ToString().Replace("\"", "");
 
-                    await App.NavigateToProfile(string.Format(name), string.Format(id));
+                    var request2 = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me/friends"), null, eventArgs.Account);
+                    var response2 = await request2.GetResponseAsync();
+                    var obj2 = JObject.Parse(response2.GetResponseText());
+                    
+                    System.Diagnostics.Debug.WriteLine(obj2.ToString());
 
-                    System.Diagnostics.Debug.WriteLine(obj.ToString());
+                    //activity.Finish();
+
+                    // activity.Finish();
+
+                    //await App.NavigateToProfile(string.Format(name), string.Format(id));
+
+                    //System.Diagnostics.Debug.WriteLine(obj.ToString());
 
                 }
                 else
@@ -64,7 +75,7 @@ namespace PinBuster.Droid
                 }
             };
 
-            activity.StartActivity(auth.GetUI(activity));
+            activity.StartActivityForResult(auth.GetUI(activity),1);
 
 
 

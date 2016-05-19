@@ -41,7 +41,7 @@ namespace PinBuster.Droid
                 AccountStore.Create(Forms.Context).Save(account, "PinBuster");
                 System.Diagnostics.Debug.WriteLine("Saved");
                 String novo = AccountStore.Create(Forms.Context).FindAccountsForService("PinBuster").FirstOrDefault().Username;
-                System.Diagnostics.Debug.WriteLine("novo:" + novo);
+                //System.Diagnostics.Debug.WriteLine("novo:" + novo);
 
             }
             else
@@ -62,10 +62,10 @@ namespace PinBuster.Droid
                 return null;
             else
             {
-                System.Diagnostics.Debug.WriteLine("in eleseeeeeeeeeeeeeeee");
+                //System.Diagnostics.Debug.WriteLine("in eleseeeeeeeeeeeeeeee");
                 String[] array = { UserID, UserName };
-                System.Diagnostics.Debug.WriteLine("nameee:" + UserName);
-                System.Diagnostics.Debug.WriteLine("idddee:" + UserID);
+              //  System.Diagnostics.Debug.WriteLine("nameee:" + UserName);
+               // System.Diagnostics.Debug.WriteLine("idddee:" + UserID);
 
 
                 return array;

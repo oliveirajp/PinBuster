@@ -70,7 +70,7 @@ namespace PinBuster
             //face.IFacebookLogin();
             Auth a = new Auth();
 
-            ThreadA();
+            //ThreadA();
 
 
 
