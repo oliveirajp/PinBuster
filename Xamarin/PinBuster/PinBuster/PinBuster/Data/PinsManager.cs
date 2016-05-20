@@ -51,6 +51,7 @@ namespace PinBuster.Data
                             App.listView._viewModel.All_M.Remove(x);
                     }
 
+
                     foreach (var msg in lista_mensagens.data)
                     {
                         if (!App.listView._viewModel.All_M.Contains(msg))
