@@ -54,7 +54,7 @@ namespace PinBuster.UWP
 
             }
         }
-        
+
         private void MapOverlay_Tapped(object sender, TappedRoutedEventArgs e)
         {
             nativeMap.Children.Remove(mapOverlay);
@@ -65,11 +65,10 @@ namespace PinBuster.UWP
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                foreach (Models.Pin pin in e.NewItems)
-                {
-
-                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                
+                    foreach (Models.Pin pin in e.NewItems)
                     {
+                    System.Diagnostics.Debug.WriteLine("Entrei");
                         var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
                         var snPoint = new Geopoint(snPosition);
 
@@ -80,18 +79,18 @@ namespace PinBuster.UWP
                         mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
 
                         nativeMap.MapElements.Add(mapIcon);
-                    });
 
-                    var pinToAdd = (new Pin
-                    {
-                        Position = new Position(pin.Latitude, pin.Longitude),
-                        Address = pin.Conteudo,
-                        Label = pin.Nome,
-                        Type = PinType.Place
-                    });
-                    pin.ActualPin = pinToAdd;
-                    customPins.Add(pin);
-                }
+                        var pinToAdd = (new Pin
+                        {
+                            Position = new Position(pin.Latitude, pin.Longitude),
+                            Address = pin.Conteudo,
+                            Label = pin.Nome,
+                            Type = PinType.Place
+                        });                        
+                        pin.ActualPin = pinToAdd;
+                        customPins.Add(pin);
+                    }
+                    
             }
 
             if (e.Action == NotifyCollectionChangedAction.Replace)
@@ -120,10 +119,10 @@ namespace PinBuster.UWP
                         throw new Exception("Custom pin not found");
                     }
 
-                    
-                        mapOverlay = new XamarinMapOverlay(customPin);
-                        mapOverlay.Tapped += MapOverlay_Tapped;
-                    
+
+                    mapOverlay = new XamarinMapOverlay(customPin);
+                    mapOverlay.Tapped += MapOverlay_Tapped;
+
 
                     var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
                     var snPoint = new Geopoint(snPosition);

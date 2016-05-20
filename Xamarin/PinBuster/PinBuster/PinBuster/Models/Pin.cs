@@ -2,10 +2,10 @@
 
 namespace PinBuster.Models
 {
-	public class Pin
-	{
+    public class Pin : IEquatable<Pin>
+    {
         public Xamarin.Forms.Maps.Pin ActualPin { get; set; }
-
+            
         string mensagem_id;
         public string Mensagem_id
         {
@@ -174,7 +174,10 @@ namespace PinBuster.Models
                 imagem = value;
             }
         }
-        
-	}
-}
 
+        public bool Equals(Pin other)
+        {
+            return this.conteudo == other.conteudo && this.face_id == other.Face_id;
+        }
+    }
+}
