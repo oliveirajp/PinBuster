@@ -61,6 +61,44 @@ namespace PinBuster
                     StackLayoutObj.Children.Add(nameLabel);
                     StackLayoutObj.Children.Add(button);
 
+                    StackLayout s = new StackLayout() { HeightRequest = 50 };
+
+                    RelativeLayout relativeLayout = new RelativeLayout();
+
+
+
+                    relativeLayout.Children.Add(image,
+                        Constraint.RelativeToParent((parent) => {
+                            return 0;
+                        }),
+                        Constraint.RelativeToParent((parent) => {
+                            return (button.Height / 2) - (image.Height / 2);
+                        }));
+
+                    relativeLayout.Children.Add(nameLabel,
+                        Constraint.RelativeToParent((parent) => {
+                            return image.Width +20;
+                        }),
+                        Constraint.RelativeToParent((parent) => {
+                            return (button.Height/2)-(nameLabel.Height/2);
+                        }));
+
+                    relativeLayout.Children.Add(button,
+                        Constraint.RelativeToParent((parent) => {
+                            return parent.Width-button.Width-10;
+                        }),
+                        Constraint.RelativeToParent((parent) => {
+                            return 0;
+                        }));
+
+                    StackLayoutObj.Children.Add(relativeLayout);
+                    StackLayoutObj.Children.Add(relativeLayout);
+                    StackLayoutObj.Children.Add(relativeLayout);
+                    StackLayoutObj.Children.Add(relativeLayout);
+                    StackLayoutObj.Children.Add(relativeLayout);
+                    StackLayoutObj.Children.Add(relativeLayout);
+
+
                 }
 
             }
