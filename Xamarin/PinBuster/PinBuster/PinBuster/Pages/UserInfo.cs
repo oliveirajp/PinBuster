@@ -51,7 +51,7 @@ namespace PinBuster
                         //logo.RelScaleTo(0.3);
 
                         var bLogout = new Button { Text = "Logout", BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions=LayoutOptions.End };
-                        var bFollowers = new Button { Text = "Followers from Facebook" };
+                        var bFollowers = new Button { Text = "Followers from Facebook" ,BackgroundColor= Color.FromHex("#3b5998")};
 
 
                         bLogout.Clicked += async delegate
