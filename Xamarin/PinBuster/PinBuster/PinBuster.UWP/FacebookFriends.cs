@@ -99,11 +99,12 @@ namespace PinBuster.UWP
                 {
                     var json2 = await httpClient.GetStringAsync("https://graph.facebook.com/me/friends?access_token="+ AccessToken);
                     
+
                     //Debug.WriteLine("datafromjson" + json2.ToString());
                     //var jsonObject = Windows.Data.Json.JsonObject.Parse(json2);
                     JObject friendListJson = JObject.Parse(json2.ToString());
                     List<string> strinArrayList = new List<string>();
-
+/*
                     foreach (var friend in friendListJson["data"].Children())
                     {
                         String id=friend["id"].ToString().Replace("\"", "");
@@ -111,7 +112,7 @@ namespace PinBuster.UWP
                         var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
                         layoutPublic.Children.Add(nameLabel);
                     }
-                    
+                    */
 
                    // Debug.WriteLine("name:" + jsonName.ToString());
                    // Now parse with JSON.Net

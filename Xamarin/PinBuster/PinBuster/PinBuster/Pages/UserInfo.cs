@@ -14,14 +14,16 @@ using Newtonsoft.Json.Linq;
 
 namespace PinBuster
 {
+
     class UserInfo : ContentPage
     {
         public User user { get; set; }
         HttpClient client;
         public static StackLayout layoutPublic;
+        public static UserInfo userinfoPublic;
         public UserInfo()
         {
-
+            userinfoPublic = this;
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
             Task.Run(() => LoadInfo(6));
@@ -146,18 +148,24 @@ namespace PinBuster
             while (result == "")
             {
                 result = FacebookFriends.LoadText("followers2.txt");
-                Debug.WriteLine("result no ciclo" + result);
+               // Debug.WriteLine("result no ciclo" + result);
                 int milliseconds = 100;
-                Task.Delay(2000).Wait();
+                Task.Delay(milliseconds).Wait();
             }
             Debug.WriteLine("666666666666666666666666666666");
             // Debug.WriteLine("result:" + result);
+
+
+            
             TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
             Device.BeginInvokeOnMainThread(() =>
             {
+                userinfoPublic.Navigation.PushAsync(new ListFollowers(result));
+
+                /*
                 try
                 {
-
+                    
                    
                     JObject friendListJson = JObject.Parse(result);
                     List<string> strinArrayList = new List<string>();
@@ -174,8 +182,7 @@ namespace PinBuster
                             postData.Add(new KeyValuePair<string, string>("follower", id));
                             postData.Add(new KeyValuePair<string, string>("followed", userid));
 
-
-                            /*PUT ON THE DATABASE*/
+                
                                     using (var client = new System.Net.Http.HttpClient())
                                     {
                                         client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
@@ -198,6 +205,7 @@ namespace PinBuster
                 {
                     tcs.SetException(ex);
                 }
+                */
             });
           
 

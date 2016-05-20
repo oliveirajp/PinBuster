@@ -40,6 +40,7 @@ namespace PinBuster
         public static Auth authFacebook;
         public static FacebookFriends l;
         private StackLayout layout;
+        private string result;
 
         public FacebookFriends()
         {
@@ -60,6 +61,7 @@ namespace PinBuster
             InitializeComponent();
             t.Start();
         }
+        
 
         static void  LoadData()
         {
@@ -77,8 +79,10 @@ namespace PinBuster
             }
             Debug.WriteLine("here2222222222222222222222222222222222222222222222222222222222222");
             // Debug.WriteLine("result:" + result);
-            
+            //l.Navigation.PushAsync(new ListFollowers("ola"),false);
+
             l.Navigation.PopModalAsync();
+          
 
         }
 
