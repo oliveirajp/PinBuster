@@ -12,19 +12,30 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Xamarin.Forms.Maps;
+
 
 namespace PinBuster.UWP
 {
-    public sealed partial class MainPage
+    public sealed partial class XamarinMapOverlay : UserControl
     {
-        public MainPage()
+        Models.Pin pin;
+
+        public XamarinMapOverlay(Models.Pin pin)
         {
             this.InitializeComponent();
-            Xamarin.FormsMaps.Init("q1gj2POVAQsGUs2DWuuZ~OBfu7hWRe8C8EuJUHiGRDg~AtSM77YwjyMP0x3438i1lyZ1h5SU3B_nVhAoMEE1hbJPtqVXtiOlM5Aj7rOLmBsp");
-            PinBuster.App.screenHeight = (int)Window.Current.Bounds.Height;
-            PinBuster.App.screenWidth = (int)Window.Current.Bounds.Width;
-            LoadApplication(new PinBuster.App());
+            this.pin = pin;
+            SetupData();
+
+        }
+        void SetupData()
+        {
+            Label.Text = pin.Nome;
+            Address.Text = pin.Conteudo;
+        }
+
+        private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("mostrar info");
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Services.Maps;
 using Windows.UI.Core;
 
 namespace PinBuster.UWP
@@ -17,9 +18,8 @@ namespace PinBuster.UWP
 
     class GetCurrentLocation : IGetCurrentPosition
     {
-
         public event EventHandler<ILocationEventArgs> locationObtained;
-
+        LocationEventArgs args;
         event EventHandler<ILocationEventArgs> IGetCurrentPosition.locationObtained
         {
             add
@@ -40,7 +40,9 @@ namespace PinBuster.UWP
                 case GeolocationAccessStatus.Allowed:
 
                     // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
-                    var geoLocator = new Geolocator { MovementThreshold = 1 };
+                    var geoLocator = new Geolocator { };
+                    geoLocator.ReportInterval = 10000;
+                    geoLocator.MovementThreshold = 100;
                     geoLocator.DesiredAccuracy = PositionAccuracy.High;
 
                     // Subscribe to StatusChanged event to get updates of location status changes
@@ -51,6 +53,7 @@ namespace PinBuster.UWP
                     {
                         // Carry out the operation
                         Geoposition pos = await geoLocator.GetGeopositionAsync();
+                        args = new LocationEventArgs();
                         UpdateLocationData(pos);
                     }
                     catch (Exception ex)
@@ -58,7 +61,7 @@ namespace PinBuster.UWP
                         System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
                     }
                     break;
-                    
+
                 case GeolocationAccessStatus.Denied:
                     System.Diagnostics.Debug.WriteLine("Error: location permission denied");
                     break;
@@ -83,11 +86,22 @@ namespace PinBuster.UWP
         {
             if (pos != null)
             {
-                LocationEventArgs args = new LocationEventArgs();
                 args.lat = pos.Coordinate.Point.Position.Latitude;
                 args.lng = pos.Coordinate.Point.Position.Longitude;
-                locationObtained(this, args);
+              
+                try
+                {
+                    locationObtained(this, args);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error: " + e);
+                }
             };
+        }
+
+        ~GetCurrentLocation()
+        {
         }
     }
 }

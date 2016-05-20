@@ -11,7 +11,7 @@ namespace PinBuster.Pages
 {
     public partial class DetailMessageList : ContentPage
     {
-        public DetailMessageList(Message_i temp_Item)
+        public DetailMessageList(Pin temp_Item)
         {
             var layout = new RelativeLayout();
 

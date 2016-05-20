@@ -7,6 +7,8 @@ using Xamarin.Forms;
 using PinBuster.Data;
 using PinBuster.Pages;
 using PinBuster;
+using System.Threading.Tasks;
+using Xamarin.Forms.Maps;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -18,15 +20,20 @@ namespace PinBuster
 
         private readonly static Locator _locator = new Locator();
 
-        public static PinsManager PinsManager { get; private set; }
+        public static PinsManager pinsManager { get; private set; }
 
         public static Locator Locator
         {
             get { return _locator; }
         }
-
-        public IGetCurrentPosition loc;
-        public static double lat,lng;
+        
+        public static IGetCurrentPosition loc;
+        public static double lat, lng;
+        public static int screenWidth, screenHeight;
+        public static ContentPage mapPage;
+        public static MessageListView listView;
+        public static string town;
+        
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username);   }
@@ -74,8 +81,8 @@ namespace PinBuster
         {
             IGetCurrentPosition loctemp;
             loctemp = DependencyService.Get<IGetCurrentPosition>();
-            PinsManager = new PinsManager();
-            App.Current.MainPage = new MasterDetail(loctemp);
+            pinsManager = new PinsManager();
+            App.Current.MainPage = new MasterDetail();
             
 
            // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
@@ -87,7 +94,19 @@ namespace PinBuster
         {
             
             loc = DependencyService.Get<IGetCurrentPosition>();
+            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                lat = e.lat;
+                lng = e.lng;
+                Locator.Map.LoadPins();
+            };
+            loc.IGetCurrentPosition();
+
             // The root page of your application
+            pinsManager = new PinsManager();
+            mapPage = new MapPage();
+            listView = new MessageListView();
+            
             loc.locationObtained += (object sender, ILocationEventArgs e) =>
             {
                 lat = e.lat;
@@ -95,8 +114,7 @@ namespace PinBuster
 
             };
             loc.IGetCurrentPosition();
-
-            PinsManager = new PinsManager();
+            
            
 
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
@@ -116,7 +134,7 @@ namespace PinBuster
                 MainPage = new NavigationPage(new LoginPage());
             }
             else
-                MainPage = new MasterDetail(loc);
+                MainPage = new MasterDetail();
         }
 
 

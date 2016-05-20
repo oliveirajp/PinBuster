@@ -9,14 +9,19 @@ using Xamarin.Forms.Maps;
 using PinBuster.ViewModels;
 using GalaSoft.MvvmLight.Helpers;
 using System.Collections.Specialized;
+using PinBuster.Data;
+using System.Threading;
 using PinBuster;
 
 namespace PinBuster.Pages
 {
     public class MapPage : ContentPage
     {
-
-        public Map map;
+        
+        public CustomMap map;
+        public bool update, isCentering;
+        Button recenterBtn;
+        public IEnumerable<String> town;
 
         Label label;
         int clickTotal = 0;
@@ -29,28 +34,47 @@ namespace PinBuster.Pages
             Navigation.PushModalAsync(new post(App.lat,App.lng));
         }
 
-        public MapPage(IGetCurrentPosition loc)
+        public MapPage()
         {
 
             BindingContext = App.Locator.Map;
 
-            App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
-                (PinsChangedMethod);
-
-
-
-            map = new Map(
-            MapSpan.FromCenterAndRadius(
-                    new Position(0, 0), Distance.FromMiles(0.3)))
+            //App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+            
+            map = new CustomMap
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            map.IsShowingUser = true;
+            map.MoveToRegion(
+            MapSpan.FromCenterAndRadius(
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
 
-      
+            update = true;
+            isCentering = true;
+
+            try
+            {
+                App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                 {
+                     if (update)
+                     {
+                         isCentering = true;
+                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
+                         if (App.town == null)
+                         {
+                             setTown();
+                         }
+                     }
+                 };
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
 
             Button button = new Button
             {
@@ -94,31 +118,71 @@ namespace PinBuster.Pages
                 return parent.Height * .1;
             }));
 
-
-
-            try
+            recenterBtn = new Button
             {
-                loc.locationObtained += (object sender, ILocationEventArgs e) =>
-                {
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-                    
-                };
-                loc.IGetCurrentPosition();
+                Text = "Re-Center",
+                Font = Font.SystemFontOfSize(NamedSize.Micro),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+            recenterBtn.Clicked += OnRecenterClicked;
+            recenterBtn.IsEnabled = false;
+            recenterBtn.IsVisible = false;
 
-
-            }
-            catch (Exception e)
+            stack.Children.Add(recenterBtn, Constraint.RelativeToParent((parent) =>
             {
-                System.Diagnostics.Debug.WriteLine("Error: " + e);
-            }
+                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y * .95;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
 
+            map.PropertyChanged += SpanChanged;
 
-
+            
 
             Content = stack;
         }
+        
+        async private void setTown()
+        {
+            var geo = new Geocoder();
+            town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
+            parseTown(town.First());
+        }
 
-     
+        private void parseTown(string first)
+        {           
+            App.town = first.Split(' ')[0];
+        }
+
+        private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "VisibleRegion" && !isCentering)
+            {
+                update = false;
+                recenterBtn.IsEnabled = true;
+                recenterBtn.IsVisible = true;
+            }
+        }
+
+        private void OnRecenterClicked(object sender, EventArgs e)
+        {
+            update = isCentering = true;
+            
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+
+            recenterBtn.IsEnabled = false;
+            recenterBtn.IsVisible = false;
+        }
+        
         private void PositionMap()
         {
             var mapPins = map.Pins;
@@ -141,14 +205,17 @@ namespace PinBuster.Pages
 
         public void AddPin(PinBuster.Models.Pin pin)
         {
-            this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
+            var pinToAdd = (new Pin
             {
-                Position = new Position(pin.latitude, pin.longitude),
-                Address = pin.mensagem,
-                Label = pin.title,
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
                 Type = PinType.Place
             });
-            this.PositionMap();
+            pin.ActualPin = pinToAdd;
+            map.CustomPins.Add(pin);
+            map.Pins.Add(pin.ActualPin);
+           // this.PositionMap();
         }
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -178,6 +245,7 @@ namespace PinBuster.Pages
         }
 
     }
+
 }
 
 
