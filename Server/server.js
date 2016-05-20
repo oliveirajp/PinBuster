@@ -52,7 +52,7 @@ function updateTimeLimits() {
     });
 }
 
-setInterval(updateTimeLimits, 30 * 1000);
+setInterval(updateTimeLimits, 60 * 1000);
 
 //////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
@@ -402,7 +402,7 @@ router.route('/perfil_info/:face_id')
             // Handle the error
             res.json(err);
         } else if (rows) {
-            res.json(rows);
+            res.json(rows['data'][0]);
             // Process the rows returned from the database
         } else {
             res.json(rows);
@@ -543,8 +543,13 @@ function getDataRaio(Query,lat,lon,raio,callback) {
 
             var dist = findDistance(dataset['latitude'],dataset['longitude'],lat,lon);
             console.log("Distancia: " + dist + " Loc: " + dataset['localizacao'] + " Lat: " + dataset['latitude'] + " Lon: " + dataset['longitude']);
-            if(dist < raio)
-                newdata.push(dataset);
+            
+            if(dist <= raio){
+                dataset['visivel'] = 0;
+                if(dist <= dataset['raio'] /1000)
+                dataset['visivel'] = 1;
+                 newdata.push(dataset);
+            }
         });
         connection.execSql(request);
     });

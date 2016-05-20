@@ -26,6 +26,7 @@ namespace PinBuster
         }
 
         public IGetCurrentPosition loc;
+        public static double lat,lng;
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username);   }
@@ -87,6 +88,14 @@ namespace PinBuster
             
             loc = DependencyService.Get<IGetCurrentPosition>();
             // The root page of your application
+            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                lat = e.lat;
+                lng = e.lng;
+
+            };
+            loc.IGetCurrentPosition();
+
             PinsManager = new PinsManager();
            
 
