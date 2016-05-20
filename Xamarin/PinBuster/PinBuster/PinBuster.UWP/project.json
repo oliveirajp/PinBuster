@@ -1,13 +1,12 @@
 ﻿{
   "dependencies": {
     "Facebook": "7.0.6",
-    "InTheHand.Forms.Maps.Platform.WinRT": "2.1.16.419",
     "Microsoft.Net.Http": "2.2.29",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "MvvmLightLibs": "5.3.0",
     "Newtonsoft.Json": "8.0.3",
-    "Xamarin.Forms": "2.1.0.6529",
-    "Xamarin.Forms.Maps": "2.1.0.6529"
+    "Xamarin.Forms": "2.2.0.31",
+    "Xamarin.Forms.Maps": "2.2.0.31"
   },
   "frameworks": {
     "uap10.0": {}

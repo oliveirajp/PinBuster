@@ -20,6 +20,7 @@ namespace PinBuster.Droid
     class GetCurrentLocation : Java.Lang.Object, IGetCurrentPosition, ILocationListener
     {
         LocationManager lm;
+        LocationEventArgs args;
         public void OnProviderDisabled(string provider) { }
         public void OnProviderEnabled(string provider) { }
         public void OnStatusChanged(string provider, Availability status, Android.OS.Bundle extras) { }
@@ -27,9 +28,10 @@ namespace PinBuster.Droid
         {
             if (location != null)
             {
-                LocationEventArgs args = new LocationEventArgs();
                 args.lat = location.Latitude;
                 args.lng = location.Longitude;
+                 
+
                 locationObtained(this, args);
             };
         }
@@ -54,7 +56,7 @@ namespace PinBuster.Droid
         public void IGetCurrentPosition()
         {
             string locationProvider;
-
+            
             lm = (LocationManager) Forms.Context.GetSystemService(Context.LocationService);
 
             Criteria criteriaForLocationService = new Criteria
@@ -66,12 +68,12 @@ namespace PinBuster.Droid
             if (acceptableLocationProviders.Any())
             {
                 locationProvider = acceptableLocationProviders.First();
+                args = new LocationEventArgs();
             }
             else
             {
                 locationProvider = string.Empty;
             }
-            Log.Debug(null, "Using " + locationProvider + ".");
 
             lm.RequestLocationUpdates(locationProvider, 2000, 1, this);
         }
