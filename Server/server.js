@@ -179,6 +179,7 @@ router.route('/follow/:face_id')
         else
             followQuery = "SELECT nome, follower as face_id, imagem FROM [dbo].[follow],[dbo].[utilizador] WHERE face_id = followed AND face_id ='" + req.params.face_id + "'";
 
+
     getData(followQuery, function(err, rows) {
         if (err) {
                 // Handle the error
@@ -398,7 +399,6 @@ router.route('/message_user')
     });
     }
     else{
-        
     getData("SELECT me.*, ut.nome, ut.imagem, ut.face_id FROM dbo.mensagem me, dbo.utilizador ut WHERE me.face_id = ut.face_id" , function(err, rows) {
         if (err) {
             // Handle the error
@@ -574,6 +574,7 @@ function getDataRaio(Query,lat,lon,raio,callback) {
                 dataset['visivel'] = 1;
                  newdata.push(dataset);
             }
+
         });
         connection.execSql(request);
     });

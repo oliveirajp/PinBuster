@@ -15859,6 +15859,7 @@
     },
     "Xamarin.Forms.Maps/2.2.0.31": {
       "sha512": "2AQ5hj3R3p5QRyiw8s95+5aM6AeyheAZFjuY7yWyKRns6Vfx0u6F56bl4x0zVsHxeVeQmZoRom8I4ykxEMOxzA==",
+
       "type": "package",
       "files": [
         "Xamarin.Forms.Maps.2.2.0.31.nupkg.sha512",
