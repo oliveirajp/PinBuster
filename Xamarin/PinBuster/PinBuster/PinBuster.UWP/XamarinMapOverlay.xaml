@@ -10,12 +10,19 @@
     d:DesignWidth="300">
     <StackPanel>
         <Image Source="xamarin.png" Width="100" />
-        <StackPanel Orientation="Horizontal" Background="White" Opacity="0.5" Padding="20,0,20,0">
+        <StackPanel Orientation="Horizontal" Background="White" Opacity="0.8" Padding="20,0,20,0">
             <Image Source="monkey.png" Width="24"  />
             <StackPanel Margin="20,10,20,0">
                 <TextBlock x:Name="Label" FontWeight="Bold" />
                 <TextBlock x:Name="Address" />
             </StackPanel>
+            <Button Tapped="OnInfoButtonTapped">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="info.png" Width="24" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -32,5 +32,10 @@ namespace PinBuster.UWP
             Label.Text = pin.Nome;
             Address.Text = pin.Conteudo;
         }
+
+        private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("mostrar info");
+        }
     }
 }

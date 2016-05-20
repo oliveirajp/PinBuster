@@ -54,7 +54,7 @@ namespace PinBuster.UWP
 
             }
         }
-
+        
         private void MapOverlay_Tapped(object sender, TappedRoutedEventArgs e)
         {
             nativeMap.Children.Remove(mapOverlay);

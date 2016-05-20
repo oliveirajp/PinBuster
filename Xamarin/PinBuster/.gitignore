@@ -1,4 +1,6 @@
 test-results
+bin
+obj
 
 _UpgradeReport_Files
 UpgradeLog.*
