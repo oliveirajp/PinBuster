@@ -36,6 +36,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="ListFollowers.xaml.cs">
+      <DependentUpon>ListFollowers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Achievement_L.cs" />
+    <Compile Include="Models\Mensagem.cs" />
+    <Compile Include="Models\Mensagem_L.cs" />
+    <Compile Include="Models\ProfileInfo.cs" />
+    <Compile Include="Pages\FacebookFriends.xaml.cs">
+      <DependentUpon>FacebookFriends.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MessageListModel.cs" />
     <Compile Include="Pages\DetailMessageList.xaml.cs">
@@ -57,6 +74,9 @@
     <Compile Include="Data\PinsManager.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Data\Utilities.cs" />
+    <Compile Include="AfterLogin.xaml.cs">
+      <DependentUpon>AfterLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="Pages\MapPage.cs" />
     <Compile Include="Constants.cs" />
@@ -84,6 +104,9 @@
   </Target>
   -->
   <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\v6.0\Mono.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Windows.Foundation.UniversalApiContract">
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\References\Windows.Foundation.UniversalApiContract\2.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
     </Reference>
@@ -130,6 +153,36 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\DetailMessageList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AfterLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\FacebookFriends.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ListFollowers.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
