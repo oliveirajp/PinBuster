@@ -40,6 +40,11 @@
     <Compile Include="ListFollowers.xaml.cs">
       <DependentUpon>ListFollowers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Achievement_L.cs" />
+    <Compile Include="Models\Mensagem.cs" />
+    <Compile Include="Models\Mensagem_L.cs" />
+    <Compile Include="Models\ProfileInfo.cs" />
     <Compile Include="Pages\FacebookFriends.xaml.cs">
       <DependentUpon>FacebookFriends.xaml</DependentUpon>
     </Compile>
