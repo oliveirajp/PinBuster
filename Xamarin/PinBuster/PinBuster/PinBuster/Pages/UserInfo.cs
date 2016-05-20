@@ -20,9 +20,15 @@ namespace PinBuster
         public User user { get; set; }
         HttpClient client;
         public static StackLayout layoutPublic;
+        public static Label labelPublic;
+
+        public static String resultPublicString;
         public static UserInfo userinfoPublic;
         public UserInfo()
         {
+            labelPublic = new Label { IsVisible = false, Text = "" };
+
+            resultPublicString = "";
             userinfoPublic = this;
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
@@ -50,8 +56,8 @@ namespace PinBuster
                         //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
                         //logo.RelScaleTo(0.3);
 
-                        var bLogout = new Button { Text = "Logout", BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions=LayoutOptions.End };
-                        var bFollowers = new Button { Text = "Followers from Facebook" ,BackgroundColor= Color.FromHex("#3b5998")};
+                        var bLogout = new Button { Text = "Logout",TextColor=Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions=LayoutOptions.End };
+                        var bFollowers = new Button { Text = "Followers from Facebook" , TextColor = Color.White,  BackgroundColor = Color.FromHex("#3b5998")};
 
 
                         bLogout.Clicked += async delegate
@@ -114,7 +120,10 @@ namespace PinBuster
                             if (Device.OS == TargetPlatform.Windows)
                             {
                                 IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
-                                FacebookFriends.IFacebookFriends(layout);
+                               FacebookFriends.IFacebookFriends(labelPublic);
+                                Task t = new Task(InsertFollowersWindowsPhone);
+
+                                t.Start();
                             }
                             else
                             {
@@ -134,6 +143,33 @@ namespace PinBuster
             {
                 Debug.WriteLine(@"				ERROR {0}", ex.Message);
             }
+        }
+
+
+        static void InsertFollowersWindowsPhone()
+        {
+            Debug.WriteLine("in insert");
+
+            while (labelPublic.Text == "")
+            {
+                Debug.WriteLine("result no ciclo" + labelPublic.Text);
+                int milliseconds = 100;
+                Task.Delay(milliseconds).Wait();
+            }
+            Debug.WriteLine("666666666666666666666666666666");
+            // Debug.WriteLine("result:" + result);
+
+
+
+            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+               // userinfoPublic.DisplayAlert("Alert", "entrou", "OK");
+                userinfoPublic.Navigation.PushAsync(new ListFollowers(labelPublic.Text));
+
+            });
+
+
         }
 
         static void InsertFollowers()

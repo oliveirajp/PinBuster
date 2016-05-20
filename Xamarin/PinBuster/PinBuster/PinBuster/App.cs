@@ -40,7 +40,7 @@ namespace PinBuster
         {void IFacebookLogin();}
 
         public interface IFacebookFriends
-        { void IFacebookFriends(StackLayout layout); }
+        { void IFacebookFriends(Label label); }
 
         public interface ISaveAndLoad
         { void SaveText(string filename, string tex);

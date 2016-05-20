@@ -10,7 +10,7 @@ using static PinBuster.App;
 [assembly: Xamarin.Forms.Dependency(typeof(SaveCredentials))]
 [assembly: Xamarin.Forms.Dependency(typeof(GetCredentials))]
 [assembly: Xamarin.Forms.Dependency(typeof(DeleteCredentials))]
-
+[assembly: Xamarin.Forms.Dependency(typeof(SaveAndLoad))]
 
 
 
@@ -60,6 +60,36 @@ namespace PinBuster.UWP
 
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             localSettings.Values["userID"] = null;
+
+        }
+    }
+
+    class SaveAndLoad : ISaveAndLoad
+    {
+        public void DeleteFile(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string LoadText(string filename)
+        {
+
+            Windows.Storage.StorageFolder storageFolder =
+    Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile =   storageFolder.GetFileAsync(filename).GetResults();
+            string text =  Windows.Storage.FileIO.ReadTextAsync(sampleFile).GetResults();
+            return text;
+
+
+        }
+
+        public void SaveText(string filename, string text)
+        {
+            Windows.Storage.StorageFolder storageFolder =
+    Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile =
+                 storageFolder.GetFileAsync(filename).GetResults();
+             Windows.Storage.FileIO.WriteTextAsync(sampleFile, text).GetResults();
 
         }
     }

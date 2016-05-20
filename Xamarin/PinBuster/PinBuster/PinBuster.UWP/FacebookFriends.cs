@@ -19,11 +19,11 @@ namespace PinBuster.UWP
 {
     class FacebookFriends : IFacebookFriends
     {
-        StackLayout layoutPublic;
+        Label labelPublic;
 
-        public void IFacebookFriends(StackLayout layout)
+        public void IFacebookFriends(Label label)
         {
-            layoutPublic = layout;
+            labelPublic = label;
             IFacebookLogin();
         }
 
@@ -98,13 +98,14 @@ namespace PinBuster.UWP
                 using (var httpClient = new HttpClient())
                 {
                     var json2 = await httpClient.GetStringAsync("https://graph.facebook.com/me/friends?access_token="+ AccessToken);
-                    
 
+                    labelPublic.Text = json2.ToString();
                     //Debug.WriteLine("datafromjson" + json2.ToString());
                     //var jsonObject = Windows.Data.Json.JsonObject.Parse(json2);
+                    /*
                     JObject friendListJson = JObject.Parse(json2.ToString());
                     List<string> strinArrayList = new List<string>();
-/*
+
                     foreach (var friend in friendListJson["data"].Children())
                     {
                         String id=friend["id"].ToString().Replace("\"", "");

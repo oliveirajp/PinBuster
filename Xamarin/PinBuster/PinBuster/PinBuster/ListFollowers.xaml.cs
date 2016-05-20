@@ -159,7 +159,7 @@ namespace PinBuster
                     s2.Children.Add(nameLabel);
                     s2.Children.Add(button);
                     StackLayoutObj.Children.Add(s);
-                    StackLayoutObj.Children.Add(new Label() { Text = "novo", FontSize = 20 });
+                   // StackLayoutObj.Children.Add(new Label() { Text = "novo", FontSize = 20 });
 
 
                     RelativeLayout relativeLayout = new RelativeLayout();
