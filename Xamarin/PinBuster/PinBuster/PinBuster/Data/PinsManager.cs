@@ -37,7 +37,7 @@ namespace PinBuster.Data
             }
             else
             {
-                response = await u.MakeGetRequest("message_user?latidude=" + App.lat + "&longitude=" + App.lng + "&raio=30");
+                response = await u.MakeGetRequest("message_user?latitude=" + App.lat + "&longitude=" + App.lng + "&raio=30");
                 System.Diagnostics.Debug.WriteLine(App.lat + " " + App.lng);
                 try
                 {
