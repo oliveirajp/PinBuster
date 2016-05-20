@@ -9,6 +9,8 @@ using PinBuster.Pages;
 using PinBuster;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace PinBuster
 {
@@ -24,18 +26,73 @@ namespace PinBuster
         {
             get { return _locator; }
         }
-
+        
         public static IGetCurrentPosition loc;
         public static double lat, lng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
         public static MessageListView listView;
         public static string town;
+        
+
+        public interface ISaveCredentials
+        { void ISaveCredentials(string userid, string username);   }
+
+        public interface IGetCredentials
+        {String[] IGetCredentials(); }
+
+        public interface IDeleteCredentials
+        {void IDeleteCredentials();  }
+
+        public interface IFacebookLogin
+        {void IFacebookLogin();}
+
+        public interface IFacebookFriends
+        { void IFacebookFriends(Label label); }
+
+        public interface ISaveAndLoad
+        { void SaveText(string filename, string tex);
+            string LoadText(string filename);
+            void DeleteFile(string filename);
+        }
+
+        public async static Task NavigateToProfile(string name, string id)
+        {
+            
+            //saving credentials
+            ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
+            saveCredentials.ISaveCredentials(id, name);
+
+            //how to get credentials
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String userID = getCredentials.IGetCredentials()[0];
+            String userName = getCredentials.IGetCredentials()[1];
+
+            await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
+
+           // IGetCurrentPosition loctemp;
+            //loctemp = DependencyService.Get<IGetCurrentPosition>();
+            //PinsManager = new PinsManager();
+
+            //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+        }
+
+        public async static Task NavigateToApp()
+        {
+            IGetCurrentPosition loctemp;
+            loctemp = DependencyService.Get<IGetCurrentPosition>();
+            pinsManager = new PinsManager();
+            App.Current.MainPage = new MasterDetail();
+            
+
+           // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+        }
+
+        IFacebookLogin face;
 
         public App()
         {
-            lat = 0;
-            lng = 0;
+            
             loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += (object sender, ILocationEventArgs e) =>
             {
@@ -49,9 +106,39 @@ namespace PinBuster
             pinsManager = new PinsManager();
             mapPage = new MapPage();
             listView = new MessageListView();
-            MainPage = new MasterDetail();
             
+            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                lat = e.lat;
+                lng = e.lng;
+
+            };
+            loc.IGetCurrentPosition();
+            
+           
+
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String userID = null;
+            String userName = null;
+            if (getCredentials.IGetCredentials() != null)
+            {
+                userID = getCredentials.IGetCredentials()[0];
+                userName = getCredentials.IGetCredentials()[1];
+            }
+          //  Debug.WriteLine("user id after saving:" + userID);
+
+
+            if (userID == null)
+            {
+
+                MainPage = new NavigationPage(new LoginPage());
+            }
+            else
+                MainPage = new MasterDetail();
         }
+
+
+
 
         protected override void OnStart()
         {

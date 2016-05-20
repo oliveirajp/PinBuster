@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PinBuster.TestPage">
+
+
+  <Grid VerticalOptions="Center" Padding="20">
+    <StackLayout>
+      <Label x:Name="NomeUser" FontSize="30" HorizontalOptions="Center" TextColor="Gray"/>
+
+      <Image x:Name="ProfilePic"   />
+
+      <Button Text="Log out" TextColor="White" BackgroundColor="#EF3E36" Clicked="NavigateLogout" />
+    </StackLayout>
+  </Grid>
+
+  </ContentPage>
