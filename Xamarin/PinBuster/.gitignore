@@ -1,7 +1,7 @@
 //test-results
-//bin
-//obj
-packages
+//bin/
+//obj/
+packages/
 
 _UpgradeReport_Files
 UpgradeLog.*
