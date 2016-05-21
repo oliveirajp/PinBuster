@@ -56,13 +56,14 @@ namespace PinBuster.Droid
         public void IGetCurrentPosition()
         {
             string locationProvider;
-            
-            lm = (LocationManager) Forms.Context.GetSystemService(Context.LocationService);
+
+            lm = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
 
             Criteria criteriaForLocationService = new Criteria
             {
-                Accuracy = Accuracy.High;
+                Accuracy = Accuracy.High
             };
+                
             IList<string> acceptableLocationProviders = lm.GetProviders(criteriaForLocationService, true);
 
             if (acceptableLocationProviders.Any())
