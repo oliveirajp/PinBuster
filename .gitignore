@@ -20,3 +20,6 @@ UpgradeLog.*
 Xamarin/PinBuster/PinBuster/PinBuster.Droid/Resources/Resource.Designer.cs
 Xamarin/PinBuster/PinBuster/PinBuster.Droid/Resources/Resource.Designer.cs
 Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/entrypoint/PinBuster.UWP.exe
+Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/entrypoint/PinBuster.UWP.exe
+Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/resources.pri
+Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/PinBuster.pdb
