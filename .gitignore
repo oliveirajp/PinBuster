@@ -23,3 +23,9 @@ Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/entrypoint/PinBuste
 Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/entrypoint/PinBuster.UWP.exe
 Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/resources.pri
 Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/PinBuster.pdb
+*.props
+Xamarin/PinBuster/packages/Xamarin.Forms.Maps.2.2.0.31/build/win81/Xamarin.Forms.Maps.targets
+*.xml
+*.exe
+Xamarin/PinBuster/PinBuster/PinBuster.UWP/bin/x86/Debug/AppX/vs.appxrecipe
+*.pdb

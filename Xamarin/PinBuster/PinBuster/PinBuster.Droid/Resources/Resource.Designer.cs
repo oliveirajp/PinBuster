@@ -26,8 +26,6 @@ namespace PinBuster.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::GalaSoft.MvvmLight.Resource.String.ApplicationName = global::PinBuster.Droid.Resource.String.ApplicationName;
-			global::GalaSoft.MvvmLight.Resource.String.Hello = global::PinBuster.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::PinBuster.Droid.Resource.Attribute.actionBarSize;
 		}
 		
@@ -2763,12 +2761,6 @@ namespace PinBuster.Droid
 		
 		public partial class String
 		{
-			
-			// aapt resource value: 0x7f050037
-			public const int ApplicationName = 2131034167;
-			
-			// aapt resource value: 0x7f050036
-			public const int Hello = 2131034166;
 			
 			// aapt resource value: 0x7f05001f
 			public const int abc_action_bar_home_description = 2131034143;

@@ -61,7 +61,7 @@ namespace PinBuster.Droid
 
             Criteria criteriaForLocationService = new Criteria
             {
-                Accuracy = Accuracy.Fine
+                Accuracy = Accuracy.Fine;
             };
             IList<string> acceptableLocationProviders = lm.GetProviders(criteriaForLocationService, true);
 

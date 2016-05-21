@@ -79,8 +79,6 @@ namespace PinBuster
 
         public async static Task NavigateToApp()
         {
-            IGetCurrentPosition loctemp;
-            loctemp = DependencyService.Get<IGetCurrentPosition>();
             pinsManager = new PinsManager();
             App.Current.MainPage = new MasterDetail();
             
@@ -106,15 +104,6 @@ namespace PinBuster
             pinsManager = new PinsManager();
             mapPage = new MapPage();
             listView = new MessageListView();
-            
-            loc.locationObtained += (object sender, ILocationEventArgs e) =>
-            {
-                lat = e.lat;
-                lng = e.lng;
-
-            };
-            loc.IGetCurrentPosition();
-            
            
 
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
