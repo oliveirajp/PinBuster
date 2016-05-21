@@ -1,6 +1,7 @@
-obj
-test-results
-bin
+obj/
+test-results/
+bin/
+packages/
 
 _UpgradeReport_Files
 UpgradeLog.*
