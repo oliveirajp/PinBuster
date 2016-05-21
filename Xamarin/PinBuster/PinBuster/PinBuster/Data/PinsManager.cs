@@ -38,7 +38,6 @@ namespace PinBuster.Data
             else
             {
                 response = await u.MakeGetRequest("message_user?latitude=" + App.lat + "&longitude=" + App.lng + "&raio=30");
-                System.Diagnostics.Debug.WriteLine(App.lat + " " + App.lng);
                 try
                 {
                     lista_mensagens = (Pins_L)Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof(Pins_L));

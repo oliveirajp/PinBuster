@@ -127,7 +127,6 @@ namespace PinBuster.Pages
                 VerticalOptions = LayoutOptions.Center
             };
             recenterBtn.Clicked += OnRecenterClicked;
-            recenterBtn.IsEnabled = false;
             recenterBtn.IsVisible = false;
 
             stack.Children.Add(recenterBtn, Constraint.RelativeToParent((parent) =>
@@ -135,7 +134,7 @@ namespace PinBuster.Pages
                 return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
             }), Constraint.RelativeToParent((parent) =>
             {
-                return parent.Y * .95;
+                return parent.Y * 0.95 + 3*App.screenHeight / 4;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Width * 0.5;
@@ -168,7 +167,6 @@ namespace PinBuster.Pages
             if (e.PropertyName == "VisibleRegion" && !isCentering)
             {
                 update = false;
-                recenterBtn.IsEnabled = true;
                 recenterBtn.IsVisible = true;
             }
         }
@@ -178,8 +176,7 @@ namespace PinBuster.Pages
             update = isCentering = true;
             
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
-
-            recenterBtn.IsEnabled = false;
+            
             recenterBtn.IsVisible = false;
         }
         

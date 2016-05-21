@@ -1,5 +1,4 @@
-﻿using PinBuster.Pages;
-using PinBuster.UWP;
+﻿using PinBuster.UWP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +14,7 @@ using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
 using System.Collections.Specialized;
 using System.Collections;
+using PinBuster.Pages;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
