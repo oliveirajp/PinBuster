@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="Pages\MasterDetail.cs" />
     <Compile Include="Pages\MenuPage.cs" />
+    <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="post.xaml.cs">
       <DependentUpon>post.xaml</DependentUpon>
     </Compile>

@@ -29,6 +29,7 @@ namespace PinBuster.Pages
             new Menu("Pin list", () => new MessageListView()),
             new Menu("Map", () => new MapPage(loc)),
             new Menu("Profile", () => new UserPage()),
+            new Menu("Search", () => new SearchPage())
         };
 
             var dataTemplate = new DataTemplate(typeof(TextCell));
@@ -53,4 +54,5 @@ namespace PinBuster.Pages
             Content = listView;
         }
     }
+
 }
