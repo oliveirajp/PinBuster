@@ -1,6 +1,10 @@
 ﻿using Xamarin.Forms;
 using PinBuster.Data;
-using System.Linq
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using PinBuster.Models;
+using Newtonsoft.Json;
+using System;
 
 namespace PinBuster.Pages
 {
@@ -28,10 +32,21 @@ namespace PinBuster.Pages
                 {
 
                     string result = await getsDb.MakeGetRequest("utilizador?searchName=" + searchBar.Text);
-                    JArr
-                    resultsLabel.Text = "Result: \n" + result;
+                    List<User> listUsers = new List<User>();
+                    JObject json = JObject.Parse(result);
 
+                    JArray array = JArray.Parse(json["data"].ToString());
+                    resultsLabel.Text = "";
+                    foreach (JObject o in array.Children())
+                    {
+                        resultsLabel.Text = resultsLabel.Text + "Nome: " + o["nome"].ToString() + "\n" + "Face id" + o["face_id"] + "\n-----------";
+                        //listUsers.Add(new User(Int32.Parse(o["utilizador_id"].ToString()), o["nome"].ToString(), o["imagem"].ToString(), Double.Parse(o["raio"].ToString()), Int64.Parse(o["face_id"].ToString())));
 
+                    }
+                    /*foreach(User user in listUsers)
+                    {
+                        resultsLabel.Text = resultsLabel.Text + "Nome: " + user.nome.ToString() + "\n" + "Imagem: " + user.imagem.ToString();
+                    }*/
                 })
             };
 
