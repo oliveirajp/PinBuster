@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Util;
+using Android.Support.Design.Widget;
 
 [assembly: Xamarin.Forms.Dependency(typeof(GetCurrentLocation))]
 namespace PinBuster.Droid
@@ -59,24 +60,20 @@ namespace PinBuster.Droid
 
             lm = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
 
-            Criteria criteriaForLocationService = new Criteria
-            {
-                Accuracy = Accuracy.High
-            };
-                
-            IList<string> acceptableLocationProviders = lm.GetProviders(criteriaForLocationService, true);
+            Criteria locationCriteria = new Criteria();
 
-            if (acceptableLocationProviders.Any())
+            locationCriteria.Accuracy = Accuracy.Fine;
+            locationCriteria.PowerRequirement = Power.Medium;
+
+            locationProvider = lm.GetBestProvider(locationCriteria, true);
+
+            if (locationProvider != null)
             {
-                locationProvider = acceptableLocationProviders.First();
+                lm.RequestLocationUpdates(locationProvider, 10000, 30, this);
                 args = new LocationEventArgs();
             }
             else
-            {
-                locationProvider = string.Empty;
-            }
-
-            lm.RequestLocationUpdates(locationProvider, 2000, 1, this);
+                System.Diagnostics.Debug.WriteLine("No location provider could be found");
         }
        
         ~GetCurrentLocation()

@@ -50,7 +50,7 @@ namespace PinBuster.UWP
 
                 PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
                 (PinsChangedMethod);
-
+                nativeMap.MapElements.Clear();
 
             }
         }
