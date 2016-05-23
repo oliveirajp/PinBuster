@@ -19,9 +19,10 @@ namespace PinBuster
         public ListFollowers(string result)
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            
+
 
             InitializeComponent();
+            Debug.WriteLine("recieved" + result);
             this.result = result;
             BackButtonFacebook.HorizontalOptions = LayoutOptions.End;
             BackButtonFacebook.Clicked += delegate
@@ -31,31 +32,35 @@ namespace PinBuster
 
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = getCredentials.IGetCredentials()[0];
-
+            Boolean noUsers = false;
             List<string> followsList = new List<string>();
 
             using (var clientGet = new System.Net.Http.HttpClient())
             {
                 clientGet.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
                 // var content = new System.Net.Http.FormUrlEncodedContent(postData);
-                var resultGet = clientGet.GetAsync("api/follow/" + userID+ "?f=follower").Result;
+                var resultGet = clientGet.GetAsync("api/follow/" + userID + "?f=follower").Result;
                 string resultContentGet = resultGet.Content.ReadAsStringAsync().Result;
-                Debug.WriteLine(resultContentGet);
+                Debug.WriteLine("REcieved from DB" + resultContentGet);
                 JObject followersJson = JObject.Parse(resultContentGet);
+                if (followersJson["data"].ToString() == "false")
+                {
+                    noUsers = true;
+                }
 
 
                 foreach (var friend in followersJson["data"].Children())
                 {
-                    followsList.Add(friend["followed"].ToString().Replace("\"", ""));
-
+                    followsList.Add(friend["face_id"].ToString());
+                    Debug.WriteLine(friend["face_id"].ToString());
                 }
             }
-            //Debug.WriteLine("followers" + followsList.ToArray().ToString());
-;
+            Debug.WriteLine("followers" + followsList.ToArray().ToString());
+            ;
 
             JObject friendListJson = JObject.Parse(result);
             List<string> strinArrayList = new List<string>();
-            
+
 
             {
                 userID = getCredentials.IGetCredentials()[0];
@@ -64,31 +69,39 @@ namespace PinBuster
                 {
                     String id = friend["id"].ToString().Replace("\"", "");
                     String name = friend["name"].ToString().Replace("\"", "");
-                    var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand , VerticalTextAlignment=TextAlignment.Center,
-                    TextColor=Color.Black};
-                    Button button = new Button { Text = "Follow", HorizontalOptions = LayoutOptions.End , HeightRequest=30 };
-                    
+                    Debug.WriteLine(name);
+                    var nameLabel = new Label
+                    {
+                        Text = name,
+                        FontSize = 20,
+                        TextColor = Color.Black
+                    };
+                    Button button = new Button { Text = "Follow", HorizontalOptions = LayoutOptions.End, HeightRequest = 30 };
+
                     button.BackgroundColor = Color.FromHex("#8ADD97");
 
                     Boolean following = false;
-                    foreach (String user in followsList)
+                    if (!noUsers)
                     {
-                        if (user == id)
+                        foreach (String user in followsList)
                         {
-                            button.BackgroundColor = Color.FromHex("#FF464D");
+                            Debug.WriteLine(user + "-" + id);
+                            if (user == id)
+                            {
+                                button.BackgroundColor = Color.FromHex("#FF464D");
 
-                            button.Text = "Unfollow";
-                            following = true;
+                                button.Text = "Unfollow";
+                                following = true;
+                            }
                         }
                     }
-                    
                     button.Clicked += delegate
                     {
                         var postData = new List<KeyValuePair<string, string>>();
                         postData.Add(new KeyValuePair<string, string>("follower", userID));
                         postData.Add(new KeyValuePair<string, string>("followed", id));
 
-                        if(following)
+                        if (following)
                         {
                             using (var client = new System.Net.Http.HttpClient())
                             {
@@ -98,7 +111,7 @@ namespace PinBuster
 
                                 client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
                                 var content = new System.Net.Http.FormUrlEncodedContent(postData);
-                                var result2 = client.DeleteAsync("api/follow/"+ userID + "?unfollow="+id ).Result;
+                                var result2 = client.DeleteAsync("api/follow/" + userID + "?unfollow=" + id).Result;
                                 string resultContent = result2.Content.ReadAsStringAsync().Result;
                                 JObject resultContentJson = JObject.Parse(resultContent);
                                 Debug.WriteLine("DELETE RESULT:" + resultContent);
@@ -106,7 +119,7 @@ namespace PinBuster
                                 Debug.WriteLine("PostResult:" + resultContentJson["data"].ToString());
 
 
-                                if (resultContentJson["data"].ToString()=="done")
+                                if (resultContentJson["data"].ToString() == "done")
                                 {
                                     button.BackgroundColor = Color.FromHex("#8ADD97");
 
@@ -114,7 +127,7 @@ namespace PinBuster
                                     following = false;
                                 }
 
-                               
+
                                 // NomeUser.Text = resultContent;
                             }
                         }
@@ -135,73 +148,43 @@ namespace PinBuster
                                     button.Text = "Unfollow";
                                     following = true;
                                 }
-                                
+
 
                                 // NomeUser.Text = resultContent;
                             }
                         }
-                       
+
                     };
                     Image image = new Image { Source = "http://graph.facebook.com/" + id + "/picture?type=square" };
                     image.WidthRequest = 30;
                     image.HeightRequest = 30;
-                    
-                    //   StackLayoutObj.Children.Add(image);
-                    // StackLayoutObj.Children.Add(nameLabel);
-                    //StackLayoutObj.Children.Add(button);
 
-                    StackLayout s = new StackLayout() { HeightRequest = 40 , Orientation=StackOrientation.Horizontal, Padding = new Thickness(5, 8, 5, 5) };
+
+                    StackLayout s = new StackLayout() { HeightRequest = 40, Orientation = StackOrientation.Horizontal, Padding = new Thickness(5, 8, 5, 5) };
                     s.Children.Add(image);
                     s.Children.Add(nameLabel);
                     s.Children.Add(button);
-                    StackLayout s2 = new StackLayout() { HeightRequest = 50, Orientation = StackOrientation.Horizontal };
-                    s2.Children.Add(image);
-                    s2.Children.Add(nameLabel);
-                    s2.Children.Add(button);
+                    Debug.WriteLine("here");
+                    // StackLayoutObj.Children.Add(nameLabel);
+
                     StackLayoutObj.Children.Add(s);
-                   // StackLayoutObj.Children.Add(new Label() { Text = "novo", FontSize = 20 });
-
-
-                    RelativeLayout relativeLayout = new RelativeLayout();
+                    // StackLayoutObj.Children.Add(new Label() { Text = "novo", FontSize = 20 });
 
 
 
-                    relativeLayout.Children.Add(image,
-                        Constraint.RelativeToParent((parent) => {
-                            return 0;
-                        }),
-                        Constraint.RelativeToParent((parent) => {
-                            return (button.Height / 2) - (image.Height / 2);
-                        }));
 
-                    relativeLayout.Children.Add(nameLabel,
-                        Constraint.RelativeToParent((parent) => {
-                            return image.Width +20;
-                        }),
-                        Constraint.RelativeToParent((parent) => {
-                            return (button.Height/2)-(nameLabel.Height/2);
-                        }));
-
-                    relativeLayout.Children.Add(button,
-                        Constraint.RelativeToParent((parent) => {
-                            return parent.Width-button.Width-10;
-                        }),
-                        Constraint.RelativeToParent((parent) => {
-                            return 0;
-                        }));
-
-                  /*  StackLayoutObj.Children.Add(relativeLayout);
-                    StackLayoutObj.Children.Add(relativeLayout);
-                    StackLayoutObj.Children.Add(relativeLayout);
-                    StackLayoutObj.Children.Add(relativeLayout);
-                    StackLayoutObj.Children.Add(relativeLayout);
-                    StackLayoutObj.Children.Add(relativeLayout);
-                    */
+                    /*  StackLayoutObj.Children.Add(relativeLayout);
+                      StackLayoutObj.Children.Add(relativeLayout);
+                      StackLayoutObj.Children.Add(relativeLayout);
+                      StackLayoutObj.Children.Add(relativeLayout);
+                      StackLayoutObj.Children.Add(relativeLayout);
+                      StackLayoutObj.Children.Add(relativeLayout);
+                      */
 
                 }
 
             }
         }
-        
+
     }
 }
