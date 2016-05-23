@@ -22,13 +22,13 @@
     <AppXManifest Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-23T00:37:57.231</Modified>
+      <Modified>2016-05-23T00:50:34.635</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\PinBuster.UWP.exe">
       <PackagePath>entrypoint\PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-05-23T00:37:53.795</Modified>
+      <Modified>2016-05-23T00:50:32.847</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\.nuget\packages\CommonServiceLocator\1.3.0\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll">
       <PackagePath>Microsoft.Practices.ServiceLocation.dll</PackagePath>
@@ -474,6 +474,10 @@
       <PackagePath>System.Xml.XmlSerializer.dll</PackagePath>
       <Modified>2015-07-22T22:11:12.000</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Ze_Pa\.nuget\packages\Xamarin.Auth\1.3.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10\Xamarin.Auth.dll">
+      <PackagePath>Xamarin.Auth.dll</PackagePath>
+      <Modified>2000-07-14T13:11:28.000</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\.nuget\packages\Xamarin.Forms\2.2.0.31\lib\uap10.0\Xamarin.Forms.Core.dll">
       <PackagePath>Xamarin.Forms.Core.dll</PackagePath>
       <Modified>2016-04-26T18:42:52.000</Modified>
@@ -500,7 +504,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll">
       <PackagePath>PinBuster.dll</PackagePath>
-      <Modified>2016-05-23T00:37:51.822</Modified>
+      <Modified>2016-05-23T00:47:47.107</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
@@ -558,11 +562,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2016-05-23T00:33:59.773</Modified>
+      <Modified>2016-05-23T00:40:27.197</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\PinBuster.UWP.exe">
       <PackagePath>PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-05-23T00:37:57.229</Modified>
+      <Modified>2016-05-23T00:50:34.628</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

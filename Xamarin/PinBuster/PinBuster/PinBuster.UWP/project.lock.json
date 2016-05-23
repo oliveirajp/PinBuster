@@ -1843,6 +1843,14 @@
           }
         }
       },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        }
+      },
       "Xamarin.Forms/2.2.0.31": {
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -3573,6 +3581,14 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        }
+      },
       "Xamarin.Forms/2.2.0.31": {
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -5259,6 +5275,14 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
         }
       },
       "Xamarin.Forms/2.2.0.31": {
@@ -6999,6 +7023,14 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        }
+      },
       "Xamarin.Forms/2.2.0.31": {
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -8685,6 +8717,14 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
         }
       },
       "Xamarin.Forms/2.2.0.31": {
@@ -10425,6 +10465,14 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        }
+      },
       "Xamarin.Forms/2.2.0.31": {
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -12111,6 +12159,14 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Xamarin.Auth/1.3.0": {
+        "compile": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll": {}
         }
       },
       "Xamarin.Forms/2.2.0.31": {
@@ -15747,6 +15803,19 @@
         "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll"
       ]
     },
+    "Xamarin.Auth/1.3.0": {
+      "sha512": "rfxCdEq714O1qoz6W/riDNu2V/wgcbHO0To9oR/MwyUYLS+UBKzOQa5/0zQwlIS5z21yx6LkXp4vDKg3uiLxHA==",
+      "type": "package",
+      "files": [
+        "Xamarin.Auth.1.3.0.nupkg.sha512",
+        "Xamarin.Auth.nuspec",
+        "lib/MonoAndroid10/Xamarin.Auth.dll",
+        "lib/MonoTouch10/Xamarin.Auth.dll",
+        "lib/Xamarin.iOS10/Xamarin.Auth.dll",
+        "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10/Xamarin.Auth.dll",
+        "lib/wp8/Xamarin.Auth.dll"
+      ]
+    },
     "Xamarin.Forms/2.2.0.31": {
       "sha512": "UQ3Km0Lway+n0b9lfZczE+sPtRzMyY9oJHCKSSjsoTeEOiZfQkBDIcL7SzNYEdBCFaU9He4lnASgfRD6yHdEtg==",
       "type": "package",
@@ -16014,6 +16083,7 @@
       "Microsoft.Net.Http >= 2.2.29",
       "MvvmLightLibs >= 5.3.0",
       "Newtonsoft.Json >= 8.0.3",
+      "Xamarin.Auth >= 1.3.0",
       "Xamarin.Forms >= 2.2.0.31",
       "Xamarin.Forms.Maps >= 2.2.0.31"
     ],
