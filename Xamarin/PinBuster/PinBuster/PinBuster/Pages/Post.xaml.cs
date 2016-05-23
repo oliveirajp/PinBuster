@@ -64,7 +64,7 @@ namespace PinBuster.Pages
             postData.Add(new KeyValuePair<string, string>("raio", SliderRadius.Value.ToString()));
             postData.Add(new KeyValuePair<string, string>("utilizador_id", "0"));
             postData.Add(new KeyValuePair<string, string>("conteudo", PostMessage.Text));
-            postData.Add(new KeyValuePair<string, string>("localizacao", "leiden"));
+            postData.Add(new KeyValuePair<string, string>("localizacao", currentTown));
             postData.Add(new KeyValuePair<string, string>("categoria", CategoryPicker.Items[CategoryPicker.SelectedIndex].ToString()));
             postData.Add(new KeyValuePair<string, string>("imagem", "dummy"));
 
