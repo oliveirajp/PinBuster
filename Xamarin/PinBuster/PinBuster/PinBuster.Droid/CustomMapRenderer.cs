@@ -87,6 +87,7 @@ namespace PinBuster.Droid
         {
             map = googleMap;
             map.InfoWindowClick += OnInfoWindowClick;
+
             map.SetInfoWindowAdapter(this);
         }
 
@@ -100,10 +101,12 @@ namespace PinBuster.Droid
             }
         }
 
-        void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Mostrar info");
+            var pin = GetCustomPin(e.Marker);
+            await App.NavigateToEditPost(pin);
         }
+
 
         public Android.Views.View GetInfoContents(Marker marker)
         {

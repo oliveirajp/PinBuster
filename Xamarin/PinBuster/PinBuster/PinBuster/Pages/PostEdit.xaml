@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PinBuster.Pages.PostEdit">
+  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  
+  <StackLayout Spacing="50">
+    <Label Text="Write your message below:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+    <Editor  x:Name="PostMessage" VerticalOptions="FillAndExpand"/>
+   
+    
+     <Picker Title="Select a category" x:Name="CategoryPicker" SelectedIndex="{Binding Industry}" HorizontalOptions="Center">
+        <Picker.Items HorizontalOptions="Center">
+            <x:String> Tip </x:String> 
+            <x:String> Review </x:String> 
+            <x:String> Historical/Cultural fact </x:String> 
+            <x:String> Fun fact </x:String> 
+            <x:String> Random </x:String>
+            <x:String> Other </x:String> 
+        </Picker.Items>
+    </Picker> 
+    
+    <Label  x:Name="SliderValue" Text="Select the desired radius:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+
+    <Slider x:Name="SliderRadius" Maximum="100" Minimum="1"  VerticalOptions="CenterAndExpand"
+                ValueChanged="OnSliderValueChanged" />
+            
+    
+    <Button Text="Update pin!" Clicked="Button_OnClicked"></Button>
+    
+      
+  <Label x:Name="outputpost"> </Label>
+  
+  </StackLayout>
+
+</ContentPage>

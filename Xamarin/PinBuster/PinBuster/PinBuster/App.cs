@@ -86,6 +86,20 @@ namespace PinBuster
            // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
 
+        public async static Task NavigateToEditPost(Models.Pin pin)
+        {
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String userID = getCredentials.IGetCredentials()[0];
+
+            if (pin.Face_id == userID)
+            {
+                await App.Current.MainPage.Navigation.PushModalAsync(new PostEdit(pin));
+            } else
+            {
+                await App.Current.MainPage.Navigation.PushModalAsync(new DetailMessageList(pin));
+            }
+        }
+
         IFacebookLogin face;
 
         public App()

@@ -65,6 +65,9 @@
     <Compile Include="Pages\Post.xaml.cs">
       <DependentUpon>Post.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PostEdit.xaml.cs">
+      <DependentUpon>PostEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="CLocation.cs" />
     <Compile Include="Models\User.cs" />
@@ -204,6 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\Post.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\PostEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
