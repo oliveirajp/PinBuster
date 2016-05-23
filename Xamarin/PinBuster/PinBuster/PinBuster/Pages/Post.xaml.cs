@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace PinBuster
+namespace PinBuster.Pages
 {
     public partial class Post : ContentPage
     {

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PinBuster.Post">
+             x:Class="PinBuster.Pages.Post">
   <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
   
   <StackLayout Spacing="50">
@@ -19,7 +19,6 @@
             <x:String> Other </x:String> 
         </Picker.Items>
     </Picker> 
-    <label></label>
     
     <Label  x:Name="SliderValue" Text="Select the desired radius:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
 
@@ -29,7 +28,6 @@
     
     <Button Text="Pin it!" Clicked="Button_OnClicked"></Button>
 
-    <Label> </Label>
   <Label x:Name="outputpost"> </Label>
   
   </StackLayout>
