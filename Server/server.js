@@ -174,10 +174,11 @@ router.route('/follow')
 router.route('/follow/:face_id')
 .get(function(req, res) {
     var followQuery;
-    if (req.query.f == 'follower')
-        followQuery = "SELECT * FROM dbo.follow WHERE follower = '" + req.params.face_id + "'";
-    else
-        followQuery = "SELECT * FROM dbo.follow WHERE followed = '" + req.params.face_id + "'";
+        if (req.query.f == 'follower')
+            followQuery = "SELECT nome, followed as face_id, imagem FROM [dbo].[follow],[dbo].[utilizador] WHERE face_id = follower AND face_id ='" + req.params.face_id + "'";
+        else
+            followQuery = "SELECT nome, follower as face_id, imagem FROM [dbo].[follow],[dbo].[utilizador] WHERE face_id = followed AND face_id ='" + req.params.face_id + "'";
+
 
     getData(followQuery, function(err, rows) {
         if (err) {
@@ -229,6 +230,28 @@ router.route('/mensagem')
             // No rows returns; handle appropriately
         }
     })
+})
+.put(function(req, res) {
+    if(req.params.data && req.params.tempo_limite && req.params.raio && req.params.conteudo && req.params.categoria && req.params.mensagem_id)
+    {
+        getData("UPDATE [dbo].[mensagem] SET [data] = '" + req.params.data + "' , [tempo_limite] = '" + req.params.tempo_limite + "' , [raio] = '" + req.params.raio + "' , [conteudo] = '" + req.params.conteudo  + "' , [categoria] = '" + req.params.categoria + "' WHERE mensagem_id = " + req.params.mensagem_id, function(err, rows) {
+        if (err) {
+            // Handle the error
+            res.json(err);
+        } else if (rows) {
+            var retorno = {};
+            retorno['data'] = 'done';
+            res.json(retorno);
+            // Process the rows returned from the database
+        } else {
+            res.json(rows);
+            // No rows returns; handle appropriately
+        }
+    });
+
+    }
+    else
+        res.json("Falta argumentos");
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
@@ -543,7 +566,7 @@ function getDataRaio(Query,lat,lon,raio,callback) {
 
             var dist = findDistance(dataset['latitude'],dataset['longitude'],lat,lon);
             console.log("Distancia: " + dist + " Loc: " + dataset['localizacao'] + " Lat: " + dataset['latitude'] + " Lon: " + dataset['longitude']);
-            
+
             if(dist <= raio){
                 dataset['visivel'] = 0;
                 if(dist <= dataset['raio'] /1000)

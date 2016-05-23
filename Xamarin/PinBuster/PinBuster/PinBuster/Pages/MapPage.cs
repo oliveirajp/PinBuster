@@ -9,59 +9,177 @@ using Xamarin.Forms.Maps;
 using PinBuster.ViewModels;
 using GalaSoft.MvvmLight.Helpers;
 using System.Collections.Specialized;
+using PinBuster.Data;
+using System.Threading;
+using PinBuster;
 
 namespace PinBuster.Pages
 {
     public class MapPage : ContentPage
     {
-
-        public Map map;
         
+        public CustomMap map;
+        public bool update, isCentering;
+        Button recenterBtn;
+        public IEnumerable<String> town;
 
-        public MapPage(IGetCurrentPosition loc)
+        Label label;
+        int clickTotal = 0;
+
+        void postmessageaction(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(App.lat);
+            System.Diagnostics.Debug.WriteLine(App.lng);
+
+            Navigation.PushModalAsync(new post(App.lat,App.lng));
+        }
+
+        public MapPage()
         {
 
             BindingContext = App.Locator.Map;
 
-            App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
-                (PinsChangedMethod);
-
-            map = new Map(
-            MapSpan.FromCenterAndRadius(
-                    new Position(0, 0), Distance.FromMiles(0.3)))
+            //App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+            
+            map = new CustomMap
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            map.IsShowingUser = true;
+            map.MoveToRegion(
+            MapSpan.FromCenterAndRadius(
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
 
-            var stack = new StackLayout { Spacing = 0 };
+            update = true;
+            isCentering = true;
+
+            try
+            {
+                App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+                 {
+                     if (update)
+                     {
+                         isCentering = true;
+                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
+                         if (App.town == null)
+                         {
+                             setTown();
+                         }
+                     }
+                 };
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
+
+            Button button = new Button
+            {
+                Text = "Pin it here!",
+                Font = Font.SystemFontOfSize(NamedSize.Large),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            button.Clicked += postmessageaction;
+
+
+            var stack = new RelativeLayout {  };
 
             map.VerticalOptions = LayoutOptions.FillAndExpand;
             map.HeightRequest = 100;
             map.WidthRequest = 960;
 
-            stack.Children.Add(map);
+            stack.Children.Add(map, Constraint.RelativeToParent((parent) => {
+                return parent.X;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Y * .15;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) => {
+                return parent.Height;
+            }));
 
-            try
+            stack.Children.Add(button, Constraint.RelativeToParent((parent) =>
             {
-               loc.locationObtained += (object sender, ILocationEventArgs e) =>
-                {
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.lat, e.lng), Distance.FromMiles(0.1)));
-                };
-                loc.IGetCurrentPosition();
-            }
-            catch(Exception e)
+                return parent.X + parent.Width/2 - parent.Width * 0.5 * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
             {
-                System.Diagnostics.Debug.WriteLine("Error: " + e);
-            }
-           
+                return parent.Y * .15;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width*0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            recenterBtn = new Button
+            {
+                Text = "Re-Center",
+                Font = Font.SystemFontOfSize(NamedSize.Micro),
+                BorderWidth = 1,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+            recenterBtn.Clicked += OnRecenterClicked;
+            recenterBtn.IsVisible = false;
+
+            stack.Children.Add(recenterBtn, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y * 0.95 + 3*App.screenHeight / 4;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width * 0.5;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            map.PropertyChanged += SpanChanged;
+
+            
 
             Content = stack;
         }
+        
+        async private void setTown()
+        {
+            var geo = new Geocoder();
+            town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
+            parseTown(town.First());
+        }
 
+        private void parseTown(string first)
+        {           
+            App.town = first.Split(' ')[0];
+        }
+
+        private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "VisibleRegion" && !isCentering)
+            {
+                update = false;
+                recenterBtn.IsVisible = true;
+            }
+        }
+
+        private void OnRecenterClicked(object sender, EventArgs e)
+        {
+            update = isCentering = true;
+            
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+            
+            recenterBtn.IsVisible = false;
+        }
+        
         private void PositionMap()
         {
             var mapPins = map.Pins;
@@ -84,14 +202,17 @@ namespace PinBuster.Pages
 
         public void AddPin(PinBuster.Models.Pin pin)
         {
-            this.map.Pins.Add(new Xamarin.Forms.Maps.Pin
+            var pinToAdd = (new Pin
             {
-                Position = new Position(pin.latitude, pin.longitude),
-                Address = pin.mensagem,
-                Label = pin.title,
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
                 Type = PinType.Place
             });
-            this.PositionMap();
+            pin.ActualPin = pinToAdd;
+            map.CustomPins.Add(pin);
+            map.Pins.Add(pin.ActualPin);
+           // this.PositionMap();
         }
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -121,6 +242,7 @@ namespace PinBuster.Pages
         }
 
     }
+
 }
 
 
