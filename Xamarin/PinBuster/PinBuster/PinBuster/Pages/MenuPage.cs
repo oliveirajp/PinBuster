@@ -29,6 +29,7 @@ namespace PinBuster.Pages
             new Menu("Pin list", () => App.listView),
             new Menu("Map", () => App.mapPage),
             new Menu("Profile", () => new UserPage()),
+            new Menu("Search", () => new SearchPage())
         };
 
             var dataTemplate = new DataTemplate(typeof(TextCell));

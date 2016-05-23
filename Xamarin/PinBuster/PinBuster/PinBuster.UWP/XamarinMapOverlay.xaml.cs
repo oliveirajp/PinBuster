@@ -37,5 +37,10 @@ namespace PinBuster.UWP
         {
             System.Diagnostics.Debug.WriteLine("mostrar info");
         }
+
+        private void OnEditButtonTapped(object sender, TappedRoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Edit");
+        }
     }
 }

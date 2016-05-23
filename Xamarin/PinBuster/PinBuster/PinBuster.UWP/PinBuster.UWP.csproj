@@ -118,6 +118,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\icon.png" />
     <EmbeddedResource Include="pin.png" />
+    <AndroidResource Include="Assets\info.png" />
+    <AndroidResource Include="info.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
