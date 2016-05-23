@@ -22,13 +22,13 @@
     <AppXManifest Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-22T22:12:07.385</Modified>
+      <Modified>2016-05-23T00:37:57.231</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\PinBuster.UWP.exe">
       <PackagePath>entrypoint\PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-05-22T22:12:04.972</Modified>
+      <Modified>2016-05-23T00:37:53.795</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\.nuget\packages\CommonServiceLocator\1.3.0\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll">
       <PackagePath>Microsoft.Practices.ServiceLocation.dll</PackagePath>
@@ -500,49 +500,49 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll">
       <PackagePath>PinBuster.dll</PackagePath>
-      <Modified>2016-05-21T16:14:29.348</Modified>
+      <Modified>2016-05-23T00:37:51.822</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
-      <Modified>2016-05-08T17:14:16.560</Modified>
+      <Modified>2016-05-22T23:51:39.066</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
-      <Modified>2016-05-08T17:14:16.529</Modified>
+      <Modified>2016-05-22T23:51:39.024</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.530</Modified>
+      <Modified>2016-05-22T23:51:39.025</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\Square150x150Logo.scale-200.png">
       <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.531</Modified>
+      <Modified>2016-05-22T23:51:39.031</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\Square44x44Logo.scale-200.png">
       <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.531</Modified>
+      <Modified>2016-05-22T23:51:39.031</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.532</Modified>
+      <Modified>2016-05-22T23:51:39.032</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.532</Modified>
+      <Modified>2016-05-22T23:51:39.033</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-05-08T17:14:16.533</Modified>
+      <Modified>2016-05-22T23:51:39.034</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\PinBuster.UWP.xr.xml">
       <PackagePath>PinBuster.UWP.xr.xml</PackagePath>
-      <Modified>2016-05-22T22:08:36.837</Modified>
+      <Modified>2016-05-23T00:33:57.868</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -558,11 +558,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2016-05-22T22:12:06.909</Modified>
+      <Modified>2016-05-23T00:33:59.773</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\PinBuster.UWP.exe">
       <PackagePath>PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-05-22T22:12:07.382</Modified>
+      <Modified>2016-05-23T00:37:57.229</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
