@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -45,6 +44,9 @@ namespace PinBuster.Droid
                     var accessToken = eventArgs.Account.Properties["access_token"].ToString();
                     var expiresIn = Convert.ToDouble(eventArgs.Account.Properties["expires_in"]);
                     var expiryDate = DateTime.Now + TimeSpan.FromSeconds(expiresIn);
+                    System.Diagnostics.Debug.WriteLine("expires in:" + expiresIn.ToString());
+
+                    System.Diagnostics.Debug.WriteLine("tempo"+expiryDate.ToString());
 
                     var request = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me"), null, eventArgs.Account);
                     var response = await request.GetResponseAsync();
@@ -60,11 +62,12 @@ namespace PinBuster.Droid
                 }
                 else
                 {
-                    await App.NavigateToProfile("Usuário Cancelou o login", "");
+                   // await App.NavigateToProfile("Usuário Cancelou o login", "");
                 }
             };
 
             activity.StartActivity(auth.GetUI(activity));
+            
 
 
 

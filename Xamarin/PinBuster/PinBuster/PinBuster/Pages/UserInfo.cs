@@ -60,9 +60,24 @@ namespace PinBuster
 
                         var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
                         var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
+                        var bShare = new Button { Text = "Share", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
 
+                        bShare.Clicked += async delegate
+                        {
 
-                        bLogout.Clicked += async delegate
+                            if (Device.OS == TargetPlatform.Windows)
+                            {
+                                IFacebookShare FacebookShare = DependencyService.Get<IFacebookShare>();
+                                FacebookShare.IFacebookShare("Leiden");
+                            }
+                            else
+                            {
+                                await Navigation.PushModalAsync(new FacebookShare("leiden"));
+                            }
+
+                        };
+
+                            bLogout.Clicked += async delegate
                         {
                             // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
 
@@ -109,6 +124,7 @@ namespace PinBuster
 
                         layout.Children.Add(bFollowers);
                         layout.Children.Add(bLogout);
+                        layout.Children.Add(bShare);
 
 
 

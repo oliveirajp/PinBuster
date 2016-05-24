@@ -36,7 +36,9 @@ namespace PinBuster
         
 
         public interface ISaveCredentials
-        { void ISaveCredentials(string userid, string username);   }
+        { void ISaveCredentials(string userid, string username);
+            void ISaveCredentials(string userid, string username, string tokenAccess);
+        }
 
         public interface IGetCredentials
         {String[] IGetCredentials(); }
@@ -49,6 +51,9 @@ namespace PinBuster
 
         public interface IFacebookFriends
         { void IFacebookFriends(Label label); }
+
+        public interface IFacebookShare
+        { void IFacebookShare(String message); }
 
         public interface ISaveAndLoad
         { void SaveText(string filename, string tex);
@@ -76,6 +81,16 @@ namespace PinBuster
 
             //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
+
+        public async static Task Pop()
+        {
+
+            await App.Current.MainPage.Navigation.PopModalAsync();
+
+
+            // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+        }
+
 
         public async static Task NavigateToApp()
         {
@@ -114,8 +129,8 @@ namespace PinBuster
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
             }
-          //  Debug.WriteLine("user id after saving:" + userID);
 
+            Debug.WriteLine("user id after saving:" + userID);
 
             if (userID == null)
             {

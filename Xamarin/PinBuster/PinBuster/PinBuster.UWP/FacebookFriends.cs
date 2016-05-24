@@ -12,8 +12,12 @@ using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
 using static PinBuster.App;
 using Xamarin.Forms;
+using System.Json;
+using System.Dynamic;
+using System.Collections.Specialized;
 
 [assembly: Xamarin.Forms.Dependency(typeof(FacebookFriends))]
+[assembly: Xamarin.Forms.Dependency(typeof(FacebookShare))]
 
 namespace PinBuster.UWP
 {
@@ -46,8 +50,7 @@ namespace PinBuster.UWP
 
             Uri startUri = loginUrl;
             Uri endUri = new Uri(redirectUri, UriKind.Absolute);
-
-            WebAuthenticationResult result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startUri, endUri);
+                WebAuthenticationResult result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startUri, endUri);
             await ParseAuthenticationResult(result);
         }
 
@@ -77,8 +80,7 @@ namespace PinBuster.UWP
 
 
                     GetData(token, "me?fields=friends");
-                    //AccessToken = access_token.Value;
-                    //TokenExpiry = DateTime.Now.AddSeconds(double.Parse(expires_in.Value));
+                    
 
                     break;
                 case WebAuthenticationStatus.UserCancel:
@@ -127,6 +129,79 @@ namespace PinBuster.UWP
             }
         }
 
+        
+    }
+
+    class FacebookShare : IFacebookShare
+    {
+        public void IFacebookShare(String message)
+        {
+            IFacebookShareAsync(message);
+        }
+        private async void IFacebookShareAsync(String message)
+        {
+            //Facebook app id
+            var clientId = "536841529832251";
+            //Facebook permissions
+            var scope = "public_profile, email";
+
+            var redirectUri = "http://www.facebook.com/connect/login_success.html";
+            var fb = new FacebookClient();
+            Uri loginUrl = fb.GetLoginUrl(new
+            {
+                client_id = clientId,
+                redirect_uri = redirectUri,
+                response_type = "token",
+                scope = scope
+            });
+
+            Uri startUri = loginUrl;
+            Uri endUri = new Uri(redirectUri, UriKind.Absolute);
+            WebAuthenticationResult result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startUri, endUri);
+            await ParseAuthenticationResult(result, message);
+        }
+
+        public async Task ParseAuthenticationResult(WebAuthenticationResult result,String message)
+        {
+            switch (result.ResponseStatus)
+            {
+                case WebAuthenticationStatus.ErrorHttp:
+                    Debug.WriteLine("Error");
+                    break;
+                case WebAuthenticationStatus.Success:
+                    var pattern = string.Format("{0}#access_token={1}&expires_in={2}", WebAuthenticationBroker.GetCurrentApplicationCallbackUri(), "(?<access_token>.+)", "(?<expires_in>.+)");
+                    var match = Regex.Match(result.ResponseData, pattern);
+                    Debug.WriteLine(".." + result.ResponseData.ToString());
+
+                    var access_token = match.Groups["access_token"];
+                    var expires_in = match.Groups["expires_in"];
+
+                    Debug.WriteLine("token: " + access_token.Value.ToString());
+                    // var fb = new FacebookClient(access_token.Value);
+
+
+                    var match2 = Regex.Match(result.ResponseData, "(?:=)(.*)(?:&)");
+                    string token = match2.ToString().Substring(1);
+                    token = token.Remove(token.Length - 1);
+                    Debug.WriteLine(".." + token);
+
+                    String sJson = " {\"og:url\":\"https://www.facebook.com/PinBusterApp/\",\"og:title\":\"PinBuster App\",\"og:type\":\"pinbuster:secret_message\",\"og:description\":\"I just posted a message in "+ message+"\",\"fb:app_id\":536841529832251}";
+         
+                    var parameters = new Dictionary<string, object>();
+                    parameters["object"] = sJson;
+                    var clienteFacebook = new FacebookClient(token);
+                    dynamic resultado = await clienteFacebook.PostTaskAsync("me/objects/pinbuster:secret_message", parameters);
+                   // Debug.WriteLine("Resultado:" + resultado);
+                    
+
+                    break;
+                case WebAuthenticationStatus.UserCancel:
+                    Debug.WriteLine("Operation aborted");
+                    break;
+                default:
+                    break;
+            }
+        }
         
     }
 }

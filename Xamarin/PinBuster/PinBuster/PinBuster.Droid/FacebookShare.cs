@@ -19,15 +19,16 @@ using System.IO;
 using System.Json;
 using Org.Json;
 
-[assembly: ExportRenderer(typeof(PinBuster.FacebookFriends), typeof(PinBuster.Droid.FacebookFriends))]
+[assembly: ExportRenderer(typeof(PinBuster.FacebookShare), typeof(PinBuster.Droid.FacebookShare))]
 
 namespace PinBuster.Droid
 {
-    [Activity(Label = "FacebookFriends")]
-    public class FacebookFriends : PageRenderer
+    [Activity(Label = "FacebookShare")]
+    public class FacebookShare : PageRenderer
     {
-        public FacebookFriends()
+        public FacebookShare()
         {
+            String message = "Leiden";
             System.Diagnostics.Debug.WriteLine("android-----------");
 
 
@@ -48,40 +49,21 @@ namespace PinBuster.Droid
                     var accessToken = eventArgs.Account.Properties["access_token"].ToString();
                     var expiresIn = Convert.ToDouble(eventArgs.Account.Properties["expires_in"]);
                     var expiryDate = DateTime.Now + TimeSpan.FromSeconds(expiresIn);
-                    String sJson = " {\"og:url\":\"https://www.facebook.com/PinBusterApp/\",\"og:title\":\"PinBuster App\",\"og:type\":\"pinbuster:secret_message\",\"og:description\":\"I just posted a message in Leiden\",\"fb:app_id\":536841529832251}";
+                    String sJson = " {\"og:url\":\"https://www.facebook.com/PinBusterApp/\",\"og:title\":\"PinBuster App\",\"og:type\":\"pinbuster:secret_message\",\"og:description\":\"I just posted a message in "+ message+"\",\"fb:app_id\":536841529832251}";
                     JSONObject json = new JSONObject(sJson);
                     // IDictionary<String, String> dic = new IDictionary<String, String>();
                     var parameters = new Dictionary<string, string>();
                     parameters.Add("object", sJson);
-                   
-                    var request3 = new OAuth2Request("Post", new Uri("https://graph.facebook.com/me/objects/pinbuster:secret_message"), parameters, eventArgs.Account);
-                    var response3 = await request3.GetResponseAsync();
-                    System.Diagnostics.Debug.WriteLine("result:"+response3.ToString());
-                    
 
-
-
-
-                    var request2 = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me/friends"), null, eventArgs.Account);
-                    var response2 = await request2.GetResponseAsync();
-                    var obj2 = JObject.Parse(response2.GetResponseText());
+                    var request = new OAuth2Request("Post", new Uri("https://graph.facebook.com/me/objects/pinbuster:secret_message"), parameters, eventArgs.Account);
+                    var response = await request.GetResponseAsync();
+                    System.Diagnostics.Debug.WriteLine("result:" + response.ToString());
 
                     var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-                    var filename = Path.Combine(documents, "followers2.txt");
-                    File.WriteAllText(filename, obj2.ToString());
+                    var filename = Path.Combine(documents, "facebookshare.txt");
+                    File.WriteAllText(filename, "entrou");
+                   // await App.Pop();
 
-
-
-
-                    System.Diagnostics.Debug.WriteLine(obj2.ToString());
-
-                    //activity.Finish();
-
-                    // activity.Finish();
-
-                    //await App.NavigateToProfile(string.Format(name), string.Format(id));
-
-                    //System.Diagnostics.Debug.WriteLine(obj.ToString());
 
                 }
                 else
@@ -90,7 +72,7 @@ namespace PinBuster.Droid
                 }
             };
 
-            activity.StartActivityForResult(auth.GetUI(activity),1);
+            activity.StartActivityForResult(auth.GetUI(activity), 1);
 
 
 

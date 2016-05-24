@@ -51,7 +51,10 @@ namespace PinBuster.Droid
 
         }
 
-        
+        public void ISaveCredentials(string userid, string username, string tokenAccess)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class GetCredentials : IGetCredentials
