@@ -4,7 +4,7 @@
              x:Class="PinBuster.Pages.PostEdit">
   <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
   
-  <StackLayout Spacing="50">
+  <StackLayout Spacing="20">
     <Label Text="Write your message below:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
     <Editor  x:Name="PostMessage" VerticalOptions="FillAndExpand"/>
    
@@ -24,7 +24,34 @@
 
     <Slider x:Name="SliderRadius" Maximum="100" Minimum="1"  VerticalOptions="CenterAndExpand"
                 ValueChanged="OnSliderValueChanged" />
-            
+
+    <Label  x:Name="TimeLimitLabel" Text="Time limit:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+
+
+
+    <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand" >
+
+      <Slider x:Name="TimeLimit" Maximum="30" Minimum="1"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand"
+                  ValueChanged="OnTimeSliderValueChanged" />
+
+
+
+
+      <Picker Title="Time unit" x:Name="DateUnitPicker" SelectedIndex="0" HorizontalOptions="Center">
+        <Picker.Items HorizontalOptions="Center">
+          <x:String> No limit </x:String>
+          <x:String> Minutes </x:String>
+          <x:String> Hours </x:String>
+          <x:String> Days </x:String>
+          <x:String> Months </x:String>
+          <x:String> Years </x:String>
+        </Picker.Items>
+        <Picker.SelectedIndex>0</Picker.SelectedIndex>
+
+      </Picker>
+
+    </StackLayout>  
+    
     
     <Button Text="Update pin!" Clicked="Button_OnClicked"></Button>
     

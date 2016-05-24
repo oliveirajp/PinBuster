@@ -45,6 +45,29 @@ namespace PinBuster.Pages
 
             var updateData = new List<KeyValuePair<string, string>>();
 
+            int timeLimit = 0;
+
+            switch (DateUnitPicker.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    timeLimit = (int)TimeLimit.Value;
+                    break;
+                case 2:
+                    timeLimit = (int)TimeLimit.Value * 60;
+                    break;
+                case 3:
+                    timeLimit = (int)TimeLimit.Value * 60 * 24;
+                    break;
+                case 4:
+                    timeLimit = (int)TimeLimit.Value * 60 * 24 * 31;
+                    break;
+                case 5:
+                    timeLimit = (int)TimeLimit.Value * 60 * 24 * 31 * 12;
+                    break;
+            }
+
 
             App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
             String userID = null;
@@ -55,14 +78,16 @@ namespace PinBuster.Pages
                 userName = getCredentials.IGetCredentials()[1];
             }
 
+            int radius = (int)SliderRadius.Value;
+
             updateData.Add(new KeyValuePair<string, string>("mensagem_id", pinId));
             updateData.Add(new KeyValuePair<string, string>("face_id", userID));
             updateData.Add(new KeyValuePair<string, string>("nome", userName));
             updateData.Add(new KeyValuePair<string, string>("latitude", currentLat.ToString()));
             updateData.Add(new KeyValuePair<string, string>("longitude", currentLon.ToString()));
             updateData.Add(new KeyValuePair<string, string>("data", "20130210 11:11:11 PM"));
-            updateData.Add(new KeyValuePair<string, string>("tempo_limite", "0"));
-            updateData.Add(new KeyValuePair<string, string>("raio", SliderRadius.Value.ToString()));
+            updateData.Add(new KeyValuePair<string, string>("tempo_limite", timeLimit.ToString()));
+            updateData.Add(new KeyValuePair<string, string>("raio", radius.ToString()));
             updateData.Add(new KeyValuePair<string, string>("utilizador_id", "0"));
             updateData.Add(new KeyValuePair<string, string>("conteudo", PostMessage.Text));
             updateData.Add(new KeyValuePair<string, string>("localizacao", currentTown));
@@ -79,8 +104,7 @@ namespace PinBuster.Pages
 
                 var result = client.PutAsync("api/mensagem", content).Result;
                 string resultContent = result.Content.ReadAsStringAsync().Result;
-
-                outputpost.Text = resultContent;
+                System.Diagnostics.Debug.WriteLine("Resposta ao edit post message: " + resultContent);
             }
 
             PostMessage.Text = String.Empty;
@@ -91,10 +115,22 @@ namespace PinBuster.Pages
 
         public void OnSliderValueChanged(Object sender, ValueChangedEventArgs e)
         {
+            var newStep = Math.Round(e.NewValue / 1);
+            SliderRadius.Value = newStep * 1;
+
             SliderValue.Text = e.NewValue.ToString("F3");
             SliderValue.Text = "Select the desired radius: " + SliderValue.Text + " m";
         }
 
+
+        public void OnTimeSliderValueChanged(Object sender, ValueChangedEventArgs e)
+        {
+            var newStep = Math.Round(e.NewValue / 1);
+            TimeLimit.Value = newStep * 1;
+
+            TimeLimitLabel.Text = newStep.ToString("F0");
+            TimeLimitLabel.Text = "Time limit: " + TimeLimitLabel.Text;
+        }
 
 
 

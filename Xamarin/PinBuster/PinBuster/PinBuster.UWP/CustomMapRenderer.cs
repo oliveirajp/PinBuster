@@ -15,6 +15,7 @@ using Windows.Storage.Streams;
 using System.Collections.Specialized;
 using System.Collections;
 using PinBuster.Pages;
+using Windows.System;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
@@ -24,6 +25,8 @@ namespace PinBuster.UWP
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
+
+        Models.Pin selectedPin;
 
         public List<Models.Pin> customPins;
 
@@ -106,6 +109,8 @@ namespace PinBuster.UWP
             }
         }
 
+      
+
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)
         {
             var mapIcon = args.MapElements.FirstOrDefault(x => x is MapIcon) as MapIcon;
@@ -123,6 +128,7 @@ namespace PinBuster.UWP
                     mapOverlay = new XamarinMapOverlay(customPin);
                     mapOverlay.Tapped += MapOverlay_Tapped;
 
+                    selectedPin = customPin;
 
                     var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
                     var snPoint = new Geopoint(snPosition);
@@ -153,6 +159,8 @@ namespace PinBuster.UWP
             }
             return null;
         }
+
+      
     }
 }
 

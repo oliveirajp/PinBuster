@@ -88,6 +88,7 @@ namespace PinBuster
 
         public async static Task NavigateToEditPost(Models.Pin pin)
         {
+            Debug.WriteLine("ESTA NO APP NAVIGATE EDIT POST:");
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = getCredentials.IGetCredentials()[0];
 
