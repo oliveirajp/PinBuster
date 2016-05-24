@@ -11,49 +11,67 @@ using Newtonsoft.Json.Linq;
 
 namespace PinBuster.Data
 {
-	public class PinsManager
-	{
-		HttpClient client;
+    public class PinsManager
+    {
+        PinBuster.Data.Utilities u;
+        Pins_L lista_mensagens;
 
-		public List<Pin> Pins { get; private set; }
+        public class Pins_L
+        {
+            public List<Pin> data { get; set; }
+        }
 
-		public PinsManager ()
-		{
-			client = new HttpClient ();
-			client.MaxResponseContentBufferSize = 256000;
-		}
+        public PinsManager()
+        {
+            u = new PinBuster.Data.Utilities();
+        }
 
-		public async Task<List<Pin>> FetchPins ()
-		{
-			Pins = new List<Pin> ();
+        public async Task<List<Pin>> FetchPins()
+        {
 
-			var uri = new Uri (string.Format (Constants.RestUrl + "/mensagem", string.Empty));
-			Debug.WriteLine (uri);
+            //  System.Diagnostics.Debug.WriteLine("FETCH PINS");
+            string response = "";
+            if (App.lat == 0 && App.lng == 0)
+            {
+                return null;
+            }
+            else
+            {
+                response = await u.MakeGetRequest("message_user?latitude=" + App.lat + "&longitude=" + App.lng + "&raio=30");
+                try
+                {
+                    lista_mensagens = (Pins_L)Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof(Pins_L));
 
-			try {
-				var response = await client.GetAsync (uri);
-				if (response.IsSuccessStatusCode) {
-					var content = await response.Content.ReadAsStringAsync ();
-					var contentJson = JObject.Parse(content);
-					foreach(JObject msg in contentJson["data"]) {
-						Pin newPin = new Pin("Titulo", (string) msg["conteudo"], (double) msg["latitude"], (double) msg["longitude"]);
-						newPin.raio = (int) msg["raio"];
-						newPin.face_id = (int) msg["face_id"];
-						newPin.tempo_limite = (int) msg["tempo_limite"];
-						newPin.categoria = (string) msg["categoria"];
-						string date = (string) msg["data"];
-						string formattedDate = date.Substring(0, 24);
-						newPin.data = DateTime.Parse(formattedDate); 
-						Pins.Add(newPin);
-					}
-					Debug.WriteLine(Pins);
-				}
-			} catch (Exception ex) {
-				Debug.WriteLine (@"				ERROR {0}", ex.Message);
-			}
+                    List<PinBuster.Models.Pin> myList = new List<PinBuster.Models.Pin>(App.listView._viewModel.All_M);
 
-			return Pins;
-		}
-	}
+                    foreach (var x in myList)
+                    {
+                        if (!lista_mensagens.data.Contains(x))
+                            App.listView._viewModel.All_M.Remove(x);
+                    }
+
+
+                    foreach (var msg in lista_mensagens.data)
+                    {
+                        if (!App.listView._viewModel.All_M.Contains(msg))
+                        {
+                            App.listView._viewModel.All_M.Add(msg);
+                            if (msg.Categoria == "Secret")
+                                App.listView._viewModel.Secret_M.Add(msg);
+                            else if (msg.Categoria == "Review")
+                                App.listView._viewModel.Review_M.Add(msg);
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@ERROR {0}", ex.Message);
+                }
+
+                return lista_mensagens.data;
+            }
+        }
+    }
 }
-

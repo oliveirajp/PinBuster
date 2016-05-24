@@ -11,25 +11,44 @@ using PinBuster.Pages;
 
 namespace PinBuster.ViewModels
 {
-	public class MapViewModel : ViewModelBase
-	{
-		public static readonly Position NullPosition = new Position(0, 0);
+    public class MapViewModel : ViewModelBase
+    {
+        public static readonly Position NullPosition = new Position(0, 0);
 
-		public ObservableCollection<PinBuster.Models.Pin> Pins = new ObservableCollection<PinBuster.Models.Pin>();
+        public ObservableCollection<PinBuster.Models.Pin> Pins = new ObservableCollection<PinBuster.Models.Pin>();
 
-		public MapViewModel ()
-		{
-			Task.Run(() => LoadPins());
-		}
+        public MapViewModel()
+        {
+            Task.Run(() => LoadPins());
+        }
 
-		public async Task LoadPins()
-		{
-			var pins = await App.PinsManager.FetchPins ();
+        public async Task LoadPins()
+        {
+            var pins = await App.pinsManager.FetchPins();
+            if (pins != null)
+                try
+                {
+                    List<PinBuster.Models.Pin> myList = new List<PinBuster.Models.Pin>(Pins);
+                    if (myList.Count > 0)
+                        foreach (var x in myList)
+                        {
+                            if (!pins.Contains(x))
+                                Pins.Remove(x);
 
-			foreach (var pin in pins) {
-				this.Pins.Add (pin);
-			}
-		}
-	}
+                        }
+                    if (pins.Count > 0)
+                        foreach (var pin in pins)
+                        {
+                            if (!Pins.Contains(pin))
+                                Pins.Add(pin);
+                        }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@@@@@@ERROR {0}", ex.Message);
+                }
+
+            System.Diagnostics.Debug.WriteLine(Pins.Count);
+        }
+    }
 }
-

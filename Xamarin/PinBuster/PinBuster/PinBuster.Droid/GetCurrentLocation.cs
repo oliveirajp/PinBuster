@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Util;
+using Android.Support.Design.Widget;
 
 [assembly: Xamarin.Forms.Dependency(typeof(GetCurrentLocation))]
 namespace PinBuster.Droid
@@ -20,6 +21,7 @@ namespace PinBuster.Droid
     class GetCurrentLocation : Java.Lang.Object, IGetCurrentPosition, ILocationListener
     {
         LocationManager lm;
+        LocationEventArgs args;
         public void OnProviderDisabled(string provider) { }
         public void OnProviderEnabled(string provider) { }
         public void OnStatusChanged(string provider, Availability status, Android.OS.Bundle extras) { }
@@ -27,9 +29,10 @@ namespace PinBuster.Droid
         {
             if (location != null)
             {
-                LocationEventArgs args = new LocationEventArgs();
                 args.lat = location.Latitude;
                 args.lng = location.Longitude;
+                 
+
                 locationObtained(this, args);
             };
         }
@@ -55,25 +58,22 @@ namespace PinBuster.Droid
         {
             string locationProvider;
 
-            lm = (LocationManager) Forms.Context.GetSystemService(Context.LocationService);
+            lm = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
 
-            Criteria criteriaForLocationService = new Criteria
-            {
-                Accuracy = Accuracy.Fine
-            };
-            IList<string> acceptableLocationProviders = lm.GetProviders(criteriaForLocationService, true);
+            Criteria locationCriteria = new Criteria();
 
-            if (acceptableLocationProviders.Any())
+            locationCriteria.Accuracy = Accuracy.Fine;
+            locationCriteria.PowerRequirement = Power.Medium;
+
+            locationProvider = lm.GetBestProvider(locationCriteria, true);
+
+            if (locationProvider != null)
             {
-                locationProvider = acceptableLocationProviders.First();
+                lm.RequestLocationUpdates(locationProvider, 10000, 30, this);
+                args = new LocationEventArgs();
             }
             else
-            {
-                locationProvider = string.Empty;
-            }
-            Log.Debug(null, "Using " + locationProvider + ".");
-
-            lm.RequestLocationUpdates(locationProvider, 2000, 1, this);
+                System.Diagnostics.Debug.WriteLine("No location provider could be found");
         }
        
         ~GetCurrentLocation()
