@@ -5,6 +5,10 @@
 var express = require('express'); // call express
 var app = express(); // define our app using express
 var bodyParser = require('body-parser');
+var basicAuth = require('basic-auth-connect');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -12,6 +16,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+app.set('views', './views');
+app.set('view engine', 'jade');
 
 var port = process.env.PORT || 3000; // set our port
 
@@ -234,7 +241,7 @@ router.route('/mensagem')
 // get all the bears (accessed at GET http://localhost:8080/api/test)
 .get(function(req, res) {
     var mensagemQuery = "";
-    
+
     if(req.query.latitude && req.query.longitude && req.query.raio)
     {
         mensagemQuery = "SELECT * FROM dbo.mensagem;";
@@ -389,6 +396,46 @@ router.route('/message_user')
         }
     });
     }
+});
+
+var auth = require('http-auth');
+var basic = auth.basic({
+        realm: "PinBuster"
+    }, function (username, password, callback) { // Custom authentication
+        callback(username === "lgp" && password === "lgp");
+    }
+);
+
+
+app.use(cookieParser('secret'));
+app.use(session({cookie: { maxAge: 60000 }}));
+app.use(flash());
+app.use(function(req, res, next){
+    res.locals.message = req.flash('message');
+    next();
+});
+
+router.route('/admin')
+.get(auth.connect(basic), function(req, res)  {
+  res.render('home', {
+    title: 'Welcome'
+  });
+})
+.post(function(req, res) {
+
+  insertData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES (@latitude,@longitude,@data,@tempo_limite,@raio,@face_id,@conteudo,@localizacao,@categoria);", ['longitude', 'latitude', 'data', 'tempo_limite', 'raio', 'face_id', 'conteudo', 'localizacao', 'categoria'], [req.body.latitude, req.body.longitude, (new Date()).toISOString(), 0, req.body.raio, 0, req.body.name, req.body.city, "Exploration"], [TYPES.Float, TYPES.Float, TYPES.NVarChar, TYPES.Int, TYPES.Int, TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar], function(err, rows) {
+      if (err) {
+          // Handle the error
+      } else if (rows) {
+          req.flash('message', 'Exploration pin created successfully.');
+          res.redirect('admin');
+          // Process the rows returned from the database
+      } else {
+          res.json(rows);
+          // No rows returns; handle appropriately
+      }
+  });
+
 });
 
 
@@ -565,32 +612,32 @@ var  lat1, lon1, lat2, lon2, dlat, dlon, a, c, dm, dk, mi, km;
         lon1 = deg2rad(n1);
         lat2 = deg2rad(t2);
         lon2 = deg2rad(n2);
-        
+
         // find the differences between the coordinates
         dlat = lat2 - lat1;
         dlon = lon2 - lon1;
-        
+
         // here's the heavy lifting
         a  = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2);
         c  = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); // great circle distance in radians
 
         dk = c * Rk; // great circle distance in km
-        
+
         // round the results down to the nearest 1/1000
         km = round(dk);
-        
+
         // display the result
         return km;
     }
-    
-    
+
+
     // convert degrees to radians
     function deg2rad(deg) {
         rad = deg * Math.PI/180; // radians = degrees * pi/180
         return rad;
     }
-    
-    
+
+
     // round to the nearest 1/1000
     function round(x) {
         return Math.round( x * 1000) / 1000;
