@@ -217,13 +217,16 @@ router.route('/mensagem')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
-    // console.log("nome: " + req.body.nome);
-    insertData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES (@latitude,@longitude,@data,@tempo_limite,@raio,@face_id,@conteudo,@localizacao,@categoria);", ['longitude', 'latitude', 'data', 'tempo_limite', 'raio', 'face_id', 'conteudo', 'localizacao', 'categoria'], [req.body.latitude, req.body.longitude, req.body.data, req.body.tempo_limite, req.body.raio, req.body.face_id, req.body.conteudo, req.body.localizacao, req.body.categoria], [TYPES.Float, TYPES.Float, TYPES.NVarChar, TYPES.Int, TYPES.Int, TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar, TYPES.NVarChar], function(err, rows) {
+    
+    //console.log("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES ('"+req.body.latitude+"','"+req.body.longitude+"','convert(datetime,'" + req.body.data + "',5)','"+req.body.tempo_limite+"','"+req.body.raio+"','"+req.body.latitude+"','"+req.body.face_id+"','"+req.body.conteudo+"','"+req.body.localizacao+"','"+req.body.categoria+"');");
+    getData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES ('"+req.body.latitude+"','"+req.body.longitude+"',convert(datetime,'" + req.body.data + "',5),'"+req.body.tempo_limite+"','"+req.body.raio+"','"+req.body.face_id+"','"+req.body.conteudo+"','"+req.body.localizacao+"','"+req.body.categoria+"');", function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
         } else if (rows) {
-            res.json(rows);
+            var retorno = {};
+            retorno['data'] = 'done';
+            res.json(retorno);
             // Process the rows returned from the database
         } else {
             res.json(rows);
@@ -232,9 +235,9 @@ router.route('/mensagem')
     })
 })
 .put(function(req, res) {
-    if(req.params.data && req.params.tempo_limite && req.params.raio && req.params.conteudo && req.params.categoria && req.params.mensagem_id)
-    {
-        getData("UPDATE [dbo].[mensagem] SET [data] = '" + req.params.data + "' , [tempo_limite] = '" + req.params.tempo_limite + "' , [raio] = '" + req.params.raio + "' , [conteudo] = '" + req.params.conteudo  + "' , [categoria] = '" + req.params.categoria + "' WHERE mensagem_id = " + req.params.mensagem_id, function(err, rows) {
+   // if(req.body.data && req.body.tempo_limite && req.body.raio && req.body.conteudo && req.body.categoria && req.body.mensagem_id)
+    //{
+        getData("UPDATE dbo.mensagem SET data = convert(datetime,'" + req.body.data + "',5) , tempo_limite = '" + req.body.tempo_limite + "' , raio = '" + req.body.raio + "' , conteudo = '" + req.body.conteudo  + "' , categoria = '" + req.body.categoria + "' WHERE mensagem_id = " + req.body.mensagem_id, function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);
@@ -249,9 +252,12 @@ router.route('/mensagem')
         }
     });
 
-    }
+/*    }
     else
+    {
+        console.log(req.body.data +" " + req.body.tempo_limite+" " + req.body.raio +" " +req.body.conteudo +" " + req.body.categoria+" " + req.body.mensagem_id);
         res.json("Falta argumentos");
+    } */
 })
 
 // get all the bears (accessed at GET http://localhost:8080/api/test)
