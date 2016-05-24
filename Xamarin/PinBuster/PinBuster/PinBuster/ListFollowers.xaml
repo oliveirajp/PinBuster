@@ -4,17 +4,14 @@
              BackgroundColor="White"
              x:Class="PinBuster.ListFollowers">
   <StackLayout>
-    <StackLayout Orientation="Horizontal" BackgroundColor="#3b5998" Padding="10,5,10,5">
-    <Label Text="Facebook Friends" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="20" VerticalOptions="Center"/>
+    <StackLayout Orientation="Horizontal" BackgroundColor="#3b5998" Padding="10,5,10,5" x:Name="TesteLAyout">
+    <Label Text="Facebook Friends" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="20" VerticalOptions="Center" x:Name="LabelFacebook"/>
     <Button Text="OK" HorizontalOptions="End" BackgroundColor="#3b5998" TextColor="White" x:Name="BackButtonFacebook"/>
     </StackLayout>
-    <ScrollView Padding="0" x:Name="ScrollViewObject">
-      <StackLayout x:Name="StackLayoutObj">
+    <ScrollView Padding="0" x:Name="ScrollViewObject" >
+        <StackLayout x:Name="StackLayoutObj">
 
       </StackLayout>
-
-
-
 
     </ScrollView>
     

@@ -31,7 +31,7 @@ namespace PinBuster.Pages
             System.Diagnostics.Debug.WriteLine(App.lat);
             System.Diagnostics.Debug.WriteLine(App.lng);
 
-            Navigation.PushModalAsync(new post(App.lat,App.lng));
+            Navigation.PushAsync(new Post(App.lat,App.lng,App.town));
         }
 
         public MapPage()
