@@ -24,10 +24,11 @@ namespace PinBuster.UWP
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
+        RandomAccessStreamReference image;
 
         public List<Models.Pin> customPins;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
+        protected override async void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
             base.OnElementChanged(e);
 
@@ -47,10 +48,15 @@ namespace PinBuster.UWP
 
                 nativeMap.Children.Clear();
                 nativeMap.MapElementClick += OnMapElementClick;
+                image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin.png"));
 
-                PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
-                (PinsChangedMethod);
-                nativeMap.MapElements.Clear();
+
+                foreach (var pin in PinBuster.App.Locator.Map.Pins)
+                {
+                    positionPin(pin);
+                }
+
+                PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
 
             }
         }
@@ -63,47 +69,50 @@ namespace PinBuster.UWP
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
+            switch (e.Action)
             {
-                
+                case NotifyCollectionChangedAction.Add:
                     foreach (Models.Pin pin in e.NewItems)
                     {
-                    System.Diagnostics.Debug.WriteLine("Entrei");
-                        var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
-                        var snPoint = new Geopoint(snPosition);
-
-                        var mapIcon = new MapIcon();
-                        mapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin.png"));
-                        mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
-                        mapIcon.Location = snPoint;
-                        mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
-
-                        nativeMap.MapElements.Add(mapIcon);
-
-                        var pinToAdd = (new Pin
-                        {
-                            Position = new Position(pin.Latitude, pin.Longitude),
-                            Address = pin.Conteudo,
-                            Label = pin.Nome,
-                            Type = PinType.Place
-                        });                        
-                        pin.ActualPin = pinToAdd;
-                        customPins.Add(pin);
+                        positionPin(pin);
                     }
-                    
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    break;
+                default:
+                    break;
             }
+        }
 
-            if (e.Action == NotifyCollectionChangedAction.Replace)
-            {
-            }
+        private void positionPin(Models.Pin pin)
+        {
+            var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
+            var snPoint = new Geopoint(snPosition);
 
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-            }
+            var mapIcon = new MapIcon();
+            mapIcon.Image = image;
+            mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
+            mapIcon.Location = snPoint;
+            mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
 
-            if (e.Action == NotifyCollectionChangedAction.Move)
+            nativeMap.MapElements.Add(mapIcon);
+            
+
+            var pinToAdd = (new Pin
             {
-            }
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
+                Type = PinType.Place
+            });
+            pin.ActualPin = pinToAdd;
+            customPins.Add(pin);
         }
 
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)

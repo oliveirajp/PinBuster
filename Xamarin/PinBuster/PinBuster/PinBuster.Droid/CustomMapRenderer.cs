@@ -13,6 +13,7 @@ using Xamarin.Forms.Maps.Android;
 using PinBuster.Pages;
 using System.Collections.Specialized;
 using Android.Graphics;
+using System.Net;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -49,22 +50,7 @@ namespace PinBuster.Droid
 
                 foreach (Models.Pin pin in e.NewItems)
                 {
-                    var marker = new MarkerOptions();
-                    marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
-                    marker.SetTitle(pin.Categoria);
-                    marker.SetSnippet(pin.Conteudo);
-                    marker.SetIcon(resizeMapIcons(Resource.Drawable.pin,100,100));
-
-                    map.AddMarker(marker);
-                    var pinToAdd = (new Pin
-                    {
-                        Position = new Position(pin.Latitude, pin.Longitude),
-                        Address = pin.Conteudo,
-                        Label = pin.Nome,
-                        Type = PinType.Place
-                    });
-                    pin.ActualPin = pinToAdd;
-                    customPins.Add(pin);
+                    positionPin(pin);
                 }
             }
             if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -73,14 +59,34 @@ namespace PinBuster.Droid
             }
         }
 
+        private void positionPin(Models.Pin pin)
+        {
+            var marker = new MarkerOptions();
+            marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
+            marker.SetTitle(pin.Categoria);
+            marker.SetSnippet(pin.Conteudo);
+            marker.SetIcon(resizeMapIcons(Resource.Drawable.pin, 100, 100));
+
+            map.AddMarker(marker);
+            var pinToAdd = (new Pin
+            {
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
+                Type = PinType.Place
+            });
+            pin.ActualPin = pinToAdd;
+            customPins.Add(pin);
+        }
+
         public BitmapDescriptor resizeMapIcons(int iconName, int width, int height)
         {
-            Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, iconName); 
+            Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, iconName);
             Bitmap resizedBitmap = Bitmap.CreateScaledBitmap(imageBitmap, width, height, false);
 
             BitmapDescriptor icon = BitmapDescriptorFactory.FromBitmap(resizedBitmap);
 
-            return icon;   
+            return icon;
         }
 
         public void OnMapReady(GoogleMap googleMap)
@@ -88,6 +94,11 @@ namespace PinBuster.Droid
             map = googleMap;
             map.InfoWindowClick += OnInfoWindowClick;
             map.SetInfoWindowAdapter(this);
+
+            foreach (var pin in App.Locator.Map.Pins)
+            {
+                positionPin(pin);
+            }
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
@@ -104,6 +115,8 @@ namespace PinBuster.Droid
         {
             System.Diagnostics.Debug.WriteLine("Mostrar info");
         }
+        
+
 
         public Android.Views.View GetInfoContents(Marker marker)
         {
@@ -118,19 +131,27 @@ namespace PinBuster.Droid
                     throw new Exception("Custom pin not found");
                 }
 
-                if (customPin.Categoria == "Xamarin")
+                if (customPin.Visivel == 1)
                 {
-                    view = inflater.Inflate(Resource.Layout.XamarinMapInfoWindow, null);
-                }
-                else if (customPin.Visivel == 1)
-                {
-                    view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+
+                    if (customPin.Categoria == "Xamarin")
+                    {
+                        view = inflater.Inflate(Resource.Layout.XamarinMapInfoWindow, null);
+                    }
+                    else
+                    {
+                        view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+                    }
                 }
                 else
+                {
+                    System.Diagnostics.Debug.WriteLine("Nao podes ver");
                     return null;
+                }
 
                 var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
                 var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+                var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
 
                 if (infoTitle != null)
                 {
@@ -140,8 +161,30 @@ namespace PinBuster.Droid
                 {
                     infoSubtitle.Text = marker.Snippet;
                 }
+                if(image != null)
+                {
+                    Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem,120,120);
+                    image.SetImageBitmap(imageBitmap);
+                }
 
                 return view;
+            }
+            return null;
+        }
+
+        private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
+        {
+            String[] parsed = imagem.Split('?');
+            string img = parsed[0] + "?width=" + width + "&height=" + height;
+
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] bytes = webClient.DownloadData(img);
+                if (bytes != null && bytes.Length > 0)
+                {
+                    Bitmap bm = BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length);
+                    return Bitmap.CreateScaledBitmap(bm, width, height, false);
+                }
             }
             return null;
         }
