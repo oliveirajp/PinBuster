@@ -22,6 +22,7 @@ namespace PinBuster.Droid
         GoogleMap map;
         List<Models.Pin> customPins;
         bool isDrawn;
+        List<Marker> markers = new List<Marker>();
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e)
         {
@@ -37,6 +38,7 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+                
                 ((MapView)Control).GetMapAsync(this);
             }
         }
@@ -55,7 +57,10 @@ namespace PinBuster.Droid
                     marker.SetSnippet(pin.Conteudo);
                     marker.SetIcon(resizeMapIcons(Resource.Drawable.pin,100,100));
 
-                    map.AddMarker(marker);
+
+                    Marker mr = map.AddMarker(marker);
+                    markers.Add(mr);
+
                     var pinToAdd = (new Pin
                     {
                         Position = new Position(pin.Latitude, pin.Longitude),
@@ -63,13 +68,23 @@ namespace PinBuster.Droid
                         Label = pin.Nome,
                         Type = PinType.Place
                     });
+
                     pin.ActualPin = pinToAdd;
                     customPins.Add(pin);
+                    pin.PropertyChanged += this.OnItemPropertyChanged;
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 System.Diagnostics.Debug.WriteLine("Pin removido");
+                foreach (Models.Pin pin in e.NewItems)
+                {
+                    pin.PropertyChanged -= this.OnItemPropertyChanged;
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("EVENT");
             }
         }
 
@@ -90,6 +105,7 @@ namespace PinBuster.Droid
             map.SetInfoWindowAdapter(this);
         }
 
+        /*
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             base.OnLayout(changed, l, t, r, b);
@@ -99,7 +115,7 @@ namespace PinBuster.Droid
                 isDrawn = false;
             }
         }
-
+        */
         void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Mostrar info");
@@ -163,5 +179,16 @@ namespace PinBuster.Droid
             }
             return null;
         }
+
+        void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("asdasidjaisdjsaijdsijdaisjdiadjs");
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (Marker m in markers)
+                if (m.Position.Latitude == temp.Latitude && m.Position.Longitude == temp.Longitude && m.Snippet == temp.Conteudo)
+                    m.Visible = temp.Show;
+        }
+
     }
 }

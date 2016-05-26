@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
 
 
 function updateTimeLimits() {
-  getData("DELETE FROM dbo.mensagem WHERE tempo_limite != 0 and DATEADD(minute,tempo_limite,data) < CURRENT_TIMESTAMP", function(err, rows) {
+  getData("DELETE FROM dbo.mensagem WHERE tempo_limite != 0 and DATEADD(minute,tempo_limite,data) < DATEADD(hour,1,CURRENT_TIMESTAMP)", function(err, rows) {
         if (err) {
             // Handle the error
             console.log("Err: "+err);
@@ -52,7 +52,7 @@ function updateTimeLimits() {
     });
 }
 
-setInterval(updateTimeLimits, 60 * 1000);
+setInterval(updateTimeLimits, 45 * 1000);
 
 //////////////////////////////////////////////////////UTILIZADORES////////////////////////////////////////////////////////////
 router.route('/utilizador')
@@ -310,7 +310,7 @@ router.route('/mensagem')
 
 router.route('/mensagem/:face_id')
 .get(function(req, res) {
-    getData("SELECT * FROM dbo.mensagem WHERE face_id = " + req.params.face_id, function(err, rows) {
+    getData("SELECT * FROM dbo.mensagem WHERE face_id = '" + req.params.face_id + "'", function(err, rows) {
         if (err) {
                 // Handle the error
                 res.json(err);
@@ -369,7 +369,7 @@ router.route('/achievement')
 router.route('/achievement/:face_id')
 .get(function(req, res) {
 
-    getData("SELECT ac.face_id, ah.nome, ah.nr_mensagens as MessagesNeeded, ac.nr_mensagens as MessagesFound FROM (SELECT nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement WHERE face_id = 0 group by nome ) ah, (SELECT face_id, nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement group by face_id, nome) ac WHERE ah.nome = ac.nome and ac.face_id =" + req.params.face_id , function(err, rows) {
+    getData("SELECT ac.face_id, ah.nome, ah.nr_mensagens as MessagesNeeded, ac.nr_mensagens as MessagesFound FROM (SELECT nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement WHERE face_id = 0 group by nome ) ah, (SELECT face_id, nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement group by face_id, nome) ac WHERE ah.nome = ac.nome and ac.face_id = '" + req.params.face_id +"'" , function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);

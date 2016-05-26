@@ -145,16 +145,163 @@ namespace PinBuster.Pages
 
             map.PropertyChanged += SpanChanged;
 
-            
+
+
+            //Normal
+            Switch switcherAll = new Switch
+            {
+                IsToggled = true,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                ClassId = "Normal"
+            };
+            switcherAll.Toggled += switcher_Toggled;
+
+            stack.Children.Add(switcherAll, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.35;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.9;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            Label labelAll = new Label
+            {
+                Text = "Normal",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = Color.Black,
+            };
+            stack.Children.Add(labelAll, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.205;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.9;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            //Secret 
+            Switch switcherSecret = new Switch
+            {
+                IsToggled = true,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                ClassId = "Secret"
+            };
+            switcherSecret.Toggled += switcher_Toggled;
+
+            stack.Children.Add(switcherSecret, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.35;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.85;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            Label labelSecret = new Label
+            {
+                Text = "Secrets",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = Color.Black,
+            };
+            stack.Children.Add(labelSecret, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.205;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.85;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            //Review 
+            Switch switcherReview = new Switch
+            {
+                IsToggled = true,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                ClassId = "Review"
+            };
+            switcherReview.Toggled += switcher_Toggled;
+
+            stack.Children.Add(switcherReview, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.35;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.8;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
+
+            Label labelReview = new Label
+            {
+                Text = "Reviews",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = Color.Black,
+            };
+            stack.Children.Add(labelReview, Constraint.RelativeToParent((parent) =>
+            {
+                return parent.X - parent.Width * 0.205;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Y + parent.Height * 0.8;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Width;
+            }), Constraint.RelativeToParent((parent) =>
+            {
+                return parent.Height * .1;
+            }));
 
             Content = stack;
         }
         
         async private void setTown()
         {
-            var geo = new Geocoder();
-            town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
-            parseTown(town.First());
+            try
+            {
+
+                var geo = new Geocoder();
+                town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
+                parseTown(town.First());
+            }
+            catch (Exception err)
+            {
+
+                System.Diagnostics.Debug.WriteLine(err.Message);
+            }
         }
 
         private void parseTown(string first)
@@ -217,6 +364,7 @@ namespace PinBuster.Pages
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
+
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (var pin in e.NewItems)
@@ -239,6 +387,17 @@ namespace PinBuster.Pages
             if (e.Action == NotifyCollectionChangedAction.Move)
             {
             }
+        }
+        private void switcher_Toggled(object sender, ToggledEventArgs e)
+        {
+            var s = (Switch)sender;
+            foreach (Models.Pin i in App.Locator.Map.Pins)
+                if (i.Categoria == s.ClassId)
+                {
+                    i.Show = s.IsToggled;
+
+                }
+
         }
 
     }
