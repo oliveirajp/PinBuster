@@ -22,7 +22,10 @@ namespace PinBuster.Droid
     {
         GoogleMap map;
         List<Models.Pin> customPins;
-        bool isDrawn;
+        BitmapDescriptor imageNormal, imageSecret, imageAchiv, imageReview;
+        Android.Views.View view;
+        Android.Views.LayoutInflater inflater;
+        bool infoClicked;
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e)
         {
@@ -39,6 +42,10 @@ namespace PinBuster.Droid
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
                 ((MapView)Control).GetMapAsync(this);
+                imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
+                imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
+                imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
+                infoClicked = false;
             }
         }
 
@@ -63,10 +70,27 @@ namespace PinBuster.Droid
         {
             var marker = new MarkerOptions();
             marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
-            marker.SetTitle(pin.Categoria);
-            marker.SetSnippet(pin.Conteudo);
-            marker.SetIcon(resizeMapIcons(Resource.Drawable.pin, 100, 100));
+            if (pin.Visivel == 1)
+            {
+                marker.SetTitle(pin.Categoria);
+                marker.SetSnippet(pin.Conteudo);
+            }
 
+            switch (pin.Categoria)
+            {
+                case "Secret":
+                    marker.SetIcon(imageSecret);
+                    break;
+                case "Normal":
+                    marker.SetIcon(imageNormal);
+                    break;
+                case "Review":
+                    marker.SetIcon(imageReview);
+                    break;
+                default:
+                    marker.SetIcon(imageNormal);
+                    break;
+            }
             map.AddMarker(marker);
             var pinToAdd = (new Pin
             {
@@ -101,76 +125,106 @@ namespace PinBuster.Droid
             }
         }
 
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-            base.OnLayout(changed, l, t, r, b);
-
-            if (changed)
-            {
-                isDrawn = false;
-            }
-        }
-
         void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Mostrar info");
+            var customPin = GetCustomPin(e.Marker);
+
+
+            var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+            var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+            var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
+
+            if (image != null)
+            {
+                Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem, 120, 120);
+                image.SetImageBitmap(imageBitmap);
+            }
+
+            if (!infoClicked)
+            {
+                if (infoTitle != null)
+                {
+                    infoTitle.Text = customPin.Nome;
+                }
+                if (infoSubtitle != null)
+                {
+                    infoSubtitle.Text = customPin.Data;
+                }
+                infoClicked = true;
+            }
+            else
+            {
+                if (infoTitle != null)
+                {
+                    infoTitle.Text = customPin.Categoria;
+                }
+                if (infoSubtitle != null)
+                {
+                    infoSubtitle.Text = customPin.Conteudo;
+                }
+                infoClicked = false;
+            }
+            e.Marker.HideInfoWindow();
+            e.Marker.ShowInfoWindow();
         }
-        
+
 
 
         public Android.Views.View GetInfoContents(Marker marker)
         {
-            var inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
+            var customPin = GetCustomPin(marker);
+            if (infoClicked)
+            {
+                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                var infoContent = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+                if (customPin.Nome == infoTitle.Text && infoContent.Text == customPin.Data)
+                {
+                    System.Diagnostics.Debug.WriteLine("Mesmo pin");
+                    return view;
+                }
+            }
+
+            inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
             if (inflater != null)
             {
-                Android.Views.View view;
-
-                var customPin = GetCustomPin(marker);
+                
                 if (customPin == null)
                 {
                     throw new Exception("Custom pin not found");
                 }
-
+                infoClicked = false;
                 if (customPin.Visivel == 1)
                 {
+                    view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+                    var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                    var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+                    var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
 
-                    if (customPin.Categoria == "Xamarin")
+                    if (infoTitle != null)
                     {
-                        view = inflater.Inflate(Resource.Layout.XamarinMapInfoWindow, null);
+                        infoTitle.Text = marker.Title;
                     }
-                    else
+                    if (infoSubtitle != null)
                     {
-                        view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+                        infoSubtitle.Text = marker.Snippet;
                     }
+                    if (image != null)
+                    {
+                        Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem, 120, 120);
+                        image.SetImageBitmap(imageBitmap);
+                    }
+
+                    return view;
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("Nao podes ver");
                     return null;
                 }
-
-                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
-                var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
-                var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
-
-                if (infoTitle != null)
-                {
-                    infoTitle.Text = marker.Title;
-                }
-                if (infoSubtitle != null)
-                {
-                    infoSubtitle.Text = marker.Snippet;
-                }
-                if(image != null)
-                {
-                    Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem,120,120);
-                    image.SetImageBitmap(imageBitmap);
-                }
-
-                return view;
             }
             return null;
         }
+
 
         private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
         {

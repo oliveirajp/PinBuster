@@ -2125,17 +2125,32 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f020078
 			public const int info = 2130837624;
 			
-			// aapt resource value: 0x7f020079
-			public const int monkey = 2130837625;
+			// aapt resource value: 0x7f020081
+			public const int notification_template_icon_bg = 2130837633;
 			
-			// aapt resource value: 0x7f02007c
-			public const int notification_template_icon_bg = 2130837628;
+			// aapt resource value: 0x7f020079
+			public const int perfil = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int pin = 2130837626;
+			public const int pin_achievements = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int xamarin = 2130837627;
+			public const int pin_normal = 2130837627;
+			
+			// aapt resource value: 0x7f02007c
+			public const int pin_review = 2130837628;
+			
+			// aapt resource value: 0x7f02007d
+			public const int pin_secreto = 2130837629;
+			
+			// aapt resource value: 0x7f02007e
+			public const int search = 2130837630;
+			
+			// aapt resource value: 0x7f02007f
+			public const int vista_lista = 2130837631;
+			
+			// aapt resource value: 0x7f020080
+			public const int vista_mapa = 2130837632;
 			
 			static Drawable()
 			{
@@ -2150,17 +2165,17 @@ namespace PinBuster.Droid
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f09007d
+			public const int InfoWindowButton = 2131296381;
+			
 			// aapt resource value: 0x7f090080
-			public const int InfoWindowButton = 2131296384;
+			public const int InfoWindowSubtitle = 2131296384;
 			
 			// aapt resource value: 0x7f09007f
-			public const int InfoWindowSubtitle = 2131296383;
+			public const int InfoWindowTitle = 2131296383;
 			
 			// aapt resource value: 0x7f09007e
-			public const int InfoWindowTitle = 2131296382;
-			
-			// aapt resource value: 0x7f09007d
-			public const int UserImage = 2131296381;
+			public const int UserImage = 2131296382;
 			
 			// aapt resource value: 0x7f090081
 			public const int action0 = 2131296385;
@@ -2775,9 +2790,6 @@ namespace PinBuster.Droid
 			
 			// aapt resource value: 0x7f030031
 			public const int support_simple_spinner_dropdown_item = 2130903089;
-			
-			// aapt resource value: 0x7f030032
-			public const int XamarinMapInfoWindow = 2130903090;
 			
 			static Layout()
 			{

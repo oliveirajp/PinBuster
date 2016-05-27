@@ -49,14 +49,15 @@ namespace PinBuster.ViewModels
                             }
                             else if (!Pins.Contains(pin))
                                 Pins.Add(pin);
+
+                            //await Task.Delay(500);
                         }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@@@@@@ERROR {0}", ex.Message);
                 }
-
-            System.Diagnostics.Debug.WriteLine(Pins.Count);
+           
         }
     }
 }

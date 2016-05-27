@@ -28,7 +28,7 @@ namespace PinBuster.UWP
 
         public List<Models.Pin> customPins;
 
-        protected override async void OnElementChanged(ElementChangedEventArgs<Map> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
             base.OnElementChanged(e);
 
@@ -53,6 +53,7 @@ namespace PinBuster.UWP
 
                 foreach (var pin in PinBuster.App.Locator.Map.Pins)
                 {
+                    System.Diagnostics.Debug.WriteLine("entrei2s");
                     positionPin(pin);
                 }
 
@@ -75,6 +76,7 @@ namespace PinBuster.UWP
                     foreach (Models.Pin pin in e.NewItems)
                     {
                         positionPin(pin);
+                        System.Diagnostics.Debug.WriteLine("entrei");
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
