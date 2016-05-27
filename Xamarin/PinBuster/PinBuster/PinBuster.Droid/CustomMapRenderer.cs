@@ -29,6 +29,7 @@ namespace PinBuster.Droid
         Android.Views.LayoutInflater inflater;
         Snackbar snackBar;
         bool infoClicked;
+        List<Marker> markers = new List<Marker>();
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
@@ -44,6 +45,7 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+                
                 ((MapView)Control).GetMapAsync(this);
                 imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
                 imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
@@ -63,9 +65,17 @@ namespace PinBuster.Droid
                     positionPin(pin);
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 System.Diagnostics.Debug.WriteLine("Pin removido");
+                foreach (Models.Pin pin in e.NewItems)
+                {
+                    pin.PropertyChanged -= this.OnItemPropertyChanged;
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("EVENT");
             }
         }
 
@@ -94,7 +104,8 @@ namespace PinBuster.Droid
                     marker.SetIcon(imageNormal);
                     break;
             }
-            map.AddMarker(marker);
+            Marker mr = map.AddMarker(marker);
+            markers.Add(mr);
             var pinToAdd = (new Pin
             {
                 Position = new Position(pin.Latitude, pin.Longitude),
@@ -104,6 +115,7 @@ namespace PinBuster.Droid
             });
             pin.ActualPin = pinToAdd;
             customPins.Add(pin);
+            pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
         public BitmapDescriptor resizeMapIcons(int iconName, int width, int height)
@@ -122,14 +134,14 @@ namespace PinBuster.Droid
             map.InfoWindowClick += OnInfoWindowClick;
             map.SetInfoWindowAdapter(this);
 
-           // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
+            // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
+
 
             foreach (var pin in App.Locator.Map.Pins)
             {
                 positionPin(pin);
             }
         }
-
         void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
             var customPin = GetCustomPin(e.Marker);
@@ -268,5 +280,16 @@ namespace PinBuster.Droid
             }
             return null;
         }
+
+        void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Switch");
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (Marker m in markers)
+                if (m.Position.Latitude == temp.Latitude && m.Position.Longitude == temp.Longitude && m.Snippet == temp.Conteudo)
+                    m.Visible = temp.Show;
+        }
+
     }
 }

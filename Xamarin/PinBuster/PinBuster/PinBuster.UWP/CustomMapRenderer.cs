@@ -15,6 +15,7 @@ using Windows.Storage.Streams;
 using System.Collections.Specialized;
 using System.Collections;
 using PinBuster.Pages;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
@@ -25,6 +26,7 @@ namespace PinBuster.UWP
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
         RandomAccessStreamReference image;
+        List<MapIcon> markers = new List<MapIcon>();
 
         public List<Models.Pin> customPins;
 
@@ -50,15 +52,12 @@ namespace PinBuster.UWP
                 nativeMap.MapElementClick += OnMapElementClick;
                 image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin.png"));
 
-
                 foreach (var pin in PinBuster.App.Locator.Map.Pins)
                 {
-                    System.Diagnostics.Debug.WriteLine("entrei2s");
                     positionPin(pin);
                 }
 
                 PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
-
             }
         }
 
@@ -82,6 +81,11 @@ namespace PinBuster.UWP
                 case NotifyCollectionChangedAction.Move:
                     break;
                 case NotifyCollectionChangedAction.Remove:
+                    System.Diagnostics.Debug.WriteLine("Pin removido");
+                    foreach (Models.Pin pin in e.NewItems)
+                    {
+                        pin.PropertyChanged -= this.OnItemPropertyChanged;
+                    }
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     break;
@@ -89,6 +93,7 @@ namespace PinBuster.UWP
                     break;
                 default:
                     break;
+
             }
         }
 
@@ -96,7 +101,7 @@ namespace PinBuster.UWP
         {
             var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
             var snPoint = new Geopoint(snPosition);
-
+            
             var mapIcon = new MapIcon();
             mapIcon.Image = image;
             mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
@@ -104,7 +109,6 @@ namespace PinBuster.UWP
             mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
 
             nativeMap.MapElements.Add(mapIcon);
-            
 
             var pinToAdd = (new Pin
             {
@@ -115,6 +119,8 @@ namespace PinBuster.UWP
             });
             pin.ActualPin = pinToAdd;
             customPins.Add(pin);
+
+            pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)
@@ -164,6 +170,20 @@ namespace PinBuster.UWP
             }
             return null;
         }
+
+        void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Switch");
+
+
+            System.Diagnostics.Debug.WriteLine("Numero de elementos: " + this.nativeMap.MapElements.Count());
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (MapIcon m in markers)
+                if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
+                    m.Visible = temp.Show;
+        }
+
     }
 }
 
