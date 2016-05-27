@@ -14,6 +14,8 @@ using PinBuster.Pages;
 using System.Collections.Specialized;
 using Android.Graphics;
 using System.Net;
+using Android.Support.Design.Widget;
+using Android.Views;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -25,9 +27,10 @@ namespace PinBuster.Droid
         BitmapDescriptor imageNormal, imageSecret, imageAchiv, imageReview;
         Android.Views.View view;
         Android.Views.LayoutInflater inflater;
+        Snackbar snackBar;
         bool infoClicked;
 
-        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e)
+        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
             base.OnElementChanged(e);
 
@@ -119,6 +122,8 @@ namespace PinBuster.Droid
             map.InfoWindowClick += OnInfoWindowClick;
             map.SetInfoWindowAdapter(this);
 
+           // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
+
             foreach (var pin in App.Locator.Map.Pins)
             {
                 positionPin(pin);
@@ -179,7 +184,6 @@ namespace PinBuster.Droid
                 var infoContent = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
                 if (customPin.Nome == infoTitle.Text && infoContent.Text == customPin.Data)
                 {
-                    System.Diagnostics.Debug.WriteLine("Mesmo pin");
                     return view;
                 }
             }
@@ -218,13 +222,17 @@ namespace PinBuster.Droid
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Nao podes ver");
+                    //snackBar.Show();
                     return null;
                 }
             }
             return null;
         }
 
+        private void snackListener(Android.Views.View obj)
+        {
+            snackBar.Dismiss();
+        }
 
         private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
         {
