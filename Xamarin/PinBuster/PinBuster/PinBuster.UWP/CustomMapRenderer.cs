@@ -15,6 +15,7 @@ using Windows.Storage.Streams;
 using System.Collections.Specialized;
 using System.Collections;
 using PinBuster.Pages;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
@@ -24,7 +25,7 @@ namespace PinBuster.UWP
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
-
+        List<MapIcon> markers = new List<MapIcon>();
         public List<Models.Pin> customPins;
 
         protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
@@ -50,7 +51,6 @@ namespace PinBuster.UWP
 
                 PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler
                 (PinsChangedMethod);
-                nativeMap.MapElements.Clear();
 
             }
         }
@@ -63,10 +63,12 @@ namespace PinBuster.UWP
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
+
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 
-                    foreach (Models.Pin pin in e.NewItems)
+                
+                foreach (Models.Pin pin in e.NewItems)
                     {
                     System.Diagnostics.Debug.WriteLine("Entrei");
                         var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
@@ -77,10 +79,13 @@ namespace PinBuster.UWP
                         mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
                         mapIcon.Location = snPoint;
                         mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
+                    mapIcon.Visible = true;
 
-                        nativeMap.MapElements.Add(mapIcon);
+                     nativeMap.MapElements.Add(mapIcon);
+                    
 
-                        var pinToAdd = (new Pin
+
+                    var pinToAdd = (new Pin
                         {
                             Position = new Position(pin.Latitude, pin.Longitude),
                             Address = pin.Conteudo,
@@ -89,7 +94,8 @@ namespace PinBuster.UWP
                         });                        
                         pin.ActualPin = pinToAdd;
                         customPins.Add(pin);
-                    }
+                    pin.PropertyChanged += this.OnItemPropertyChanged;
+                }
                     
             }
 
@@ -99,6 +105,11 @@ namespace PinBuster.UWP
 
             if (e.Action == NotifyCollectionChangedAction.Remove)
             {
+                System.Diagnostics.Debug.WriteLine("Pin removido");
+                foreach (Models.Pin pin in e.NewItems)
+                {
+                    pin.PropertyChanged -= this.OnItemPropertyChanged;
+                }
             }
 
             if (e.Action == NotifyCollectionChangedAction.Move)
@@ -153,6 +164,20 @@ namespace PinBuster.UWP
             }
             return null;
         }
+
+        void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Switch");
+
+
+            System.Diagnostics.Debug.WriteLine("Numero de elementos: "+ this.nativeMap.MapElements.Count());
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (MapIcon m in markers)
+                if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
+                    m.Visible = temp.Show;
+        }
+        
     }
 }
 

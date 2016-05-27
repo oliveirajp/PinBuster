@@ -182,7 +182,7 @@ namespace PinBuster.Droid
 
         void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("asdasidjaisdjsaijdsijdaisjdiadjs");
+            System.Diagnostics.Debug.WriteLine("Switch");
 
             Models.Pin temp = (Models.Pin)sender;
             foreach (Marker m in markers)
