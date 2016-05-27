@@ -92,11 +92,11 @@ namespace PinBuster
         {
             
             loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
             {
                 lat = e.lat;
                 lng = e.lng;
-                Locator.Map.LoadPins();
+                await Locator.Map.LoadPins();
             };
             loc.IGetCurrentPosition();
 
