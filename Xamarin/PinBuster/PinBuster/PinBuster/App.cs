@@ -107,7 +107,7 @@ namespace PinBuster
         {
             
             loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            loc.locationObtained +=  (object sender, ILocationEventArgs e) =>
             {
                 lat = e.lat;
                 lng = e.lng;
@@ -129,8 +129,6 @@ namespace PinBuster
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
             }
-          //  Debug.WriteLine("user id after saving:" + userID);
-
 
             if (userID == null)
             {

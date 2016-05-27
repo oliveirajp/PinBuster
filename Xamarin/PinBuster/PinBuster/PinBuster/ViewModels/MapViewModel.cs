@@ -39,16 +39,25 @@ namespace PinBuster.ViewModels
                     if (pins.Count > 0)
                         foreach (var pin in pins)
                         {
-                            if (!Pins.Contains(pin))
+                            if (pin.Categoria == "Secret")
+                            {
+                                if (pin.Visivel == 1)
+                                {
+                                    if (!Pins.Contains(pin))
+                                        Pins.Add(pin);
+                                }
+                            }
+                            else if (!Pins.Contains(pin))
                                 Pins.Add(pin);
+
+                            //await Task.Delay(500);
                         }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@@@@@@ERROR {0}", ex.Message);
                 }
-
-            System.Diagnostics.Debug.WriteLine(Pins.Count);
+           
         }
     }
 }

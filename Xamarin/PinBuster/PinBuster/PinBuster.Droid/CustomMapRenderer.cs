@@ -13,6 +13,9 @@ using Xamarin.Forms.Maps.Android;
 using PinBuster.Pages;
 using System.Collections.Specialized;
 using Android.Graphics;
+using System.Net;
+using Android.Support.Design.Widget;
+using Android.Views;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -21,9 +24,14 @@ namespace PinBuster.Droid
     {
         GoogleMap map;
         List<Models.Pin> customPins;
-        bool isDrawn;
+        BitmapDescriptor imageNormal, imageSecret, imageAchiv, imageReview;
+        Android.Views.View view;
+        Android.Views.LayoutInflater inflater;
+        Snackbar snackBar;
+        bool infoClicked;
+        List<Marker> markers = new List<Marker>();
 
-        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e)
+        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
             base.OnElementChanged(e);
 
@@ -37,7 +45,12 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+                
                 ((MapView)Control).GetMapAsync(this);
+                imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
+                imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
+                imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
+                infoClicked = false;
             }
         }
 
@@ -49,38 +62,70 @@ namespace PinBuster.Droid
 
                 foreach (Models.Pin pin in e.NewItems)
                 {
-                    var marker = new MarkerOptions();
-                    marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
-                    marker.SetTitle(pin.Categoria);
-                    marker.SetSnippet(pin.Conteudo);
-                    marker.SetIcon(resizeMapIcons(Resource.Drawable.pin,100,100));
-
-                    map.AddMarker(marker);
-                    var pinToAdd = (new Pin
-                    {
-                        Position = new Position(pin.Latitude, pin.Longitude),
-                        Address = pin.Conteudo,
-                        Label = pin.Nome,
-                        Type = PinType.Place
-                    });
-                    pin.ActualPin = pinToAdd;
-                    customPins.Add(pin);
+                    positionPin(pin);
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 System.Diagnostics.Debug.WriteLine("Pin removido");
+                foreach (Models.Pin pin in e.NewItems)
+                {
+                    pin.PropertyChanged -= this.OnItemPropertyChanged;
+                }
             }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("EVENT");
+            }
+        }
+
+        private void positionPin(Models.Pin pin)
+        {
+            var marker = new MarkerOptions();
+            marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
+            if (pin.Visivel == 1)
+            {
+                marker.SetTitle(pin.Categoria);
+                marker.SetSnippet(pin.Conteudo);
+            }
+
+            switch (pin.Categoria)
+            {
+                case "Secret":
+                    marker.SetIcon(imageSecret);
+                    break;
+                case "Normal":
+                    marker.SetIcon(imageNormal);
+                    break;
+                case "Review":
+                    marker.SetIcon(imageReview);
+                    break;
+                default:
+                    marker.SetIcon(imageNormal);
+                    break;
+            }
+            Marker mr = map.AddMarker(marker);
+            markers.Add(mr);
+            var pinToAdd = (new Pin
+            {
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Address = pin.Conteudo,
+                Label = pin.Nome,
+                Type = PinType.Place
+            });
+            pin.ActualPin = pinToAdd;
+            customPins.Add(pin);
+            pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
         public BitmapDescriptor resizeMapIcons(int iconName, int width, int height)
         {
-            Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, iconName); 
+            Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, iconName);
             Bitmap resizedBitmap = Bitmap.CreateScaledBitmap(imageBitmap, width, height, false);
 
             BitmapDescriptor icon = BitmapDescriptorFactory.FromBitmap(resizedBitmap);
 
-            return icon;   
+            return icon;
         }
 
         public void OnMapReady(GoogleMap googleMap)
@@ -89,15 +134,13 @@ namespace PinBuster.Droid
             map.InfoWindowClick += OnInfoWindowClick;
 
             map.SetInfoWindowAdapter(this);
-        }
 
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-            base.OnLayout(changed, l, t, r, b);
+            // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
 
-            if (changed)
+
+            foreach (var pin in App.Locator.Map.Pins)
             {
-                isDrawn = false;
+                positionPin(pin);
             }
         }
 
@@ -107,44 +150,79 @@ namespace PinBuster.Droid
             await App.NavigateToEditPost(pin);
         }
 
-
+        
         public Android.Views.View GetInfoContents(Marker marker)
         {
-            var inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
+            var customPin = GetCustomPin(marker);
+            if (infoClicked)
+            {
+                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                var infoContent = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+                if (customPin.Nome == infoTitle.Text && infoContent.Text == customPin.Data)
+                {
+                    return view;
+                }
+            }
+
+            inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
             if (inflater != null)
             {
-                Android.Views.View view;
-
-                var customPin = GetCustomPin(marker);
+                
                 if (customPin == null)
                 {
                     throw new Exception("Custom pin not found");
                 }
-
-                if (customPin.Categoria == "Xamarin")
-                {
-                    view = inflater.Inflate(Resource.Layout.XamarinMapInfoWindow, null);
-                }
-                else if (customPin.Visivel == 1)
+                infoClicked = false;
+                if (customPin.Visivel == 1)
                 {
                     view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+                    var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                    var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+                    var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
+
+                    if (infoTitle != null)
+                    {
+                        infoTitle.Text = marker.Title;
+                    }
+                    if (infoSubtitle != null)
+                    {
+                        infoSubtitle.Text = marker.Snippet;
+                    }
+                    if (image != null)
+                    {
+                        Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem, 120, 120);
+                        image.SetImageBitmap(imageBitmap);
+                    }
+
+                    return view;
                 }
                 else
+                {
+                    //snackBar.Show();
                     return null;
-
-                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
-                var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
-
-                if (infoTitle != null)
-                {
-                    infoTitle.Text = marker.Title;
                 }
-                if (infoSubtitle != null)
-                {
-                    infoSubtitle.Text = marker.Snippet;
-                }
+            }
+            return null;
+        }
 
-                return view;
+        private void snackListener(Android.Views.View obj)
+        {
+            snackBar.Dismiss();
+        }
+
+        private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
+        {
+            String[] parsed = imagem.Split('?');
+            string img = parsed[0] + "?width=" + width + "&height=" + height;
+
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] bytes = webClient.DownloadData(img);
+                if (bytes != null && bytes.Length > 0)
+                {
+                    Bitmap bm = BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length);
+                    return Bitmap.CreateScaledBitmap(bm, width, height, false);
+                }
             }
             return null;
         }
@@ -166,5 +244,16 @@ namespace PinBuster.Droid
             }
             return null;
         }
+
+        void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Switch");
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (Marker m in markers)
+                if (m.Position.Latitude == temp.Latitude && m.Position.Longitude == temp.Longitude && m.Snippet == temp.Conteudo)
+                    m.Visible = temp.Show;
+        }
+
     }
 }

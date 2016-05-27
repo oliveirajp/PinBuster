@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace PinBuster.Models
 {
-    public class Pin : IEquatable<Pin>
+    public class Pin : IEquatable<Pin> , INotifyPropertyChanged
     {
         public Xamarin.Forms.Maps.Pin ActualPin { get; set; }
             
@@ -55,6 +56,19 @@ namespace PinBuster.Models
             set
             {
                 visivel = value;
+            }
+        }
+        bool show = true;
+        public bool Show {
+
+            get
+            {
+                return show;
+            }
+            set
+            {
+                show = value;
+                NotifyPropertyChanged("SHOW");
             }
         }
 
@@ -163,6 +177,16 @@ namespace PinBuster.Models
         }
 
         string imagem;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
         public string Imagem
         {
             get
