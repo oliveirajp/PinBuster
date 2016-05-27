@@ -15,11 +15,12 @@ namespace PinBuster.Pages
         {
             var layout = new RelativeLayout();
 
+     
             var picture = new Image()
             {
-                Aspect = Aspect.AspectFit,
                 Source = temp_Item.Imagem
             };
+
 
             var name = new Label()
             {
@@ -98,9 +99,13 @@ namespace PinBuster.Pages
                     return parent.Height;
                 })
             );
-            
 
-            Content = layout;
+            ScrollView scrollView = new ScrollView()
+            {
+                Content = layout
+            };
+
+            Content = scrollView;
         }
 
         async void OnDismissButtonClicked(object sender, EventArgs args)
