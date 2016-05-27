@@ -14,8 +14,9 @@ using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
 using System.Collections.Specialized;
 using System.Collections;
-using PinBuster.Pages;
+using Windows.System;
 using System.ComponentModel;
+using PinBuster.Pages;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
@@ -27,6 +28,8 @@ namespace PinBuster.UWP
         bool xamarinOverlayShown = false;
         RandomAccessStreamReference image;
         List<MapIcon> markers = new List<MapIcon>();
+
+        Models.Pin selectedPin;
 
         public List<Models.Pin> customPins;
 
@@ -123,6 +126,8 @@ namespace PinBuster.UWP
             pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
+      
+
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)
         {
             var mapIcon = args.MapElements.FirstOrDefault(x => x is MapIcon) as MapIcon;
@@ -140,6 +145,7 @@ namespace PinBuster.UWP
                     mapOverlay = new XamarinMapOverlay(customPin);
                     mapOverlay.Tapped += MapOverlay_Tapped;
 
+                    selectedPin = customPin;
 
                     var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
                     var snPoint = new Geopoint(snPosition);
@@ -170,7 +176,7 @@ namespace PinBuster.UWP
             }
             return null;
         }
-
+        
         void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Switch");
@@ -183,7 +189,7 @@ namespace PinBuster.UWP
                 if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
                     m.Visible = temp.Show;
         }
-
+        
     }
 }
 

@@ -132,6 +132,7 @@ namespace PinBuster.Droid
         {
             map = googleMap;
             map.InfoWindowClick += OnInfoWindowClick;
+
             map.SetInfoWindowAdapter(this);
 
             // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
@@ -142,51 +143,14 @@ namespace PinBuster.Droid
                 positionPin(pin);
             }
         }
-        void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+
+        async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
-            var customPin = GetCustomPin(e.Marker);
-
-
-            var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
-            var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
-            var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
-
-            if (image != null)
-            {
-                Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem, 120, 120);
-                image.SetImageBitmap(imageBitmap);
-            }
-
-            if (!infoClicked)
-            {
-                if (infoTitle != null)
-                {
-                    infoTitle.Text = customPin.Nome;
-                }
-                if (infoSubtitle != null)
-                {
-                    infoSubtitle.Text = customPin.Data;
-                }
-                infoClicked = true;
-            }
-            else
-            {
-                if (infoTitle != null)
-                {
-                    infoTitle.Text = customPin.Categoria;
-                }
-                if (infoSubtitle != null)
-                {
-                    infoSubtitle.Text = customPin.Conteudo;
-                }
-                infoClicked = false;
-            }
-            e.Marker.HideInfoWindow();
-            e.Marker.ShowInfoWindow();
+            var pin = GetCustomPin(e.Marker);
+            await App.NavigateToEditPost(pin);
         }
 
-
-
+        
         public Android.Views.View GetInfoContents(Marker marker)
         {
             var customPin = GetCustomPin(marker);

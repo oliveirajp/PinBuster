@@ -22,7 +22,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Tapped="OnEditButtonTapped" Content="Edit" />
+            <Button Tapped="OnInfoButtonTapped" Content="Edit" />
         </StackPanel>
     </StackPanel>
 </UserControl>
