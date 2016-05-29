@@ -40,7 +40,7 @@ namespace PinBuster
         {
 
 
-            var uri = new Uri(string.Format("http://pinbusterapitest.azurewebsites.net/api/utilizador/" + id, string.Empty));
+            var uri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
 
             try
             {
@@ -226,7 +226,7 @@ namespace PinBuster
                 
                                     using (var client = new System.Net.Http.HttpClient())
                                     {
-                                        client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
+                                        client.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
                                         var content = new System.Net.Http.FormUrlEncodedContent(postData);
                                         var result2 = client.PostAsync("api/follow", content).Result;
                                         string resultContent = result2.Content.ReadAsStringAsync().Result;

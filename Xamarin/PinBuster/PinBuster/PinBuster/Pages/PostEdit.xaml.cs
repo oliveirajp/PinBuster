@@ -98,7 +98,7 @@ namespace PinBuster.Pages
 
             using (var client = new System.Net.Http.HttpClient())
             {
-                client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
+                client.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
                 var content = new System.Net.Http.FormUrlEncodedContent(updateData);
 
 
