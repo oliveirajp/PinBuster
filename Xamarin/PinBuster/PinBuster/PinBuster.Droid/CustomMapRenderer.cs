@@ -16,6 +16,7 @@ using Android.Graphics;
 using System.Net;
 using Android.Support.Design.Widget;
 using Android.Views;
+using Android.App;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -27,7 +28,7 @@ namespace PinBuster.Droid
         BitmapDescriptor imageNormal, imageSecret, imageAchiv, imageReview;
         Android.Views.View view;
         Android.Views.LayoutInflater inflater;
-        Snackbar snackBar;
+        AlertDialog alertDialog;
         bool infoClicked;
         List<Marker> markers = new List<Marker>();
 
@@ -134,8 +135,10 @@ namespace PinBuster.Droid
             map.InfoWindowClick += OnInfoWindowClick;
             map.SetInfoWindowAdapter(this);
 
-            // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
 
+            alertDialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context).Create();
+            alertDialog.SetTitle("Warning");
+            alertDialog.SetMessage("Get closer to read the pin!");
 
             foreach (var pin in App.Locator.Map.Pins)
             {
@@ -190,7 +193,7 @@ namespace PinBuster.Droid
         public Android.Views.View GetInfoContents(Marker marker)
         {
             var customPin = GetCustomPin(marker);
-            if (infoClicked)
+            if (infoClicked && customPin.Visivel == 1)
             {
                 var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
                 var infoContent = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
@@ -234,17 +237,13 @@ namespace PinBuster.Droid
                 }
                 else
                 {
-                    //snackBar.Show();
+                    alertDialog.Show();
                     return null;
                 }
             }
             return null;
         }
-
-        private void snackListener(Android.Views.View obj)
-        {
-            snackBar.Dismiss();
-        }
+        
 
         private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
         {
