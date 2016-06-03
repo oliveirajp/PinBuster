@@ -1,0 +1,23 @@
+html
+  head
+    title=title
+    link(href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel='stylesheet')
+  body
+    div.container
+        h1 New Exploration Pin
+        if message && message.length > 0
+          .alert.alert-success #{message}
+        form(action='/api/admin', method='POST')
+          div.form-group
+            input.form-control(name="name",placeholder="Name")
+          div.form-group
+            input.form-control(name="city",placeholder="City")
+          div.form-group
+            input.form-control(name="longitude",placeholder="Longitude")
+          div.form-group
+            input.form-control(name="latitude",placeholder="Latitude")
+          div.form-group
+            input.form-control(name="raio",placeholder="Raio")
+          button.btn.btn-default(type="submit") Submit
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
