@@ -38,8 +38,6 @@ namespace PinBuster.Pages
         {
 
             BindingContext = App.Locator.Map;
-
-            //App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
             
             map = new CustomMap
             {
@@ -134,7 +132,7 @@ namespace PinBuster.Pages
                 return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
             }), Constraint.RelativeToParent((parent) =>
             {
-                return parent.Y * 0.95 + 3*App.screenHeight / 4;
+                return parent.Y * 0.95 + parent.Height * 0.9;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Width * 0.5;
@@ -144,8 +142,6 @@ namespace PinBuster.Pages
             }));
 
             map.PropertyChanged += SpanChanged;
-
-
 
             //Normal
             Switch switcherAll = new Switch

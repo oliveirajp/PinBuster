@@ -17,6 +17,7 @@ using System.Net;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.App;
+using static Android.Gms.Maps.GoogleMap;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -30,6 +31,7 @@ namespace PinBuster.Droid
         Android.Views.LayoutInflater inflater;
         AlertDialog alertDialog;
         bool infoClicked;
+        float maxZoom = 2;
         List<Marker> markers = new List<Marker>();
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
@@ -39,6 +41,7 @@ namespace PinBuster.Droid
             if (e.OldElement != null)
             {
                 map.InfoWindowClick -= OnInfoWindowClick;
+                //map.CameraChange -= Map_CameraChange;
             }
 
             if (e.NewElement != null)
@@ -46,13 +49,19 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
-                
+
                 ((MapView)Control).GetMapAsync(this);
                 imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
                 imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
                 imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
                 infoClicked = false;
             }
+        }
+
+        private void Map_CameraChange(object sender, GoogleMap.CameraChangeEventArgs e)
+        {
+            if (e.Position.Zoom > maxZoom)
+                map.AnimateCamera(CameraUpdateFactory.ZoomTo(maxZoom));
         }
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -133,18 +142,33 @@ namespace PinBuster.Droid
         {
             map = googleMap;
             map.InfoWindowClick += OnInfoWindowClick;
+
+            //map.CameraChange += Map_CameraChange;
             map.SetInfoWindowAdapter(this);
-
-
-            alertDialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context).Create();
-            alertDialog.SetTitle("Warning");
-            alertDialog.SetMessage("Get closer to read the pin!");
+            
+            AlertDialog.Builder alertDialogB = new AlertDialog.Builder(Xamarin.Forms.Forms.Context);
+            alertDialogB.SetTitle("Warning");
+            alertDialogB.SetMessage("Get closer to read the pin!");
+            alertDialogB.SetPositiveButton("Ok", myEventHandler);
+            alertDialog = alertDialogB.Create();
+            //map.SetOnMyLocationButtonClickListener(onPositionClick());
 
             foreach (var pin in App.Locator.Map.Pins)
             {
                 positionPin(pin);
             }
         }
+
+        void onPositionClick(object sender, GoogleMap.MyLocationButtonClickEventArgs e)
+        {
+
+        }
+
+        private void myEventHandler(object sender, DialogClickEventArgs e)
+        {
+            alertDialog.Hide();
+        }
+
         void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
             var customPin = GetCustomPin(e.Marker);
@@ -206,7 +230,7 @@ namespace PinBuster.Droid
             inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
             if (inflater != null)
             {
-                
+
                 if (customPin == null)
                 {
                     throw new Exception("Custom pin not found");
@@ -243,7 +267,7 @@ namespace PinBuster.Droid
             }
             return null;
         }
-        
+
 
         private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
         {
