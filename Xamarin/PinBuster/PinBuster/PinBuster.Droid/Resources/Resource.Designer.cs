@@ -2120,37 +2120,49 @@ namespace PinBuster.Droid
 			public const int design_snackbar_background = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int icon = 2130837623;
+			public const int hamburger = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int info = 2130837624;
-			
-			// aapt resource value: 0x7f020081
-			public const int notification_template_icon_bg = 2130837633;
+			public const int icon = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int perfil = 2130837625;
+			public const int icon_l = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int pin_achievements = 2130837626;
+			public const int icon_p = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int pin_normal = 2130837627;
+			public const int icon_sc = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int pin_review = 2130837628;
+			public const int info = 2130837628;
+			
+			// aapt resource value: 0x7f020085
+			public const int notification_template_icon_bg = 2130837637;
 			
 			// aapt resource value: 0x7f02007d
-			public const int pin_secreto = 2130837629;
+			public const int perfil = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int search = 2130837630;
+			public const int pin_achievements = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int vista_lista = 2130837631;
+			public const int pin_normal = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int vista_mapa = 2130837632;
+			public const int pin_review = 2130837632;
+			
+			// aapt resource value: 0x7f020081
+			public const int pin_secreto = 2130837633;
+			
+			// aapt resource value: 0x7f020082
+			public const int search = 2130837634;
+			
+			// aapt resource value: 0x7f020083
+			public const int vista_lista = 2130837635;
+			
+			// aapt resource value: 0x7f020084
+			public const int vista_mapa = 2130837636;
 			
 			static Drawable()
 			{
@@ -2165,23 +2177,26 @@ namespace PinBuster.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f090081
-			public const int EditPinButton = 2131296385;
-			
-			// aapt resource value: 0x7f09007d
-			public const int InfoWindowButton = 2131296381;
-			
-			// aapt resource value: 0x7f090080
-			public const int InfoWindowSubtitle = 2131296384;
-			
-			// aapt resource value: 0x7f09007f
-			public const int InfoWindowTitle = 2131296383;
+			// aapt resource value: 0x7f090082
+			public const int EditPinButton = 2131296386;
 			
 			// aapt resource value: 0x7f09007e
-			public const int UserImage = 2131296382;
+			public const int InfoWindowButton = 2131296382;
 			
-			// aapt resource value: 0x7f090082
-			public const int action0 = 2131296386;
+			// aapt resource value: 0x7f090081
+			public const int InfoWindowSubtitle = 2131296385;
+			
+			// aapt resource value: 0x7f090080
+			public const int InfoWindowTitle = 2131296384;
+			
+			// aapt resource value: 0x7f09007f
+			public const int UserImage = 2131296383;
+			
+			// aapt resource value: 0x7f090074
+			public const int ab_icon = 2131296372;
+			
+			// aapt resource value: 0x7f090083
+			public const int action0 = 2131296387;
 			
 			// aapt resource value: 0x7f090065
 			public const int action_bar = 2131296357;
@@ -2207,8 +2222,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f090066
 			public const int action_context_bar = 2131296358;
 			
-			// aapt resource value: 0x7f090086
-			public const int action_divider = 2131296390;
+			// aapt resource value: 0x7f090087
+			public const int action_divider = 2131296391;
 			
 			// aapt resource value: 0x7f090003
 			public const int action_menu_divider = 2131296259;
@@ -2252,8 +2267,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09004f
 			public const int buttonPanel = 2131296335;
 			
-			// aapt resource value: 0x7f090083
-			public const int cancel_action = 2131296387;
+			// aapt resource value: 0x7f090084
+			public const int cancel_action = 2131296388;
 			
 			// aapt resource value: 0x7f090036
 			public const int center = 2131296310;
@@ -2267,8 +2282,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09005d
 			public const int checkbox = 2131296349;
 			
-			// aapt resource value: 0x7f090089
-			public const int chronometer = 2131296393;
+			// aapt resource value: 0x7f09008a
+			public const int chronometer = 2131296394;
 			
 			// aapt resource value: 0x7f09003e
 			public const int clip_horizontal = 2131296318;
@@ -2297,20 +2312,20 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09004b
 			public const int default_activity_button = 2131296331;
 			
-			// aapt resource value: 0x7f090075
-			public const int design_bottom_sheet = 2131296373;
+			// aapt resource value: 0x7f090076
+			public const int design_bottom_sheet = 2131296374;
+			
+			// aapt resource value: 0x7f09007d
+			public const int design_menu_item_action_area = 2131296381;
 			
 			// aapt resource value: 0x7f09007c
-			public const int design_menu_item_action_area = 2131296380;
+			public const int design_menu_item_action_area_stub = 2131296380;
 			
 			// aapt resource value: 0x7f09007b
-			public const int design_menu_item_action_area_stub = 2131296379;
+			public const int design_menu_item_text = 2131296379;
 			
 			// aapt resource value: 0x7f09007a
-			public const int design_menu_item_text = 2131296378;
-			
-			// aapt resource value: 0x7f090079
-			public const int design_navigation_view = 2131296377;
+			public const int design_navigation_view = 2131296378;
 			
 			// aapt resource value: 0x7f09001a
 			public const int disableHome = 2131296282;
@@ -2321,8 +2336,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f090027
 			public const int end = 2131296295;
 			
-			// aapt resource value: 0x7f09008e
-			public const int end_padder = 2131296398;
+			// aapt resource value: 0x7f09008f
+			public const int end_padder = 2131296399;
 			
 			// aapt resource value: 0x7f09002e
 			public const int enterAlways = 2131296302;
@@ -2372,8 +2387,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09004a
 			public const int image = 2131296330;
 			
-			// aapt resource value: 0x7f09008d
-			public const int info = 2131296397;
+			// aapt resource value: 0x7f09008e
+			public const int info = 2131296398;
 			
 			// aapt resource value: 0x7f090000
 			public const int item_touch_helper_previous_elevation = 2131296256;
@@ -2384,11 +2399,11 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f090017
 			public const int light = 2131296279;
 			
-			// aapt resource value: 0x7f090087
-			public const int line1 = 2131296391;
+			// aapt resource value: 0x7f090088
+			public const int line1 = 2131296392;
 			
-			// aapt resource value: 0x7f09008b
-			public const int line3 = 2131296395;
+			// aapt resource value: 0x7f09008c
+			public const int line3 = 2131296396;
 			
 			// aapt resource value: 0x7f090018
 			public const int listMode = 2131296280;
@@ -2396,8 +2411,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09004c
 			public const int list_item = 2131296332;
 			
-			// aapt resource value: 0x7f090085
-			public const int media_actions = 2131296389;
+			// aapt resource value: 0x7f090086
+			public const int media_actions = 2131296390;
 			
 			// aapt resource value: 0x7f090028
 			public const int middle = 2131296296;
@@ -2408,8 +2423,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f090021
 			public const int multiply = 2131296289;
 			
-			// aapt resource value: 0x7f090078
-			public const int navigation_header_container = 2131296376;
+			// aapt resource value: 0x7f090079
+			public const int navigation_header_container = 2131296377;
 			
 			// aapt resource value: 0x7f09002c
 			public const int never = 2131296300;
@@ -2507,11 +2522,11 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09001e
 			public const int showTitle = 2131296286;
 			
-			// aapt resource value: 0x7f090077
-			public const int snackbar_action = 2131296375;
+			// aapt resource value: 0x7f090078
+			public const int snackbar_action = 2131296376;
 			
-			// aapt resource value: 0x7f090076
-			public const int snackbar_text = 2131296374;
+			// aapt resource value: 0x7f090077
+			public const int snackbar_text = 2131296375;
 			
 			// aapt resource value: 0x7f090032
 			public const int snap = 2131296306;
@@ -2537,8 +2552,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09003c
 			public const int start = 2131296316;
 			
-			// aapt resource value: 0x7f090084
-			public const int status_bar_latest_event_content = 2131296388;
+			// aapt resource value: 0x7f090085
+			public const int status_bar_latest_event_content = 2131296389;
 			
 			// aapt resource value: 0x7f090070
 			public const int submit_area = 2131296368;
@@ -2549,17 +2564,17 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f09000f
 			public const int terrain = 2131296271;
 			
-			// aapt resource value: 0x7f09008c
-			public const int text = 2131296396;
+			// aapt resource value: 0x7f09008d
+			public const int text = 2131296397;
 			
-			// aapt resource value: 0x7f09008a
-			public const int text2 = 2131296394;
+			// aapt resource value: 0x7f09008b
+			public const int text2 = 2131296395;
 			
 			// aapt resource value: 0x7f090058
 			public const int textSpacerNoButtons = 2131296344;
 			
-			// aapt resource value: 0x7f090088
-			public const int time = 2131296392;
+			// aapt resource value: 0x7f090089
+			public const int time = 2131296393;
 			
 			// aapt resource value: 0x7f09004e
 			public const int title = 2131296334;
@@ -2573,8 +2588,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f090052
 			public const int topPanel = 2131296338;
 			
-			// aapt resource value: 0x7f090074
-			public const int touch_outside = 2131296372;
+			// aapt resource value: 0x7f090075
+			public const int touch_outside = 2131296373;
 			
 			// aapt resource value: 0x7f090009
 			public const int up = 2131296265;
@@ -2720,79 +2735,82 @@ namespace PinBuster.Droid
 			public const int abc_select_dialog_material = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int design_bottom_sheet_dialog = 2130903065;
+			public const int ActionBar = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
-			public const int design_layout_snackbar = 2130903066;
+			public const int design_bottom_sheet_dialog = 2130903066;
 			
 			// aapt resource value: 0x7f03001b
-			public const int design_layout_snackbar_include = 2130903067;
+			public const int design_layout_snackbar = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int design_layout_tab_icon = 2130903068;
+			public const int design_layout_snackbar_include = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
-			public const int design_layout_tab_text = 2130903069;
+			public const int design_layout_tab_icon = 2130903069;
 			
 			// aapt resource value: 0x7f03001e
-			public const int design_menu_item_action_area = 2130903070;
+			public const int design_layout_tab_text = 2130903070;
 			
 			// aapt resource value: 0x7f03001f
-			public const int design_navigation_item = 2130903071;
+			public const int design_menu_item_action_area = 2130903071;
 			
 			// aapt resource value: 0x7f030020
-			public const int design_navigation_item_header = 2130903072;
+			public const int design_navigation_item = 2130903072;
 			
 			// aapt resource value: 0x7f030021
-			public const int design_navigation_item_separator = 2130903073;
+			public const int design_navigation_item_header = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int design_navigation_item_subheader = 2130903074;
+			public const int design_navigation_item_separator = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int design_navigation_menu = 2130903075;
+			public const int design_navigation_item_subheader = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int design_navigation_menu_item = 2130903076;
+			public const int design_navigation_menu = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int MapInfoWindow = 2130903077;
+			public const int design_navigation_menu_item = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int notification_media_action = 2130903078;
+			public const int MapInfoWindow = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int notification_media_cancel_action = 2130903079;
+			public const int notification_media_action = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int notification_template_big_media = 2130903080;
+			public const int notification_media_cancel_action = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int notification_template_big_media_narrow = 2130903081;
+			public const int notification_template_big_media = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int notification_template_lines = 2130903082;
+			public const int notification_template_big_media_narrow = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int notification_template_media = 2130903083;
+			public const int notification_template_lines = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int notification_template_part_chronometer = 2130903084;
+			public const int notification_template_media = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int notification_template_part_time = 2130903085;
+			public const int notification_template_part_chronometer = 2130903085;
 			
 			// aapt resource value: 0x7f03002e
-			public const int select_dialog_item_material = 2130903086;
+			public const int notification_template_part_time = 2130903086;
 			
 			// aapt resource value: 0x7f03002f
-			public const int select_dialog_multichoice_material = 2130903087;
+			public const int select_dialog_item_material = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int select_dialog_singlechoice_material = 2130903088;
+			public const int select_dialog_multichoice_material = 2130903088;
 			
 			// aapt resource value: 0x7f030031
-			public const int support_simple_spinner_dropdown_item = 2130903089;
+			public const int select_dialog_singlechoice_material = 2130903089;
+			
+			// aapt resource value: 0x7f030032
+			public const int support_simple_spinner_dropdown_item = 2130903090;
 			
 			static Layout()
 			{

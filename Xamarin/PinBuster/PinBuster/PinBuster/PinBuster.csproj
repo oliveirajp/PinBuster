@@ -213,7 +213,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <AndroidResource Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="achievement-03.png" />

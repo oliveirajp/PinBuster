@@ -69,12 +69,7 @@ namespace PinBuster
             String userName = getCredentials.IGetCredentials()[1];
 
             await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
-
-           // IGetCurrentPosition loctemp;
-            //loctemp = DependencyService.Get<IGetCurrentPosition>();
-            //PinsManager = new PinsManager();
-
-            //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+            
         }
 
         public async static Task NavigateToApp()
@@ -105,14 +100,15 @@ namespace PinBuster
 
         public App()
         {
-            
+
+
             loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained +=  (object sender, ILocationEventArgs e) =>
-            {
-                lat = e.lat;
-                lng = e.lng;
-                Locator.Map.LoadPins();
-            };
+            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+           {
+               lat = e.lat;
+               lng = e.lng;
+               await Locator.Map.LoadPins();
+           };
             loc.IGetCurrentPosition();
 
             // The root page of your application

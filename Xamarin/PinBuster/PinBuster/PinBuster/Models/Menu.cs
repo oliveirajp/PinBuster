@@ -21,9 +21,16 @@ namespace PinBuster.Models
             set;
         }
 
-        public Menu(string name, Func<Page> pageFn)
+        public string Image
+        {
+            get;
+            set;
+        }
+
+        public Menu(string name, string image, Func<Page> pageFn)
         {
             Name = name;
+            Image = image;
             PageFn = pageFn;
         }
     }

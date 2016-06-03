@@ -48,7 +48,7 @@ namespace PinBuster.Pages
             };
             map.MoveToRegion(
             MapSpan.FromCenterAndRadius(
-                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
 
             update = true;
             isCentering = true;
@@ -59,6 +59,7 @@ namespace PinBuster.Pages
                  {
                      if (update)
                      {
+                         System.Diagnostics.Debug.WriteLine("Centrando");
                          isCentering = true;
                          Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
                          map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
@@ -317,7 +318,8 @@ namespace PinBuster.Pages
         private void OnRecenterClicked(object sender, EventArgs e)
         {
             update = isCentering = true;
-            
+            Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
             
             recenterBtn.IsVisible = false;

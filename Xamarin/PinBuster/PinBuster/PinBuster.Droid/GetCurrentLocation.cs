@@ -69,7 +69,7 @@ namespace PinBuster.Droid
 
             if (locationProvider != null)
             {
-                lm.RequestLocationUpdates(locationProvider, 10000, 30, this);
+                lm.RequestLocationUpdates(locationProvider, 10000, 2, this);
                 args = new LocationEventArgs();
             }
             else

@@ -151,7 +151,9 @@ namespace PinBuster.Droid
             alertDialogB.SetMessage("Get closer to read the pin!");
             alertDialogB.SetPositiveButton("Ok", myEventHandler);
             alertDialog = alertDialogB.Create();
-            //map.SetOnMyLocationButtonClickListener(onPositionClick());
+            
+            map.UiSettings.MyLocationButtonEnabled = false;
+            map.UiSettings.CompassEnabled = true;
 
             foreach (var pin in App.Locator.Map.Pins)
             {

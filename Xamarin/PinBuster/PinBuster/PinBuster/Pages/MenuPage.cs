@@ -22,14 +22,14 @@ namespace PinBuster.Pages
         public MenuPage()
         {
             Title = "Menu";
-
+            Icon = "hamburger.png";
             Padding = new Thickness(10, 20);
 
             var categories = new List<Menu>() {
-            new Menu("Pin list", () => App.listView),
-            new Menu("Map", () => App.mapPage),
-            new Menu("Profile", () => new UserPage()),
-            new Menu("Search", () => new SearchPage())
+            new Menu("Pin list","vista_lista.png", () => App.listView),
+            new Menu("Map","vista_mapa.png",() => App.mapPage),
+            new Menu("Profile","perfil.png", () => new UserPage()),
+            new Menu("Search","search.png", () => new SearchPage())
         };
 
             var dataTemplate = new DataTemplate(typeof(TextCell));
