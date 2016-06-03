@@ -13,7 +13,7 @@ namespace PinBuster.Data
     public class Utilities
     {
         HttpClient client;
-        static string url_base = "https://pinbusterapitest.azurewebsites.net/api/";
+        static string url_base = "https://pinbusterapi.azurewebsites.net/api/";
 
         public Utilities() {
             client = new HttpClient();

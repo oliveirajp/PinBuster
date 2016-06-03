@@ -211,7 +211,11 @@ namespace PinBuster.Droid
             e.Marker.HideInfoWindow();
             e.Marker.ShowInfoWindow();
         }
-
+        //async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        //{
+        //    var pin = GetCustomPin(e.Marker);
+        //    await App.NavigateToEditPost(pin);
+        //}
 
 
         public Android.Views.View GetInfoContents(Marker marker)

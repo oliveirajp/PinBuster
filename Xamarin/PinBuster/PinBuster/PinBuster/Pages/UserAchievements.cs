@@ -23,7 +23,7 @@ namespace PinBuster
 
         public async void getUserAchievements(int id)
         {
-            var achievementsUri = new Uri(string.Format("http://pinbusterapitest.azurewebsites.net/api/achievement/" + id, string.Empty));
+            var achievementsUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/achievement/" + id, string.Empty));
 
             try
             {

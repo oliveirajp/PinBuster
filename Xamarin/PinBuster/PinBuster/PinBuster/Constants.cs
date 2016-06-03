@@ -4,7 +4,7 @@ namespace PinBuster
 {
 	public static class Constants
 	{
-		public static string RestUrl = "http://pinbusterapitest.azurewebsites.net/api";
+		public static string RestUrl = "https://pinbusterapi.azurewebsites.net/api/";
 	}
 }
 

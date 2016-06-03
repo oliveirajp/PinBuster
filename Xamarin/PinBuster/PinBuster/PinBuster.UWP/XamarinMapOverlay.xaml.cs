@@ -33,14 +33,11 @@ namespace PinBuster.UWP
             Address.Text = pin.Conteudo;
         }
 
-        private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
+        async private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("mostrar info");
+            await PinBuster.App.NavigateToEditPost(pin);
         }
 
-        private void OnEditButtonTapped(object sender, TappedRoutedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Edit");
-        }
+     
     }
 }

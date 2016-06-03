@@ -37,7 +37,7 @@ namespace PinBuster
 
             using (var clientGet = new System.Net.Http.HttpClient())
             {
-                clientGet.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
+                clientGet.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
                 // var content = new System.Net.Http.FormUrlEncodedContent(postData);
                 var resultGet = clientGet.GetAsync("api/follow/" + userID + "?f=follower").Result;
                 string resultContentGet = resultGet.Content.ReadAsStringAsync().Result;
@@ -109,7 +109,7 @@ namespace PinBuster
                                 Debug.WriteLine("here");
                                 Debug.WriteLine("treying to delete");
 
-                                client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
+                                client.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
                                 var content = new System.Net.Http.FormUrlEncodedContent(postData);
                                 var result2 = client.DeleteAsync("api/follow/" + userID + "?unfollow=" + id).Result;
                                 string resultContent = result2.Content.ReadAsStringAsync().Result;
@@ -136,7 +136,7 @@ namespace PinBuster
                             using (var client = new System.Net.Http.HttpClient())
                             {
                                 Debug.WriteLine("here");
-                                client.BaseAddress = new Uri("http://pinbusterapitest.azurewebsites.net");
+                                client.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
                                 var content = new System.Net.Http.FormUrlEncodedContent(postData);
                                 var result2 = client.PostAsync("api/follow", content).Result;
                                 string resultContent = result2.Content.ReadAsStringAsync().Result;
