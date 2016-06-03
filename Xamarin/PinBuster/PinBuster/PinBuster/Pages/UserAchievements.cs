@@ -20,12 +20,12 @@ namespace PinBuster
             App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
             String userID = getCredentials.IGetCredentials()[0];
 
-            Task.Run(() => getUserAchievements(userID));
+            Task.Run(() => getUserAchievements("6"));
         }
 
         public async void getUserAchievements(String id)
         {
-            var achievementsUri = new Uri(string.Format("http://pinbusterapitest.azurewebsites.net/api/achievement/" + id, string.Empty));
+            var achievementsUri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/achievement/" + id, string.Empty));
 
             try
             {
