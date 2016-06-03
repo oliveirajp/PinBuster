@@ -16,6 +16,8 @@ using Android.Graphics;
 using System.Net;
 using Android.Support.Design.Widget;
 using Android.Views;
+using Android.App;
+using static Android.Gms.Maps.GoogleMap;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -27,8 +29,9 @@ namespace PinBuster.Droid
         BitmapDescriptor imageNormal, imageSecret, imageAchiv, imageReview;
         Android.Views.View view;
         Android.Views.LayoutInflater inflater;
-        Snackbar snackBar;
+        AlertDialog alertDialog;
         bool infoClicked;
+        float maxZoom = 2;
         List<Marker> markers = new List<Marker>();
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
@@ -38,6 +41,7 @@ namespace PinBuster.Droid
             if (e.OldElement != null)
             {
                 map.InfoWindowClick -= OnInfoWindowClick;
+                //map.CameraChange -= Map_CameraChange;
             }
 
             if (e.NewElement != null)
@@ -45,13 +49,19 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
-                
+
                 ((MapView)Control).GetMapAsync(this);
                 imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
                 imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
                 imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
                 infoClicked = false;
             }
+        }
+
+        private void Map_CameraChange(object sender, GoogleMap.CameraChangeEventArgs e)
+        {
+            if (e.Position.Zoom > maxZoom)
+                map.AnimateCamera(CameraUpdateFactory.ZoomTo(maxZoom));
         }
 
         private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -133,10 +143,15 @@ namespace PinBuster.Droid
             map = googleMap;
             map.InfoWindowClick += OnInfoWindowClick;
 
+            //map.CameraChange += Map_CameraChange;
             map.SetInfoWindowAdapter(this);
-
-            // snackBar = Snackbar.Make(this.FindViewById(Android.Resource.Id.Content), "Get closer to read the pin", Snackbar.LengthShort).SetAction("Ok", snackListener);
-
+            
+            AlertDialog.Builder alertDialogB = new AlertDialog.Builder(Xamarin.Forms.Forms.Context);
+            alertDialogB.SetTitle("Warning");
+            alertDialogB.SetMessage("Get closer to read the pin!");
+            alertDialogB.SetPositiveButton("Ok", myEventHandler);
+            alertDialog = alertDialogB.Create();
+            //map.SetOnMyLocationButtonClickListener(onPositionClick());
 
             foreach (var pin in App.Locator.Map.Pins)
             {
@@ -144,17 +159,69 @@ namespace PinBuster.Droid
             }
         }
 
-        async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        void onPositionClick(object sender, GoogleMap.MyLocationButtonClickEventArgs e)
         {
-            var pin = GetCustomPin(e.Marker);
-            await App.NavigateToEditPost(pin);
+
         }
 
-        
+        private void myEventHandler(object sender, DialogClickEventArgs e)
+        {
+            alertDialog.Hide();
+        }
+
+        void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        {
+            var customPin = GetCustomPin(e.Marker);
+
+
+            var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+            var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
+            var image = view.FindViewById<ImageView>(Resource.Id.UserImage);
+
+            if (image != null)
+            {
+                Bitmap imageBitmap = GetImageBitmapFromUrl(customPin.Imagem, 120, 120);
+                image.SetImageBitmap(imageBitmap);
+            }
+
+            if (!infoClicked)
+            {
+                if (infoTitle != null)
+                {
+                    infoTitle.Text = customPin.Nome;
+                }
+                if (infoSubtitle != null)
+                {
+                    infoSubtitle.Text = customPin.Data;
+                }
+                infoClicked = true;
+            }
+            else
+            {
+                if (infoTitle != null)
+                {
+                    infoTitle.Text = customPin.Categoria;
+                }
+                if (infoSubtitle != null)
+                {
+                    infoSubtitle.Text = customPin.Conteudo;
+                }
+                infoClicked = false;
+            }
+            e.Marker.HideInfoWindow();
+            e.Marker.ShowInfoWindow();
+        }
+        //async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        //{
+        //    var pin = GetCustomPin(e.Marker);
+        //    await App.NavigateToEditPost(pin);
+        //}
+
+
         public Android.Views.View GetInfoContents(Marker marker)
         {
             var customPin = GetCustomPin(marker);
-            if (infoClicked)
+            if (infoClicked && customPin.Visivel == 1)
             {
                 var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
                 var infoContent = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
@@ -167,7 +234,7 @@ namespace PinBuster.Droid
             inflater = Android.App.Application.Context.GetSystemService(Context.LayoutInflaterService) as Android.Views.LayoutInflater;
             if (inflater != null)
             {
-                
+
                 if (customPin == null)
                 {
                     throw new Exception("Custom pin not found");
@@ -198,17 +265,13 @@ namespace PinBuster.Droid
                 }
                 else
                 {
-                    //snackBar.Show();
+                    alertDialog.Show();
                     return null;
                 }
             }
             return null;
         }
 
-        private void snackListener(Android.Views.View obj)
-        {
-            snackBar.Dismiss();
-        }
 
         private Bitmap GetImageBitmapFromUrl(string imagem, int width, int height)
         {
