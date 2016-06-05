@@ -107,7 +107,7 @@ namespace PinBuster
            {
                lat = e.lat;
                lng = e.lng;
-               await Locator.Map.LoadPins();
+               Locator.Map.LoadPins();
            };
             loc.IGetCurrentPosition();
 

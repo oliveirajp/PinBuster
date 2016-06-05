@@ -20,7 +20,7 @@ namespace PinBuster
             App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
             String userID = getCredentials.IGetCredentials()[0];
 
-            Task.Run(() => getUserAchievements("6"));
+            Task.Run(() => getUserAchievements(userID));
         }
 
         public async void getUserAchievements(String id)
@@ -59,7 +59,7 @@ namespace PinBuster
                             var logo = new Image { Aspect = Aspect.AspectFit };
                             logo.Source = ImageSource.FromResource("PinBuster.achievement-03.png");
                             layout.Children.Add(logo);
-                            layout.Children.Add(new Label { Text = ach.nome, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand });
+                            layout.Children.Add(new Label { Text = ach.nome, FontSize = 18, HorizontalOptions = LayoutOptions.CenterAndExpand });
                             layout.Children.Add(new ProgressBar { Progress = progress });
                             grid.Children.Add(layout, x, y);
                             x++;

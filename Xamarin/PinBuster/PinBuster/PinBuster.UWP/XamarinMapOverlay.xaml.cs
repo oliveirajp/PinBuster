@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 
@@ -31,6 +32,11 @@ namespace PinBuster.UWP
         {
             Label.Text = pin.Nome;
             Address.Text = pin.Conteudo;
+            Uri uri = new Uri(pin.Imagem);
+            BitmapImage bmi = new BitmapImage();
+            bmi.UriSource = uri;
+
+            UserImage.Source = bmi;
         }
 
         async private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)

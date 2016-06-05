@@ -3,8 +3,8 @@
   <Identity Name="f736c883-f105-4d30-a719-4bf328872f5e" Publisher="CN=joaqu" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="f736c883-f105-4d30-a719-4bf328872f5e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>FPCL.WIndows</DisplayName>
-    <PublisherDisplayName>joaqu</PublisherDisplayName>
+    <DisplayName>PinBuster.WIndows</DisplayName>
+    <PublisherDisplayName>pinbuster</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -14,11 +14,19 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="FPCL.WIndows.App">
-      <uap:VisualElements DisplayName="FPCL.WIndows" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="FPCL.WIndows" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="PinBuster.WIndows.App">
+      <uap:VisualElements DisplayName="PinBuster" Square150x150Logo="icon.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="PinBuster" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="PinBuster" Square310x310Logo="icon.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="icon_l.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="portrait" />
+        </uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>

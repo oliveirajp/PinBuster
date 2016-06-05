@@ -26,7 +26,7 @@ namespace PinBuster.UWP
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
-        RandomAccessStreamReference image;
+        RandomAccessStreamReference imageSecret,imageNormal,imageReview;
         List<MapIcon> markers = new List<MapIcon>();
 
         Models.Pin selectedPin;
@@ -53,7 +53,10 @@ namespace PinBuster.UWP
 
                 nativeMap.Children.Clear();
                 nativeMap.MapElementClick += OnMapElementClick;
-                image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin.png"));
+                
+                imageSecret = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_secreto.png"));
+                imageNormal = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_normal.png"));
+                imageReview = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_review.png"));
 
                 foreach (var pin in PinBuster.App.Locator.Map.Pins)
                 {
@@ -78,7 +81,6 @@ namespace PinBuster.UWP
                     foreach (Models.Pin pin in e.NewItems)
                     {
                         positionPin(pin);
-                        System.Diagnostics.Debug.WriteLine("entrei");
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
@@ -106,7 +108,21 @@ namespace PinBuster.UWP
             var snPoint = new Geopoint(snPosition);
             
             var mapIcon = new MapIcon();
-            mapIcon.Image = image;
+            switch (pin.Categoria)
+            {
+                case "Secret":
+                    mapIcon.Image = imageSecret;
+                    break;
+                case "Normal":
+                    mapIcon.Image = imageNormal;
+                    break;
+                case "Review":
+                    mapIcon.Image = imageReview;
+                    break;
+                default:
+                    mapIcon.Image = imageNormal;
+                    break;
+            }
             mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
             mapIcon.Location = snPoint;
             mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
@@ -141,19 +157,21 @@ namespace PinBuster.UWP
                         throw new Exception("Custom pin not found");
                     }
 
+                    if (customPin.Visivel == 1)
+                    {
+                        mapOverlay = new XamarinMapOverlay(customPin);
+                        mapOverlay.Tapped += MapOverlay_Tapped;
 
-                    mapOverlay = new XamarinMapOverlay(customPin);
-                    mapOverlay.Tapped += MapOverlay_Tapped;
+                        selectedPin = customPin;
 
-                    selectedPin = customPin;
+                        var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
+                        var snPoint = new Geopoint(snPosition);
 
-                    var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
-                    var snPoint = new Geopoint(snPosition);
-
-                    nativeMap.Children.Add(mapOverlay);
-                    MapControl.SetLocation(mapOverlay, snPoint);
-                    MapControl.SetNormalizedAnchorPoint(mapOverlay, new Windows.Foundation.Point(0.5, 1.0));
-                    xamarinOverlayShown = true;
+                        nativeMap.Children.Add(mapOverlay);
+                        MapControl.SetLocation(mapOverlay, snPoint);
+                        MapControl.SetNormalizedAnchorPoint(mapOverlay, new Windows.Foundation.Point(0.5, 1.0));
+                        xamarinOverlayShown = true;
+                    }
 
                 }
                 else
