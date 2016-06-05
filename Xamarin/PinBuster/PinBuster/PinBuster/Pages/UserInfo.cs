@@ -18,7 +18,7 @@ namespace PinBuster
 
     class UserInfo : ContentPage
     {
-        public User user { get; set; }
+        public ProfileInfo info { get; set; }
         HttpClient client;
         public static StackLayout layoutPublic;
         public static Label labelPublic;
@@ -40,7 +40,7 @@ namespace PinBuster
         {
 
 
-            var uri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
+            var uri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/perfil_info/" + id, string.Empty));
 
             try
             {
@@ -48,7 +48,7 @@ namespace PinBuster
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    user = JsonConvert.DeserializeObject<User>(content);
+                    info = JsonConvert.DeserializeObject<ProfileInfo>(content);
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -96,9 +96,9 @@ namespace PinBuster
                         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-                        grid.Children.Add(new Label { Text = "5 Followers" }, 1, 0);
-                        grid.Children.Add(new Label { Text = "2 Followed" }, 2, 0);
-                        grid.Children.Add(new Label { Text = "15 Messages" }, 3, 0);
+                        grid.Children.Add(new Label { Text = info.nr_followers + " Followers" }, 1, 0);
+                        grid.Children.Add(new Label { Text = info.nr_followed + " Followed" }, 2, 0);
+                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Messages" }, 3, 0);
 
                         // layout.Children.Add(logo);
                         layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
