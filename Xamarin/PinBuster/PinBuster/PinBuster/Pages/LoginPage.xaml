@@ -12,7 +12,7 @@
 
 
 
-    <Image Source="icon.png" />
+    <Image Source="icon_l.png" />
 
     <Grid VerticalOptions="Center" Padding="20">
       <Label Text="Welcome to PinBuster" TextColor="Gray" FontSize="30" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />

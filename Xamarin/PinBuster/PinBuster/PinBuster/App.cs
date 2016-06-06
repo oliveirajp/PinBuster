@@ -101,9 +101,9 @@ namespace PinBuster
         public App()
         {
 
-
+            
             loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+            loc.locationObtained += (object sender, ILocationEventArgs e) =>
            {
                lat = e.lat;
                lng = e.lng;
