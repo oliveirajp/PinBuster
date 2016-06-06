@@ -100,15 +100,24 @@ namespace PinBuster
 
         public App()
         {
-
-
+            
             loc = DependencyService.Get<IGetCurrentPosition>();
+           
             loc.locationObtained += async (object sender, ILocationEventArgs e) =>
-           {
-               lat = e.lat;
-               lng = e.lng;
-               Locator.Map.LoadPins();
-           };
+          {
+              double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
+
+              {
+                  lat = e.lat;
+                  lng = e.lng;
+                  await Locator.Map.LoadPins();
+              }
+              else
+              {
+                  lat = e.lat;
+                  lng = e.lng;
+              }
+          };
             loc.IGetCurrentPosition();
 
             // The root page of your application
