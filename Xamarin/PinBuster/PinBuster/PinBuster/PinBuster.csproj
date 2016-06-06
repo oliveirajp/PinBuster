@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Data\CalcDistance.cs" />
     <Compile Include="Data\PinCollection.cs" />
     <Compile Include="ListFollowers.xaml.cs">
       <DependentUpon>ListFollowers.xaml</DependentUpon>
