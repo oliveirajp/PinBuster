@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="CustomNavigation.cs" />
     <Compile Include="FacebookFriends.cs" />
     <Compile Include="FacebookUWP.cs" />
     <Compile Include="GetCurrentLocation.cs" />
@@ -116,6 +117,7 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon_hue.png" />
     <Content Include="search.png" />
     <Content Include="vista_lista.png" />
     <Content Include="vista_mapa.png" />

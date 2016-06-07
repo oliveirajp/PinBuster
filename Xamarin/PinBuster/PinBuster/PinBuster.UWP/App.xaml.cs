@@ -61,8 +61,6 @@ namespace PinBuster.UWP
 
                 Xamarin.Forms.Forms.Init(e);
 
-                Xamarin.Forms.DependencyService.Register<GetCurrentLocation>();
-
 
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
