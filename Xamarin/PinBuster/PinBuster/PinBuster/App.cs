@@ -107,15 +107,11 @@ namespace PinBuster
           {
               double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
 
+              if (CalcDistance.findDistance(lat, lng, e.lat, e.lng) > 0.010)
               {
                   lat = e.lat;
                   lng = e.lng;
                   await Locator.Map.LoadPins();
-              }
-              else
-              {
-                  lat = e.lat;
-                  lng = e.lng;
               }
           };
             loc.IGetCurrentPosition();
