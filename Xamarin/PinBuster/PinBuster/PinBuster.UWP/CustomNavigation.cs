@@ -1,31 +1,27 @@
 ﻿using PinBuster.UWP;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.UWP;
 
-[assembly: ExportRenderer(typeof(NavigationPage), typeof(CustomNavigation))]
+[assembly: ExportRenderer(typeof(MasterDetailPageRenderer), typeof(CustomNavigation))]
 namespace PinBuster.UWP
 {
-    class CustomNavigation : Xamarin.Forms.Platform.UWP.NavigationPageRenderer
+    class CustomNavigation : Xamarin.Forms.Platform.UWP.MasterDetailPageRenderer
     {
-        //protected override void OnElementChanged()
-        //{
-        //    base.OnElementChanged(e);
+        protected override void OnElementChanged(ElementChangedEventArgs<MasterDetailPage> e)
+        {
+            base.OnElementChanged(e);
 
-        //    ChangeAppIconInActionBar();
-        //}
+            //var app = Application.Current.
+            //var applicationBar = app.ApplicationBar;
+            //applicationBar.Buttons.Clear();
+            //base.OnElementPropertyChanged(sender, e);
 
-        //void ChangeAppIconInActionBar()
-        //{
-        //    var actionBar = ((Activity)Context).ActionBar;
-        //    actionBar.SetCustomView(Resource.Layout.ActionBar);
-        //    actionBar.SetIcon(new ColorDrawable(Color.Transparent.ToAndroid()));
-        //    actionBar.SetDisplayShowTitleEnabled(false);
-        //    actionBar.SetDisplayShowCustomEnabled(true);
-        //}
+        }
     }
 }

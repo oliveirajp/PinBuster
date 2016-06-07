@@ -53,8 +53,6 @@ namespace PinBuster.Pages
             //postData.Add(new KeyValuePair<string, string>("data", DateTime.Now.ToString("yyyymmdd HH:mm:ss tt")));
 
 
-            Debug.WriteLine("latitude: " + currentLat.ToString());
-
             int radius = (int)SliderRadius.Value;
             int timeLimit = 0;
 
@@ -104,13 +102,15 @@ namespace PinBuster.Pages
 
                 var result = client.PostAsync("api/mensagem", content).Result;
                 string resultContent = result.Content.ReadAsStringAsync().Result;
-                System.Diagnostics.Debug.WriteLine("Resposta ao post message: "+ resultContent);
+
+                outputpost.Text = resultContent;
 
             }
 
             PostMessage.Text = String.Empty;
             SliderRadius.Value = 0;
             CategoryPicker.SelectedIndex = -1;
+            App.Locator.Map.LoadPins();
 
         }
 

@@ -54,6 +54,7 @@ namespace PinBuster.Droid
                 imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
                 imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
                 imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
+                imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 100);
                 infoClicked = false;
             }
         }
@@ -81,6 +82,12 @@ namespace PinBuster.Droid
                 foreach (Models.Pin pin in e.NewItems)
                 {
                     pin.PropertyChanged -= this.OnItemPropertyChanged;
+                    LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
+                    foreach(var m in markers)
+                    {
+                        if (m.Position == pos && m.Title == pin.Categoria && m.Snippet == pin.Conteudo)
+                            m.Remove();
+                    }
                 }
             }
             else
@@ -109,6 +116,9 @@ namespace PinBuster.Droid
                     break;
                 case "Review":
                     marker.SetIcon(imageReview);
+                    break;
+                case "Exploration":
+                    marker.SetIcon(imageAchiv);
                     break;
                 default:
                     marker.SetIcon(imageNormal);

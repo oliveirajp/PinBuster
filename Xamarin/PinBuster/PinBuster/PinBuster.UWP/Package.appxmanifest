@@ -5,7 +5,7 @@
   <Properties>
     <DisplayName>PinBuster.WIndows</DisplayName>
     <PublisherDisplayName>pinbuster</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>icon.png</Logo>
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
@@ -15,15 +15,15 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="PinBuster.WIndows.App">
-      <uap:VisualElements DisplayName="PinBuster" Square150x150Logo="icon.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="PinBuster" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="PinBuster" Square310x310Logo="icon.png">
+      <uap:VisualElements DisplayName="PinBuster" Square150x150Logo="icon.png" Square44x44Logo="icon.png" Description="PinBuster" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="icon.png" ShortName="PinBuster" Square310x310Logo="icon.png" Square71x71Logo="icon.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
             <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="icon_hue.png" BackgroundColor="white" />
+        <uap:SplashScreen Image="icon.png" BackgroundColor="white" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="portrait" />
         </uap:InitialRotationPreference>

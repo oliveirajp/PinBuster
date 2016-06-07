@@ -58,12 +58,12 @@ namespace PinBuster.Droid
         {
             string locationProvider;
 
+
             lm = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
 
             Criteria locationCriteria = new Criteria();
-
-            locationCriteria.Accuracy = Accuracy.Fine;
-            locationCriteria.PowerRequirement = Power.Medium;
+            locationCriteria.Accuracy = Accuracy.Coarse;
+            locationCriteria.PowerRequirement = Power.Low;
 
             locationProvider = lm.GetBestProvider(locationCriteria, true);
 
@@ -73,7 +73,10 @@ namespace PinBuster.Droid
                 args = new LocationEventArgs();
             }
             else
+            {
                 System.Diagnostics.Debug.WriteLine("No location provider could be found");
+            }
+                
         }
        
         ~GetCurrentLocation()

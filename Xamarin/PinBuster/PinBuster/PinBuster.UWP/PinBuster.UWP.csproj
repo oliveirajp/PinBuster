@@ -117,36 +117,21 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon_hue.png" />
+    <Content Include="pin_achievement.png" />
+    <Content Include="pin_normal.png" />
+    <Content Include="pin_review.png" />
+    <Content Include="pin_secret.png" />
     <Content Include="search.png" />
     <Content Include="vista_lista.png" />
     <Content Include="vista_mapa.png" />
     <Content Include="pin.png" />
     <Content Include="info.png" />
-    <AndroidResource Include="Assets\hamburger.png" />
-    <AndroidResource Include="Assets\icon.png" />
-    <AndroidResource Include="Assets\icon_l.png" />
-    <AndroidResource Include="Assets\icon_p.png" />
-    <AndroidResource Include="Assets\icon_sc.png" />
-    <AndroidResource Include="Assets\info.png" />
-    <AndroidResource Include="Assets\perfil.png" />
-    <AndroidResource Include="Assets\pin_achievements.png" />
-    <AndroidResource Include="Assets\pin_normal.png" />
-    <AndroidResource Include="Assets\pin_review.png" />
-    <AndroidResource Include="Assets\pin_secreto.png" />
-    <AndroidResource Include="Assets\search.png" />
-    <AndroidResource Include="Assets\vista_lista.png" />
-    <AndroidResource Include="Assets\vista_mapa.png" />
     <Content Include="hamburger.png" />
     <Content Include="icon.png" />
     <Content Include="icon_l.png" />
     <Content Include="icon_p.png" />
     <Content Include="icon_sc.png" />
     <Content Include="perfil.png" />
-    <Content Include="pin_achievements.png" />
-    <Content Include="pin_normal.png" />
-    <Content Include="pin_review.png" />
-    <Content Include="pin_secreto.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +152,9 @@
     <ProjectReference Include="..\PinBuster\PinBuster.csproj">
       <Name>PinBuster</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

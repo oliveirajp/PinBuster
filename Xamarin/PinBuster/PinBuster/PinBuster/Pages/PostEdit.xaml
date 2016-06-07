@@ -11,12 +11,9 @@
     
      <Picker Title="Select a category" x:Name="CategoryPicker" SelectedIndex="{Binding Industry}" HorizontalOptions="Center">
         <Picker.Items HorizontalOptions="Center">
-            <x:String> Tip </x:String> 
-            <x:String> Review </x:String> 
-            <x:String> Historical/Cultural fact </x:String> 
-            <x:String> Fun fact </x:String> 
-            <x:String> Random </x:String>
-            <x:String> Other </x:String> 
+            <x:String> Normal </x:String> 
+            <x:String> Review </x:String>
+            <x:String> Secret </x:String>
         </Picker.Items>
     </Picker> 
     

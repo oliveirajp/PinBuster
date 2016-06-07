@@ -26,7 +26,7 @@ namespace PinBuster.UWP
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
-        RandomAccessStreamReference imageSecret,imageNormal,imageReview;
+        RandomAccessStreamReference imageSecret, imageNormal, imageReview, imageAchievement;
         List<MapIcon> markers = new List<MapIcon>();
 
         Models.Pin selectedPin;
@@ -53,10 +53,11 @@ namespace PinBuster.UWP
 
                 nativeMap.Children.Clear();
                 nativeMap.MapElementClick += OnMapElementClick;
-                
-                imageSecret = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_secreto.png"));
+
+                imageSecret = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_secret.png"));
                 imageNormal = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_normal.png"));
                 imageReview = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_review.png"));
+                imageAchievement = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_achievement.png"));
 
                 foreach (var pin in PinBuster.App.Locator.Map.Pins)
                 {
@@ -106,7 +107,7 @@ namespace PinBuster.UWP
         {
             var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
             var snPoint = new Geopoint(snPosition);
-            
+
             var mapIcon = new MapIcon();
             switch (pin.Categoria)
             {
@@ -118,6 +119,9 @@ namespace PinBuster.UWP
                     break;
                 case "Review":
                     mapIcon.Image = imageReview;
+                    break;
+                case "Exploration":
+                    mapIcon.Image = imageAchievement;
                     break;
                 default:
                     mapIcon.Image = imageNormal;
@@ -142,7 +146,7 @@ namespace PinBuster.UWP
             pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
-      
+
 
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)
         {
@@ -194,7 +198,7 @@ namespace PinBuster.UWP
             }
             return null;
         }
-        
+
         void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Switch");
@@ -207,7 +211,7 @@ namespace PinBuster.UWP
                 if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
                     m.Visible = temp.Show;
         }
-        
+
     }
 }
 

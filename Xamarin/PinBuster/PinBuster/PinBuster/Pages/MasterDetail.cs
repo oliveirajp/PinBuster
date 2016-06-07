@@ -26,9 +26,7 @@ namespace PinBuster.Pages
             
             page = new NavigationPage(App.mapPage);
             page.BarBackgroundColor = Color.White;
-            page.Icon = "icon.png";
-            page.BackgroundImage = "icon_sc.png";
-            
+            NavigationPage.SetTitleIcon(page, "icon.png");
             Detail = page;
         }
     }
