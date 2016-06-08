@@ -16,7 +16,7 @@ namespace PinBuster
 {
     public class App : Application
     {
-      
+
 
         private readonly static Locator _locator = new Locator();
 
@@ -26,14 +26,14 @@ namespace PinBuster
         {
             get { return _locator; }
         }
-        
+
         public static IGetCurrentPosition loc;
         public static double lat, lng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
         public static MessageListView listView;
         public static string town;
-        
+
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username);   }
@@ -58,7 +58,7 @@ namespace PinBuster
 
         public async static Task NavigateToProfile(string name, string id)
         {
-            
+
             //saving credentials
             ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
             saveCredentials.ISaveCredentials(id, name);
@@ -70,52 +70,95 @@ namespace PinBuster
 
             await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
 
-           // IGetCurrentPosition loctemp;
-            //loctemp = DependencyService.Get<IGetCurrentPosition>();
-            //PinsManager = new PinsManager();
-
-            //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
 
         public async static Task NavigateToApp()
         {
             pinsManager = new PinsManager();
             App.Current.MainPage = new MasterDetail();
-            
+
 
            // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+        }
+
+        public async static Task NavigateToEditPost(Models.Pin pin)
+        {
+            Debug.WriteLine("ESTA NO APP NAVIGATE EDIT POST:");
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String userID = getCredentials.IGetCredentials()[0];
+
+            if (pin.Face_id == userID)
+            {
+                await App.Current.MainPage.Navigation.PushModalAsync(new PostEdit(pin));
+            } else
+            {
+                await App.Current.MainPage.Navigation.PushModalAsync(new DetailMessageList(pin));
+            }
         }
 
         IFacebookLogin face;
 
         public App()
         {
-            
             loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += (object sender, ILocationEventArgs e) =>
-            {
-                lat = e.lat;
-                lng = e.lng;
-                Locator.Map.LoadPins();
-            };
+           {
+               lat = e.lat;
+               lng = e.lng;
+               Locator.Map.LoadPins();
+           };
+
+          //  loc = DependencyService.Get<IGetCurrentPosition>();
+
+            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+          {
+              double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
+
+              if (CalcDistance.findDistance(lat, lng, e.lat, e.lng) > 0.010)
+              {
+                  lat = e.lat;
+                  lng = e.lng;
+                  await Locator.Map.LoadPins();
+              }
+          };
+          //  loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+          //{
+          //    double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
+
+          //    {
+          //        lat = e.lat;
+          //        lng = e.lng;
+          //        await Locator.Map.LoadPins();
+          //    }
+          //    else
+          //    {
+          //        lat = e.lat;
+          //        lng = e.lng;
+          //    }
+          //};
             loc.IGetCurrentPosition();
 
             // The root page of your application
             pinsManager = new PinsManager();
             mapPage = new MapPage();
             listView = new MessageListView();
-           
 
-			/*IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+
+			IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = null;
             String userName = null;
             if (getCredentials.IGetCredentials() != null)
             {
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
-            }*/
-          //  Debug.WriteLine("user id after saving:" + userID);
+            }
 
+            if (userID == null)
+            {
+
+                MainPage = new NavigationPage(new LoginPage());
+            }
+            else
                 MainPage = new MasterDetail();
         }
 
@@ -125,7 +168,7 @@ namespace PinBuster
         protected override void OnStart()
         {
             // Handle when your app starts
-            
+
         }
 
         protected override void OnSleep()
@@ -135,7 +178,7 @@ namespace PinBuster
 
         protected override void OnResume()
         {
-            
+
         }
     }
 }

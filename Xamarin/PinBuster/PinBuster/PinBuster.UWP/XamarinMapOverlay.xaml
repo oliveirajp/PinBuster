@@ -3,14 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="100"
-    d:DesignWidth="300">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <StackPanel>
-        <Image Source="xamarin.png" Width="100" />
-        <StackPanel Orientation="Horizontal" Background="White" Opacity="0.8" Padding="20,0,20,0">
-            <Image Source="monkey.png" Width="24"  />
+        <StackPanel Orientation="Horizontal" Background="White" Opacity="1" Padding="20,0,20,0">
+            <Image  x:Name="UserImage" Width="30" Height="30"  />
             <StackPanel Margin="20,10,20,0">
                 <TextBlock x:Name="Label" FontWeight="Bold" />
                 <TextBlock x:Name="Address" />
@@ -22,7 +18,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Tapped="OnEditButtonTapped" Content="Edit" />
+            <Button Tapped="OnInfoButtonTapped" Content="Edit" />
         </StackPanel>
     </StackPanel>
 </UserControl>

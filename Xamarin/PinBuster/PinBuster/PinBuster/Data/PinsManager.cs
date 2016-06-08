@@ -37,7 +37,7 @@ namespace PinBuster.Data
             }
             else
             {
-                response = await u.MakeGetRequest("message_user?latitude=" + App.lat + "&longitude=" + App.lng + "&raio=30");
+                response = await u.MakeGetRequest("message_user?latitude=" + App.lat.ToString().Replace(',','.') + "&longitude=" + App.lng.ToString().Replace(',', '.') + "&raio=10");
                 try
                 {
                     lista_mensagens = (Pins_L)Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof(Pins_L));
@@ -53,7 +53,7 @@ namespace PinBuster.Data
 
                     foreach (var msg in lista_mensagens.data)
                     {
-                        if (!App.listView._viewModel.All_M.Contains(msg))
+                        if (!App.listView._viewModel.All_M.Contains(msg) && msg.Visivel == 1)
                         {
                             App.listView._viewModel.All_M.Add(msg);
                             if (msg.Categoria == "Secret")

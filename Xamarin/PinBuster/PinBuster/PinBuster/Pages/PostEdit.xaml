@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PinBuster.Pages.PostEdit">
+  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  
+  <StackLayout Spacing="20">
+    <Label Text="Write your message below:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+    <Editor  x:Name="PostMessage" VerticalOptions="FillAndExpand"/>
+   
+    
+     <Picker Title="Select a category" x:Name="CategoryPicker" SelectedIndex="{Binding Industry}" HorizontalOptions="Center">
+        <Picker.Items HorizontalOptions="Center">
+            <x:String> Normal </x:String> 
+            <x:String> Review </x:String>
+            <x:String> Secret </x:String>
+        </Picker.Items>
+    </Picker> 
+    
+    <Label  x:Name="SliderValue" Text="Select the desired radius:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+
+    <Slider x:Name="SliderRadius" Maximum="100" Minimum="1"  VerticalOptions="CenterAndExpand"
+                ValueChanged="OnSliderValueChanged" />
+
+    <Label  x:Name="TimeLimitLabel" Text="Time limit:" HorizontalOptions="Center" VerticalOptions="End"> </Label>
+
+
+
+    <StackLayout Orientation="Horizontal"  HorizontalOptions="FillAndExpand" >
+
+      <Slider x:Name="TimeLimit" Maximum="30" Minimum="1"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand"
+                  ValueChanged="OnTimeSliderValueChanged" />
+
+
+
+
+      <Picker Title="Time unit" x:Name="DateUnitPicker" SelectedIndex="0" HorizontalOptions="Center">
+        <Picker.Items HorizontalOptions="Center">
+          <x:String> No limit </x:String>
+          <x:String> Minutes </x:String>
+          <x:String> Hours </x:String>
+          <x:String> Days </x:String>
+          <x:String> Months </x:String>
+          <x:String> Years </x:String>
+        </Picker.Items>
+        <Picker.SelectedIndex>0</Picker.SelectedIndex>
+
+      </Picker>
+
+    </StackLayout>  
+    
+    
+    <Button Text="Update pin!" Clicked="Button_OnClicked"></Button>
+    
+      
+  <Label x:Name="outputpost"> </Label>
+  
+  </StackLayout>
+
+</ContentPage>

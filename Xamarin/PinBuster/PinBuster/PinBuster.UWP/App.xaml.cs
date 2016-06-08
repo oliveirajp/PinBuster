@@ -44,7 +44,7 @@ namespace PinBuster.UWP
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+               // this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 
@@ -60,8 +60,6 @@ namespace PinBuster.UWP
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 Xamarin.Forms.Forms.Init(e);
-
-                Xamarin.Forms.DependencyService.Register<GetCurrentLocation>();
 
 
 

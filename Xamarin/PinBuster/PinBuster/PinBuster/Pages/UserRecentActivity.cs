@@ -24,7 +24,7 @@ namespace PinBuster
 
         public async void getUserRecentActivity(int id)
         {
-            var mensagensUri = new Uri(string.Format("http://pinbusterapitest.azurewebsites.net/api/mensagem/" + id, string.Empty));
+            var mensagensUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/mensagem/" + id, string.Empty));
 
             try
             {

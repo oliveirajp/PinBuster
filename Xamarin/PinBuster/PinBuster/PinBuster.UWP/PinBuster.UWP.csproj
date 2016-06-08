@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="CustomNavigation.cs" />
     <Compile Include="FacebookFriends.cs" />
     <Compile Include="FacebookUWP.cs" />
     <Compile Include="GetCurrentLocation.cs" />
@@ -116,18 +117,22 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\icon.png" />
-    <EmbeddedResource Include="pin.png" />
-    <AndroidResource Include="Assets\info.png" />
-    <AndroidResource Include="info.png" />
+    <Content Include="pin_achievement.png" />
+    <Content Include="pin_normal.png" />
+    <Content Include="pin_review.png" />
+    <Content Include="pin_secret.png" />
+    <Content Include="search.png" />
+    <Content Include="vista_lista.png" />
+    <Content Include="vista_mapa.png" />
+    <Content Include="pin.png" />
+    <Content Include="info.png" />
+    <Content Include="hamburger.png" />
+    <Content Include="icon.png" />
+    <Content Include="icon_l.png" />
+    <Content Include="icon_p.png" />
+    <Content Include="icon_sc.png" />
+    <Content Include="perfil.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -147,6 +152,9 @@
     <ProjectReference Include="..\PinBuster\PinBuster.csproj">
       <Name>PinBuster</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

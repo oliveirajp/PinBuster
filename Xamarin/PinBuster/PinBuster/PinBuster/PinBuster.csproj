@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Data\CalcDistance.cs" />
     <Compile Include="Data\PinCollection.cs" />
     <Compile Include="ListFollowers.xaml.cs">
       <DependentUpon>ListFollowers.xaml</DependentUpon>
@@ -64,6 +65,9 @@
     <Compile Include="Pages\MenuPage.cs" />
     <Compile Include="Pages\Post.xaml.cs">
       <DependentUpon>Post.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PostEdit.xaml.cs">
+      <DependentUpon>PostEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="CLocation.cs" />
@@ -142,9 +146,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="microsoft.png" />
     <EmbeddedResource Include="Pages\MessageListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -200,6 +201,18 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\PostEdit.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="achievement-03.png" />
   </ItemGroup>
   <Import Project="..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
 </Project>
