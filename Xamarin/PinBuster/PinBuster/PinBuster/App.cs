@@ -106,23 +106,16 @@ namespace PinBuster
             listView = new MessageListView();
            
 
-            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+			/*IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = null;
             String userName = null;
             if (getCredentials.IGetCredentials() != null)
             {
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
-            }
+            }*/
           //  Debug.WriteLine("user id after saving:" + userID);
 
-
-            if (userID == null)
-            {
-
-                MainPage = new NavigationPage(new LoginPage());
-            }
-            else
                 MainPage = new MasterDetail();
         }
 
