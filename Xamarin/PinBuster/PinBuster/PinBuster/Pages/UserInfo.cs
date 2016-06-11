@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using static PinBuster.App;
 using Newtonsoft.Json.Linq;
-
+using PinBuster.Data;
 
 namespace PinBuster
 {
@@ -60,7 +60,7 @@ namespace PinBuster
 
                         var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
                         var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
-
+                        var bFollow = new Button { Text = "Follow", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
 
                         bLogout.Clicked += async delegate
                         {
@@ -74,6 +74,24 @@ namespace PinBuster
                             // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
                         };
+
+
+                        bFollow.Clicked += async delegate
+                        {
+                            String followerId = DependencyService.Get<IGetCredentials>().IGetCredentials()[0];
+
+                            var utilities = new Utilities();
+                            var values = new Dictionary<string, string>
+                            {
+                                { "follower", followerId },
+                                {"followed", user.utilizador_id}
+                            };
+
+                            string result = await Utilities.MakePostRequest("follow", values.ToString());
+                            bFollow.Text = result;
+                        };
+
+
 
 
                         //how to get credentials
