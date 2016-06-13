@@ -144,21 +144,24 @@ namespace PinBuster.iOS
 
 				return;
 			}
-				
 
-			customPinView = new UIView ();
+			/*customPinView = new UIView ();
 
 			customPinView.Frame = new CGRect (0, 0, 200, 84);
 			var image = new UIImageView (new CGRect (0, 0, 200, 84));
 			image.Image = UIImage.FromFile ("xamarin.png");
 			customPinView.AddSubview (image);
 			customPinView.Center = new CGPoint (0, -(e.View.Frame.Height + 75));
-			e.View.AddSubview (customPinView);
+			e.View.AddSubview (customPinView);*/
 		}
 
 		void OnDidDeselectAnnotationView (object sender, MKAnnotationViewEventArgs e)
 		{
 			if (!e.View.Selected) {
+				if (customPinView == null)
+				{
+					return;
+				}
 				customPinView.RemoveFromSuperview ();
 				customPinView.Dispose ();
 				customPinView = null;

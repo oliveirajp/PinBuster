@@ -16,7 +16,7 @@ namespace PinBuster
 {
     public class App : Application
     {
-
+      
 
         private readonly static Locator _locator = new Locator();
 
@@ -26,14 +26,14 @@ namespace PinBuster
         {
             get { return _locator; }
         }
-
+        
         public static IGetCurrentPosition loc;
         public static double lat, lng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
         public static MessageListView listView;
         public static string town;
-
+        
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username);   }
@@ -58,7 +58,7 @@ namespace PinBuster
 
         public async static Task NavigateToProfile(string name, string id)
         {
-
+            
             //saving credentials
             ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
             saveCredentials.ISaveCredentials(id, name);
@@ -69,14 +69,14 @@ namespace PinBuster
             String userName = getCredentials.IGetCredentials()[1];
 
             await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
-
+            
         }
 
         public async static Task NavigateToApp()
         {
             pinsManager = new PinsManager();
             App.Current.MainPage = new MasterDetail();
-
+            
 
            // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
@@ -107,9 +107,9 @@ namespace PinBuster
                lng = e.lng;
                Locator.Map.LoadPins();
            };
-
+            
           //  loc = DependencyService.Get<IGetCurrentPosition>();
-
+           
             loc.locationObtained += async (object sender, ILocationEventArgs e) =>
           {
               double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
@@ -151,6 +151,7 @@ namespace PinBuster
             {
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
+
             }
 
             if (userID == null)
@@ -160,6 +161,9 @@ namespace PinBuster
             }
             else
                 MainPage = new MasterDetail();
+                
+
+			//MainPage = new MasterDetail();
         }
 
 
@@ -168,7 +172,7 @@ namespace PinBuster
         protected override void OnStart()
         {
             // Handle when your app starts
-
+            
         }
 
         protected override void OnSleep()
@@ -178,7 +182,7 @@ namespace PinBuster
 
         protected override void OnResume()
         {
-
+            
         }
     }
 }

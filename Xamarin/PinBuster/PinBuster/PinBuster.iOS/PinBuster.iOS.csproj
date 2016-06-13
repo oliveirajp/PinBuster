@@ -97,6 +97,8 @@
     <None Include="packages.config" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="CustomMKPinAnnotationView.cs" />
+    <Compile Include="Credentials.cs" />
+    <Compile Include="FacebookIos.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinBuster\PinBuster.csproj">
@@ -191,5 +193,8 @@
       <Version>1.2.3.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\icon.png" />
   </ItemGroup>
 </Project>

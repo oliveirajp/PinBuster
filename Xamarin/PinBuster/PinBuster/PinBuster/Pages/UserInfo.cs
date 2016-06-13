@@ -62,8 +62,9 @@ namespace PinBuster
                         var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
 
 
-                        bLogout.Clicked += async delegate
+                        bLogout.Clicked += delegate
                         {
+							System.Diagnostics.Debug.WriteLine("logging out 123");
                             // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
 
 
