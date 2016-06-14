@@ -2137,8 +2137,8 @@ namespace PinBuster.Droid
 			// aapt resource value: 0x7f02007c
 			public const int info = 2130837628;
 			
-			// aapt resource value: 0x7f020085
-			public const int notification_template_icon_bg = 2130837637;
+			// aapt resource value: 0x7f020086
+			public const int notification_template_icon_bg = 2130837638;
 			
 			// aapt resource value: 0x7f02007d
 			public const int perfil = 2130837629;
@@ -2163,6 +2163,9 @@ namespace PinBuster.Droid
 			
 			// aapt resource value: 0x7f020084
 			public const int vista_mapa = 2130837636;
+			
+			// aapt resource value: 0x7f020085
+			public const int warning = 2130837637;
 			
 			static Drawable()
 			{
