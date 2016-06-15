@@ -33,6 +33,8 @@ namespace PinBuster.Droid
         bool infoClicked;
         float maxZoom = 2;
         List<Marker> markers = new List<Marker>();
+        Circle userCircle;
+        int userRadius, fillColor, strokeColor;
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
@@ -49,13 +51,18 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+                var c = Android.Graphics.Color.Argb(75, 255, 255, 255);
+                fillColor = c.GetHashCode();
+                c = Android.Graphics.Color.Argb(128, 27, 67, 76);
+                strokeColor = c.GetHashCode();
+                userRadius = App.radius * 1000;
 
-                ((MapView)Control).GetMapAsync(this);
-                imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
-                imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
-                imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
-                imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 100);
-                infoClicked = false;
+                    ((MapView)Control).GetMapAsync(this);
+                    imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
+                    imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
+                    imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
+                    imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 100);
+                    infoClicked = false;
             }
         }
 
@@ -148,9 +155,24 @@ namespace PinBuster.Droid
             return icon;
         }
 
-        public void OnMapReady(GoogleMap googleMap)
-        {
+        public void OnMapReady(GoogleMap googleMap) { 
+
             map = googleMap;
+
+            App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                var circleOptions = new CircleOptions();
+                circleOptions.InvokeCenter(new LatLng(e.lat,e.lng));
+                circleOptions.InvokeRadius(userRadius);
+                circleOptions.InvokeFillColor(fillColor);
+                circleOptions.InvokeStrokeColor(strokeColor);
+                circleOptions.InvokeStrokeWidth(5);
+                if (userCircle != null)
+                    userCircle.Remove();
+                userCircle = map.AddCircle(circleOptions);
+            };
+                
+
             map.InfoWindowClick += OnInfoWindowClick;
 
             //map.CameraChange += Map_CameraChange;
