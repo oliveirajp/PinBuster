@@ -62,18 +62,11 @@ namespace PinBuster
                         var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
                         var bShare = new Button { Text = "Share", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
 
-                        bShare.Clicked += async delegate
+                        bShare.Clicked += delegate
                         {
+                            IFacebookShare FacebookShare = DependencyService.Get<IFacebookShare>();
+                            FacebookShare.IFacebookShare("secret message", "Porto");
 
-                            if (Device.OS == TargetPlatform.Windows)
-                            {
-                                IFacebookShare FacebookShare = DependencyService.Get<IFacebookShare>();
-                                FacebookShare.IFacebookShare("Leiden");
-                            }
-                            else
-                            {
-                                await Navigation.PushModalAsync(new FacebookShare("leiden"));
-                            }
 
                         };
 

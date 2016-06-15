@@ -53,7 +53,7 @@ namespace PinBuster
         { void IFacebookFriends(Label label); }
 
         public interface IFacebookShare
-        { void IFacebookShare(String message); }
+        { void IFacebookShare(String place,String message); }
 
         public interface ISaveAndLoad
         { void SaveText(string filename, string tex);

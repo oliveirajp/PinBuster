@@ -134,11 +134,11 @@ namespace PinBuster.UWP
 
     class FacebookShare : IFacebookShare
     {
-        public void IFacebookShare(String message)
+        public void IFacebookShare(String place,String message)
         {
-            IFacebookShareAsync(message);
+            IFacebookShareAsync(place,message);
         }
-        private async void IFacebookShareAsync(String message)
+        private async void IFacebookShareAsync(String place, String message)
         {
             //Facebook app id
             var clientId = "536841529832251";
@@ -158,10 +158,10 @@ namespace PinBuster.UWP
             Uri startUri = loginUrl;
             Uri endUri = new Uri(redirectUri, UriKind.Absolute);
             WebAuthenticationResult result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startUri, endUri);
-            await ParseAuthenticationResult(result, message);
+            await ParseAuthenticationResult(result, place,message);
         }
 
-        public async Task ParseAuthenticationResult(WebAuthenticationResult result,String message)
+        public async Task ParseAuthenticationResult(WebAuthenticationResult result,String place, String message)
         {
             switch (result.ResponseStatus)
             {
@@ -185,7 +185,7 @@ namespace PinBuster.UWP
                     token = token.Remove(token.Length - 1);
                     Debug.WriteLine(".." + token);
 
-                    String sJson = " {\"og:url\":\"https://www.facebook.com/PinBusterApp/\",\"og:title\":\"PinBuster App\",\"og:type\":\"pinbuster:secret_message\",\"og:description\":\"I just posted a message in "+ message+"\",\"fb:app_id\":536841529832251}";
+                    String sJson = " {\"og:url\":\"https://www.facebook.com/PinBusterApp/\",\"og:title\":\"PinBuster App\",\"og:type\":\"pinbuster:secret_message\",\"og:description\":\"I just posted a "+message+" in "+ place+"\",\"fb:app_id\":536841529832251}";
          
                     var parameters = new Dictionary<string, object>();
                     parameters["object"] = sJson;
@@ -204,4 +204,5 @@ namespace PinBuster.UWP
         }
         
     }
+
 }

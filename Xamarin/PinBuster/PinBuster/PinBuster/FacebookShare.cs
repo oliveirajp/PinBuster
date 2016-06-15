@@ -1,4 +1,5 @@
-﻿using PinBuster;
+﻿using Android.Content;
+using PinBuster;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -53,6 +54,8 @@ namespace PinBuster
             stack.Children.Add(label);
 
 
+
+            // Navigation.PushAsync(new FacebookShare());
 
 
             Content = stack;

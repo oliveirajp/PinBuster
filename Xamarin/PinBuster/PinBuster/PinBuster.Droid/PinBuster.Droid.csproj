@@ -171,7 +171,6 @@
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FacebookAndroid.cs" />
     <Compile Include="FacebookFriends.cs" />
-    <Compile Include="FacebookShare.cs" />
     <Compile Include="GetCurrentLocation.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
