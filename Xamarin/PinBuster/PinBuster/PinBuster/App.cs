@@ -33,7 +33,7 @@ namespace PinBuster
         public static ContentPage mapPage;
         public static MessageListView listView;
         public static string town;
-        
+        public static int radius = 10;
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username);   }
@@ -110,17 +110,17 @@ namespace PinBuster
             
           //  loc = DependencyService.Get<IGetCurrentPosition>();
            
-            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
-          {
-              double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
+          //  loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+          //{
+          //    double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
 
-              if (CalcDistance.findDistance(lat, lng, e.lat, e.lng) > 0.010)
-              {
-                  lat = e.lat;
-                  lng = e.lng;
-                  await Locator.Map.LoadPins();
-              }
-          };
+          //    if (CalcDistance.findDistance(lat, lng, e.lat, e.lng) > 0.010)
+          //    {
+          //        lat = e.lat;
+          //        lng = e.lng;
+          //        await Locator.Map.LoadPins();
+          //    }
+          //};
           //  loc.locationObtained += async (object sender, ILocationEventArgs e) =>
           //{
           //    double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);

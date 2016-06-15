@@ -26,6 +26,7 @@ namespace PinBuster.UWP
         bool xamarinOverlayShown = false;
         RandomAccessStreamReference imageSecret, imageNormal, imageReview, imageAchievement;
         List<MapIcon> markers = new List<MapIcon>();
+        int userRadius;
 
         Models.Pin selectedPin;
 
@@ -47,9 +48,9 @@ namespace PinBuster.UWP
 
             if (e.NewElement != null)
             {
-                var formsMap = (CustomMap)e.NewElement;
                 nativeMap = Control as MapControl;
                 customPins = new List<Models.Pin>();
+                userRadius = PinBuster.App.radius * 1000;
 
                 nativeMap.Children.Clear();
                 nativeMap.MapElementClick += OnMapElementClick;
@@ -68,9 +69,9 @@ namespace PinBuster.UWP
 
                 PinBuster.App.loc.locationObtained += (object sender, ILocationEventArgs eLoc) =>
                 {
-                    var circle = formsMap.Circle;
                     var coordinates = new List<BasicGeoposition>();
-                    var positions = GenerateCircleCoordinates(circle.Position, circle.Radius);
+                    Position pos = new Position(eLoc.lat, eLoc.lng);
+                    var positions = GenerateCircleCoordinates(pos, userRadius);
                     foreach (var position in positions)
                     {
                         coordinates.Add(new BasicGeoposition { Latitude = position.Latitude, Longitude = position.Longitude });

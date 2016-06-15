@@ -5,7 +5,7 @@ using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Widget;
-using PinBuster
+using PinBuster;
 using PinBuster.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -33,7 +33,8 @@ namespace PinBuster.Droid
         bool infoClicked;
         float maxZoom = 2;
         List<Marker> markers = new List<Marker>();
-        Models.CustomCircle circle;
+        Circle userCircle;
+        int userRadius, fillColor, strokeColor;
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
@@ -50,8 +51,11 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
-
-                    circle = formsMap.Circle;
+                var c = Android.Graphics.Color.Argb(75, 255, 255, 255);
+                fillColor = c.GetHashCode();
+                c = Android.Graphics.Color.Argb(128, 27, 67, 76);
+                strokeColor = c.GetHashCode();
+                userRadius = App.radius * 1000;
 
                     ((MapView)Control).GetMapAsync(this);
                     imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
@@ -155,13 +159,19 @@ namespace PinBuster.Droid
 
             map = googleMap;
 
-            var circleOptions = new CircleOptions();
-            circleOptions.InvokeCenter(new LatLng(circle.Position.Latitude, circle.Position.Longitude));
-            circleOptions.InvokeRadius(circle.Radius);
-            circleOptions.InvokeFillColor(0XFFFFFF);
-            circleOptions.InvokeStrokeColor(0X1B434C);
-            circleOptions.InvokeStrokeWidth(0);
-            map.AddCircle(circleOptions);
+            App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                var circleOptions = new CircleOptions();
+                circleOptions.InvokeCenter(new LatLng(e.lat,e.lng));
+                circleOptions.InvokeRadius(userRadius);
+                circleOptions.InvokeFillColor(fillColor);
+                circleOptions.InvokeStrokeColor(strokeColor);
+                circleOptions.InvokeStrokeWidth(5);
+                if (userCircle != null)
+                    userCircle.Remove();
+                userCircle = map.AddCircle(circleOptions);
+            };
+                
 
             map.InfoWindowClick += OnInfoWindowClick;
 
