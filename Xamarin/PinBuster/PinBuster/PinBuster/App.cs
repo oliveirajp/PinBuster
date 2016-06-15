@@ -35,6 +35,7 @@ namespace PinBuster
         public static MessageListView listView;
         public static string town;
         public static int radius = 10;
+        public static bool updatedPins;
 
         public interface ISaveCredentials
         { void ISaveCredentials(string userid, string username); }
@@ -104,6 +105,7 @@ namespace PinBuster
         {
             oldLat = 0;
             oldLng = 0;
+            updatedPins = true;
 
             loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += async (object sender, ILocationEventArgs e) =>
@@ -119,17 +121,18 @@ namespace PinBuster
                        else
                            x.Visivel = 0;
                    }
-
-                   //System.Diagnostics.Debug.WriteLine(x.Conteudo + " - " + x.Visivel);
+                   
                }
                lat = e.lat;
                lng = e.lng;
 
                if (CalcDistance.findDistance(oldLat, oldLng, e.lat, e.lng) > 0.010)
                {
+                   updatedPins = true;
                    oldLat = e.lat;
                    oldLng = e.lng;
                    await Locator.Map.LoadPins();
+                   Device.StartTimer(new TimeSpan(0, 0, 7), () => { updatedPins = false; return false; });
                }
 
            };

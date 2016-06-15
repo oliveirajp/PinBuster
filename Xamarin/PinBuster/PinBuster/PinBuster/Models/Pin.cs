@@ -201,7 +201,7 @@ namespace PinBuster.Models
 
         public bool Equals(Pin other)
         {
-            return this.conteudo == other.Conteudo && this.face_id == other.Face_id && this.visivel == other.Visivel;
+            return this.conteudo == other.Conteudo && this.face_id == other.Face_id;
         }
     }
 }

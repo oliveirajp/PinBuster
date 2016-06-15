@@ -69,6 +69,7 @@ namespace PinBuster.Droid
                 c = Android.Graphics.Color.Argb(128, 27, 67, 76);
                 strokeColor = c.GetHashCode();
                 userRadius = App.radius * 1000;
+                App.updatedPins = true;
             }
         }
 
@@ -91,41 +92,38 @@ namespace PinBuster.Droid
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                //map.Clear();
-
                 foreach (Models.Pin pin in e.NewItems)
                 {
                     if (!CheckIfExists(pin))
                         positionPin(pin);
                 }
             }
-            //else if (e.Action == NotifyCollectionChangedAction.Remove)
-            //{
-            //    System.Diagnostics.Debug.WriteLine("Pin removido");
-            //    foreach (Models.Pin pin in e.OldItems)
-            //    {
-            //        pin.PropertyChanged -= this.OnItemPropertyChanged;
-            //        LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
-            //        Marker ms = null;
-            //        foreach (var m in markers)
-            //        {
-            //            if (m.Position.Latitude == pos.Latitude && m.Position.Longitude == pos.Longitude)
-            //            {
-            //                ms = m;
-            //                break;
-            //            }
-            //        }
-            //        if (ms != null)
-            //        {
-            //            markers.Remove(ms);
-            //            ms.Remove();
-            //        }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (Models.Pin pin in e.OldItems)
+                {
+                    pin.PropertyChanged -= this.OnItemPropertyChanged;
+                    LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
+                    Marker ms = null;
+                    foreach (var m in markers)
+                    {
+                        if (m.Position.Latitude == pos.Latitude && m.Position.Longitude == pos.Longitude)
+                        {
+                            ms = m;
+                            break;
+                        }
+                    }
+                    if (ms != null)
+                    {
+                        markers.Remove(ms);
+                        ms.Remove();
+                    }
 
-            //    }
-            //}
+                }
+            }
             else
             {
-                System.Diagnostics.Debug.WriteLine("EVENT");
+                System.Diagnostics.Debug.WriteLine(e.Action.ToString());
             }
         }
 
@@ -200,15 +198,19 @@ namespace PinBuster.Droid
 
             App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
             {
-                var circleOptions = new CircleOptions();
-                circleOptions.InvokeCenter(new LatLng(e.lat,e.lng));
-                circleOptions.InvokeRadius(userRadius);
-                circleOptions.InvokeFillColor(fillColor);
-                circleOptions.InvokeStrokeColor(strokeColor);
-                circleOptions.InvokeStrokeWidth(5);
-                if (userCircle != null)
-                    userCircle.Remove();
-                userCircle = map.AddCircle(circleOptions);
+                if (App.updatedPins)
+                {
+                    var circleOptions = new CircleOptions();
+                    circleOptions.InvokeCenter(new LatLng(e.lat, e.lng));
+                    circleOptions.InvokeRadius(userRadius);
+                    circleOptions.InvokeFillColor(fillColor);
+                    circleOptions.InvokeStrokeColor(strokeColor);
+                    circleOptions.InvokeStrokeWidth(5);
+                    if (userCircle != null)
+                        userCircle.Remove();
+                    userCircle = map.AddCircle(circleOptions);
+                    App.updatedPins = false;
+                }
             };
                 
 
