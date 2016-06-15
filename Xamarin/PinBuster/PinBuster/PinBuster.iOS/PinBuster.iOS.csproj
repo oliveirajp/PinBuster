@@ -120,6 +120,9 @@
     <BundleResource Include="Resources\pin.png" />
     <BundleResource Include="Resources\xamarin.png" />
     <BundleResource Include="Resources\pin_normal.png" />
+    <BundleResource Include="Resources\pin_achievements.png" />
+    <BundleResource Include="Resources\pin_review.png" />
+    <BundleResource Include="Resources\pin_secreto.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

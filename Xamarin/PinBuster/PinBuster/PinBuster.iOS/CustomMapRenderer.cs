@@ -95,7 +95,25 @@ namespace PinBuster.iOS
 			annotationView = mapView.DequeueReusableAnnotation (customPin.Mensagem_id);
 			if (annotationView == null) {
 				annotationView = new CustomMKPinAnnotationView (annotation, customPin.Mensagem_id);
-				annotationView.Image = UIImage.FromFile ("pin_normal.png").Scale(new CGSize(40f, 40f));
+
+				switch (customPin.Categoria)
+				{
+					case "Secret":
+						annotationView.Image = UIImage.FromFile("pin_secreto.png").Scale(new CGSize(40f, 40f));
+						break;
+					case "Normal":
+						annotationView.Image = UIImage.FromFile("pin_normal.png").Scale(new CGSize(40f, 40f));
+						break;
+					case "Review":
+						annotationView.Image = UIImage.FromFile("pin_review.png").Scale(new CGSize(40f, 40f));
+						break;
+					case "Exploration":
+						annotationView.Image = UIImage.FromFile("pin_achievements.png").Scale(new CGSize(40f, 40f));
+						break;
+					default:
+						annotationView.Image = UIImage.FromFile("pin_normal.png").Scale(new CGSize(40f, 40f));
+						break;
+				}
 
 				if (customPin.Visivel == 0) {
 					annotationView.CalloutOffset = new CGPoint (1000000, 0);
@@ -118,6 +136,15 @@ namespace PinBuster.iOS
 			if (!string.IsNullOrWhiteSpace (customView.Url)) {
 				UIApplication.SharedApplication.OpenUrl (new Foundation.NSUrl (customView.Url));
 			}
+
+			customPinView = new UIView();
+
+			customPinView.Frame = new CGRect(0, 0, 200, 84);
+			var text = new UILabel();
+			text.Text = "This is more info LUL";
+			customPinView.AddSubview(text);
+			customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
+			customView.AddSubview(customPinView);
 		}
 
 		void OnDidSelectAnnotationView (object sender, MKAnnotationViewEventArgs e)
@@ -144,15 +171,6 @@ namespace PinBuster.iOS
 
 				return;
 			}
-
-			/*customPinView = new UIView ();
-
-			customPinView.Frame = new CGRect (0, 0, 200, 84);
-			var image = new UIImageView (new CGRect (0, 0, 200, 84));
-			image.Image = UIImage.FromFile ("xamarin.png");
-			customPinView.AddSubview (image);
-			customPinView.Center = new CGPoint (0, -(e.View.Frame.Height + 75));
-			e.View.AddSubview (customPinView);*/
 		}
 
 		void OnDidDeselectAnnotationView (object sender, MKAnnotationViewEventArgs e)
