@@ -22,13 +22,13 @@
     <AppXManifest Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-06-15T17:43:58.745</Modified>
+      <Modified>2016-06-15T17:56:03.863</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\PinBuster.UWP.exe">
       <PackagePath>entrypoint\PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-06-15T17:43:58.056</Modified>
+      <Modified>2016-06-15T17:56:03.109</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\.nuget\packages\CommonServiceLocator\1.3.0\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll">
       <PackagePath>Microsoft.Practices.ServiceLocation.dll</PackagePath>
@@ -504,7 +504,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster\bin\Debug\PinBuster.dll">
       <PackagePath>PinBuster.dll</PackagePath>
-      <Modified>2016-06-15T16:56:15.487</Modified>
+      <Modified>2016-06-15T17:56:01.693</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\pin_achievement.png">
       <PackagePath>pin_achievement.png</PackagePath>
@@ -597,7 +597,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Ze_Pa\Desktop\PinBuster\Xamarin\PinBuster\PinBuster\PinBuster.UWP\bin\x86\Debug\Core\PinBuster.UWP.exe">
       <PackagePath>PinBuster.UWP.exe</PackagePath>
-      <Modified>2016-06-15T17:43:58.737</Modified>
+      <Modified>2016-06-15T17:56:03.857</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

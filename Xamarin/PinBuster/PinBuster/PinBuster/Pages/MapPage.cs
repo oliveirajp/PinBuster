@@ -57,6 +57,7 @@ namespace PinBuster.Pages
             {
                 App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
                  {
+
                      if (update)
                      {
                          System.Diagnostics.Debug.WriteLine("Centrando");

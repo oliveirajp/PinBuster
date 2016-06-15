@@ -67,7 +67,7 @@ namespace PinBuster.Data
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@ERROR {0}", ex.Message);
+                    System.Diagnostics.Debug.WriteLine(@"@@@@@@@@@@@@@@-ERROR {0}", ex.Message);
                 }
 
                 return lista_mensagens.data;
