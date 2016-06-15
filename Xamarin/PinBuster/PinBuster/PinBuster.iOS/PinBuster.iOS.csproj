@@ -197,5 +197,9 @@
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\120x120.png" />
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\180x180.png" />
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\120x120-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\29x29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\58x58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\80x80.png" />
   </ItemGroup>
 </Project>
