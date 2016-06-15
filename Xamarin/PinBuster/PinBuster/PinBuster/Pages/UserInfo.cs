@@ -33,10 +33,12 @@ namespace PinBuster
             userinfoPublic = this;
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
-            Task.Run(() => LoadInfo(6));
+            App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
+            String userID = getCredentials.IGetCredentials()[0];
+            Task.Run(() => LoadInfo(userID));
         }
 
-        public async void LoadInfo(int id)
+        public async void LoadInfo(string id)
         {
 
 

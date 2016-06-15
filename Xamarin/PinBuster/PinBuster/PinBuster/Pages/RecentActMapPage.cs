@@ -12,33 +12,30 @@ using System.Collections.Specialized;
 using PinBuster.Data;
 using System.Threading;
 using PinBuster;
+using PinBuster.Models;
 
 namespace PinBuster.Pages
 {
-    public class MapPage : ContentPage
+    public class RecentActMapPage : ContentPage
     {
 
-        public CustomMap map;
+        public CustomRecentActMap map;
         public bool update, isCentering;
         Button recenterBtn;
         public IEnumerable<String> town;
-        
+        public RelativeLayout layout;
 
-        void postmessageaction(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(App.lat);
-            System.Diagnostics.Debug.WriteLine(App.lng);
+        Label label;
+        int clickTotal = 0;
 
-            Navigation.PushAsync(new Post(App.lat, App.lng, App.town));
-        }
-
-        public MapPage()
+        public RecentActMapPage(List<Models.Pin> pinList)
         {
 
             BindingContext = App.Locator.Map;
 
-            map = new CustomMap
+            map = new CustomRecentActMap
             {
+                CustomPins = pinList,
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
@@ -54,36 +51,21 @@ namespace PinBuster.Pages
             try
             {
                 App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
-                 {
+                {
 
-                     if (update)
-                     {
-                         System.Diagnostics.Debug.WriteLine("Centrando");
-                         isCentering = true;
-                         Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
-                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
-                         if (App.town == null)
-                         {
-                             setTown();
-                         }
-                     }
-                 };
+                    if (update)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Centrando");
+                        isCentering = true;
+                        Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
+                    }
+                };
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + e);
             }
-
-            Button button = new Button
-            {
-                Text = "Pin it here!",
-                Font = Font.SystemFontOfSize(NamedSize.Large),
-                BorderWidth = 1,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
-
-            button.Clicked += postmessageaction;
 
 
             var stack = new RelativeLayout { };
@@ -104,20 +86,6 @@ namespace PinBuster.Pages
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Height;
-            }));
-
-            stack.Children.Add(button, Constraint.RelativeToParent((parent) =>
-            {
-                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
-            }), Constraint.RelativeToParent((parent) =>
-            {
-                return parent.Y * .15;
-            }), Constraint.RelativeToParent((parent) =>
-            {
-                return parent.Width * 0.5;
-            }), Constraint.RelativeToParent((parent) =>
-            {
-                return parent.Height * .1;
             }));
 
             recenterBtn = new Button
@@ -295,28 +263,7 @@ namespace PinBuster.Pages
                 return parent.Height * .1;
             }));
 
-            Content = stack;
-        }
-
-        async private void setTown()
-        {
-            try
-            {
-
-                var geo = new Geocoder();
-                town = await geo.GetAddressesForPositionAsync(new Position(App.lat, App.lng));
-                parseTown(town.First());
-            }
-            catch (Exception err)
-            {
-
-                System.Diagnostics.Debug.WriteLine(err.Message);
-            }
-        }
-
-        private void parseTown(string first)
-        {
-            App.town = first.Split(' ')[0];
+            layout = stack;
         }
 
         private void SpanChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -337,27 +284,6 @@ namespace PinBuster.Pages
 
             recenterBtn.IsVisible = false;
         }
-
-        private void PositionMap()
-        {
-            var mapPins = map.Pins;
-
-            if (mapPins == null || !mapPins.Any()) return;
-
-            var centerPosition = new Position(mapPins.Average(x => x.Position.Latitude), mapPins.Average(x => x.Position.Longitude));
-
-            var minLongitude = mapPins.Min(x => x.Position.Longitude);
-            var minLatitude = mapPins.Min(x => x.Position.Latitude);
-
-            var maxLongitude = mapPins.Max(x => x.Position.Longitude);
-            var maxLatitude = mapPins.Max(x => x.Position.Latitude);
-
-            var distance = MapHelper.CalculateDistance(minLatitude, minLongitude,
-                maxLatitude, maxLongitude, 'M') / 2;
-
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance * 1.5)));
-        }
-        
         private void switcher_Toggled(object sender, ToggledEventArgs e)
         {
             var s = (Switch)sender;

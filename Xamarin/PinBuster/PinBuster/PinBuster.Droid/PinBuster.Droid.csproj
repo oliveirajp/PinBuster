@@ -183,6 +183,7 @@
     <Compile Include="Credentials.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="CustomNavigationRenderer.cs" />
+    <Compile Include="CustomRecentActMapRenderer.cs" />
     <Compile Include="FacebookAndroid.cs" />
     <Compile Include="FacebookFriends.cs" />
     <Compile Include="GetCurrentLocation.cs" />

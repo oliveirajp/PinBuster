@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PinBuster.Data
 {
-    static class CalcDistance
+    public static class CalcDistance
     {
         static public double findDistance(double t1, double n1, double t2, double n2)
         {

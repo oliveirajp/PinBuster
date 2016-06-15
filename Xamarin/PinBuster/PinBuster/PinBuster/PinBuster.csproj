@@ -47,6 +47,7 @@
     <Compile Include="Models\Mensagem.cs" />
     <Compile Include="Models\Mensagem_L.cs" />
     <Compile Include="Models\ProfileInfo.cs" />
+    <Compile Include="Pages\CustomRecentActMap.cs" />
     <Compile Include="Pages\FacebookFriends.xaml.cs">
       <DependentUpon>FacebookFriends.xaml</DependentUpon>
     </Compile>
@@ -70,6 +71,7 @@
     <Compile Include="Pages\PostEdit.xaml.cs">
       <DependentUpon>PostEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\RecentActMapPage.cs" />
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="CLocation.cs" />
     <Compile Include="Models\User.cs" />
