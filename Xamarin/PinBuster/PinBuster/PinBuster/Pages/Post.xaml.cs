@@ -22,13 +22,14 @@ namespace PinBuster.Pages
             currentLon = lon;
             currentTown = town;
             InitializeComponent();
+            TimeLimit.Value = 0;
        
         }
 
         private void Button_OnClicked(object sender, EventArgs e)
         {
             /* Check if any input was left blank */ 
-            if(PostMessage.Text == null || PostMessage.Text == "" || SliderRadius.Value <= 20 || CategoryPicker.SelectedIndex < 0)
+            if(PostMessage.Text == null || PostMessage.Text == "" || SliderRadius.Value <= 1 || CategoryPicker.SelectedIndex < 0)
             {
                 DisplayAlert("Error", "Please fill in all the fields", "OK");
                 return;
@@ -47,10 +48,6 @@ namespace PinBuster.Pages
                 userID = getCredentials.IGetCredentials()[0];
                 userName = getCredentials.IGetCredentials()[1];
             }
-
-           // postData.Add(new KeyValuePair<string, string>("data", DateTime.Now.ToString("ddd MMM dd yyyy HH:mm:ss zzz")));
-           // postData.Add(new KeyValuePair<string, string>("data", "20130210 11:11:11 PM"));
-            //postData.Add(new KeyValuePair<string, string>("data", DateTime.Now.ToString("yyyymmdd HH:mm:ss tt")));
 
 
             int radius = (int)SliderRadius.Value;
