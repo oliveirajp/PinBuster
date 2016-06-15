@@ -176,6 +176,21 @@ namespace PinBuster.UWP
                         MapControl.SetNormalizedAnchorPoint(mapOverlay, new Windows.Foundation.Point(0.5, 1.0));
                         xamarinOverlayShown = true;
                     }
+                    else
+                    {
+                        mapOverlay = new XamarinMapOverlay(null);
+                        mapOverlay.Tapped += MapOverlay_Tapped;
+
+                        selectedPin = customPin;
+
+                        var snPosition = new BasicGeoposition { Latitude = customPin.Latitude, Longitude = customPin.Longitude };
+                        var snPoint = new Geopoint(snPosition);
+
+                        nativeMap.Children.Add(mapOverlay);
+                        MapControl.SetLocation(mapOverlay, snPoint);
+                        MapControl.SetNormalizedAnchorPoint(mapOverlay, new Windows.Foundation.Point(0.5, 1.0));
+                        xamarinOverlayShown = true;
+                    }
 
                 }
                 else

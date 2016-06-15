@@ -18,6 +18,7 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.App;
 using static Android.Gms.Maps.GoogleMap;
+using PinBuster.Models;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.Droid
@@ -43,7 +44,7 @@ namespace PinBuster.Droid
             if (e.OldElement != null)
             {
                 map.InfoWindowClick -= OnInfoWindowClick;
-                //map.CameraChange -= Map_CameraChange;
+                map.MapClick -= Map_MapClick;
             }
 
             if (e.NewElement != null)
@@ -51,18 +52,25 @@ namespace PinBuster.Droid
                 var formsMap = (CustomMap)e.NewElement;
                 customPins = new List<Models.Pin>();
                 App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
-
                 ((MapView)Control).GetMapAsync(this);
-                imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 121);
-                imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 121);
-                imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 121);
-                imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 121);
+                imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
+                imageSecret = resizeMapIcons(Resource.Drawable.pin_secreto, 100, 100);
+                imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
+                imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 100);
 
                 Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, Resource.Drawable.warning);
                 imageWarning = Bitmap.CreateScaledBitmap(imageBitmap, 120, 120, false);
-            
 
                 infoClicked = false;
+            }
+        }
+
+        private void Map_MapClick(object sender, MapClickEventArgs e)
+        {
+            if (warningCircle != null)
+            {
+                drawnCircle.Remove();
+                warningCircle = null;
             }
         }
 
@@ -80,38 +88,63 @@ namespace PinBuster.Droid
 
                 foreach (Models.Pin pin in e.NewItems)
                 {
-                    positionPin(pin);
+                    if (!CheckIfExists(pin))
+                        positionPin(pin);
                 }
             }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                System.Diagnostics.Debug.WriteLine("Pin removido");
-                foreach (Models.Pin pin in e.NewItems)
-                {
-                    pin.PropertyChanged -= this.OnItemPropertyChanged;
-                    LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
-                    foreach(var m in markers)
-                    {
-                        if (m.Position == pos && m.Title == pin.Categoria && m.Snippet == pin.Conteudo)
-                            m.Remove();
-                    }
-                }
-            }
+            //else if (e.Action == NotifyCollectionChangedAction.Remove)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("Pin removido");
+            //    foreach (Models.Pin pin in e.OldItems)
+            //    {
+            //        pin.PropertyChanged -= this.OnItemPropertyChanged;
+            //        LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
+            //        Marker ms = null;
+            //        foreach (var m in markers)
+            //        {
+            //            if (m.Position.Latitude == pos.Latitude && m.Position.Longitude == pos.Longitude)
+            //            {
+            //                ms = m;
+            //                break;
+            //            }
+            //        }
+            //        if (ms != null)
+            //        {
+            //            markers.Remove(ms);
+            //            ms.Remove();
+            //        }
+
+            //    }
+            //}
             else
             {
                 System.Diagnostics.Debug.WriteLine("EVENT");
             }
         }
 
+        private bool CheckIfExists(Models.Pin pin)
+        {
+            LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
+            Marker ms = null;
+
+            foreach (Models.Pin p in customPins)
+            {
+                if (p.Longitude == pin.Longitude && p.Latitude == pin.Latitude && p.Conteudo == pin.Conteudo && p.Data == pin.Data)
+                {
+                    p.Visivel = pin.Visivel;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void positionPin(Models.Pin pin)
         {
             var marker = new MarkerOptions();
             marker.SetPosition(new LatLng(pin.Latitude, pin.Longitude));
-            if (pin.Visivel == 1)
-            {
-                marker.SetTitle(pin.Categoria);
-                marker.SetSnippet(pin.Conteudo);
-            }
+            marker.SetTitle(pin.Categoria);
+            marker.SetSnippet(pin.Conteudo);
 
             switch (pin.Categoria)
             {
@@ -133,7 +166,7 @@ namespace PinBuster.Droid
             }
             Marker mr = map.AddMarker(marker);
             markers.Add(mr);
-            var pinToAdd = (new Pin
+            var pinToAdd = (new Xamarin.Forms.Maps.Pin
             {
                 Position = new Position(pin.Latitude, pin.Longitude),
                 Address = pin.Conteudo,
@@ -162,9 +195,11 @@ namespace PinBuster.Droid
 
             //map.CameraChange += Map_CameraChange;
             map.SetInfoWindowAdapter(this);
-                        
+
             map.UiSettings.MyLocationButtonEnabled = false;
             map.UiSettings.CompassEnabled = true;
+
+            map.MapClick += Map_MapClick;
 
             foreach (var pin in App.Locator.Map.Pins)
             {
@@ -172,11 +207,7 @@ namespace PinBuster.Droid
             }
         }
 
-        void onPositionClick(object sender, GoogleMap.MyLocationButtonClickEventArgs e)
-        {
 
-        }
-        
 
         void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
@@ -290,7 +321,7 @@ namespace PinBuster.Droid
                     warningCircle.InvokeRadius(customPin.Raio);
                     warningCircle.InvokeFillColor(0X66FF0000);
                     warningCircle.InvokeStrokeColor(0X66FF0000);
-                    warningCircle.InvokeStrokeWidth(0);
+                    warningCircle.InvokeStrokeWidth(1);
                     drawnCircle = map.AddCircle(warningCircle);
 
                     return view;
