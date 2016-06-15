@@ -1,28 +1,26 @@
-﻿using PinBuster.UWP;
+using PinBuster.UWP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls.Maps;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.UWP;
 using Xamarin.Forms.Platform.UWP;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
 using System.Collections.Specialized;
-using System.Collections;
-using Windows.System;
 using System.ComponentModel;
 using PinBuster.Pages;
+using System.Diagnostics;
+
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace PinBuster.UWP
 {
     class CustomMapRenderer : MapRenderer
     {
+        const int EarthRadiusInMeteres = 6371000;
         MapControl nativeMap;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
@@ -32,6 +30,8 @@ namespace PinBuster.UWP
         Models.Pin selectedPin;
 
         public List<Models.Pin> customPins;
+
+        public object Thread { get; private set; }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
@@ -65,7 +65,55 @@ namespace PinBuster.UWP
                 }
 
                 PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+
+                PinBuster.App.loc.locationObtained += (object sender, ILocationEventArgs eLoc) =>
+                {
+                    var circle = formsMap.Circle;
+                    var coordinates = new List<BasicGeoposition>();
+                    var positions = GenerateCircleCoordinates(circle.Position, circle.Radius);
+                    foreach (var position in positions)
+                    {
+                        coordinates.Add(new BasicGeoposition { Latitude = position.Latitude, Longitude = position.Longitude });
+                    }
+
+                    var polygon = new MapPolygon();
+                    polygon.FillColor = Windows.UI.Color.FromArgb(75, 255, 255, 255);
+                    polygon.StrokeColor = Windows.UI.Color.FromArgb(128, 27, 67, 76);
+                    polygon.StrokeThickness = 5;
+                    polygon.Path = new Geopath(coordinates);
+                    nativeMap.MapElements.Add(polygon);
+                };
+               }
+        }
+
+        private double ToRadians(double x)
+        {
+            return x * (Math.PI / 180);
+        }
+
+        private double ToDegrees(double x)
+        {
+            return x * (180 / Math.PI);
+        }
+
+        private List<Position> GenerateCircleCoordinates(Position position, double radius)
+        {
+            double latitude = ToRadians(position.Latitude);
+            double longitude = ToRadians(position.Longitude);
+            double distance = radius / EarthRadiusInMeteres;
+            var positions = new List<Position>();
+
+            for (int angle = 0; angle <= 360; angle++)
+            {
+                double angleInRadians = ToRadians((double)angle);
+                double latitudeInRadians = Math.Asin(Math.Sin(latitude) * Math.Cos(distance) + Math.Cos(latitude) * Math.Sin(distance) * Math.Cos(angleInRadians));
+                double longitudeInRadians = longitude + Math.Atan2(Math.Sin(angleInRadians) * Math.Sin(distance) * Math.Cos(latitude), Math.Cos(distance) - Math.Sin(latitude) * Math.Sin(latitudeInRadians));
+
+                var pos = new Position(ToDegrees(latitudeInRadians), ToDegrees(longitudeInRadians));
+                positions.Add(pos);
             }
+
+            return positions;
         }
 
         private void MapOverlay_Tapped(object sender, TappedRoutedEventArgs e)
@@ -214,4 +262,5 @@ namespace PinBuster.UWP
 
     }
 }
+
 
