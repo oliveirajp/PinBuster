@@ -11,14 +11,14 @@
                 <TextBlock x:Name="Label" FontWeight="Bold" />
                 <TextBlock x:Name="Address" />
             </StackPanel>
-            <Button Tapped="OnInfoButtonTapped">
+            <Button Tapped="OnInfoButtonTapped" x:Name="InfoButton">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Image Source="info.png" Width="24" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Tapped="OnInfoButtonTapped" Content="Edit" />
+            <Button Tapped="OnInfoButtonTapped" Content="Edit" x:Name="EditButton"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

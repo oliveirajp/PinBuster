@@ -24,19 +24,30 @@ namespace PinBuster.UWP
         public XamarinMapOverlay(Models.Pin pin)
         {
             this.InitializeComponent();
-            this.pin = pin;
+            if (pin != null)
+                this.pin = pin;
             SetupData();
 
         }
         void SetupData()
         {
-            Label.Text = pin.Nome;
-            Address.Text = pin.Conteudo;
-            Uri uri = new Uri(pin.Imagem);
-            BitmapImage bmi = new BitmapImage();
-            bmi.UriSource = uri;
+            if (pin != null)
+            {
+                Label.Text = pin.Nome;
+                Address.Text = pin.Conteudo;
+                Uri uri = new Uri(pin.Imagem);
+                BitmapImage bmi = new BitmapImage();
+                bmi.UriSource = uri;
 
-            UserImage.Source = bmi;
+                UserImage.Source = bmi;
+            }
+            else
+            {
+                Label.Text = "Warning!";
+                Address.Text = "Get closer to read the pin";
+                InfoButton.Visibility = Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         async private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
@@ -44,6 +55,6 @@ namespace PinBuster.UWP
             await PinBuster.App.NavigateToEditPost(pin);
         }
 
-     
+
     }
 }
