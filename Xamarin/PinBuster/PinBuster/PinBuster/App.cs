@@ -103,16 +103,26 @@ namespace PinBuster
             loc = DependencyService.Get<IGetCurrentPosition>();
             loc.locationObtained += (object sender, ILocationEventArgs e) =>
            {
-               lat = e.lat;
-               lng = e.lng;
-               Locator.Map.LoadPins();
+              List<PinBuster.Models.Pin> myList = Locator.Map.Pins.ToList();
+
+             foreach (PinBuster.Models.Pin x in myList)
+                         {
+                             if (x.Raio != 0) { 
+                                 if (CalcDistance.findDistance(e.lat, e.lng, x.Latitude, x.Longitude) * 1000 <= x.Raio)
+                                     x.Visivel = 1;
+                                 else
+                                     x.Visivel = 0;
+                             }
+
+                   //System.Diagnostics.Debug.WriteLine(x.Conteudo + " - " + x.Visivel);
+                         }
+             
            };
             
           //  loc = DependencyService.Get<IGetCurrentPosition>();
            
             loc.locationObtained += async (object sender, ILocationEventArgs e) =>
           {
-              double t = CalcDistance.findDistance(lat, lng, e.lat, e.lng);
 
               if (CalcDistance.findDistance(lat, lng, e.lat, e.lng) > 0.010)
               {
