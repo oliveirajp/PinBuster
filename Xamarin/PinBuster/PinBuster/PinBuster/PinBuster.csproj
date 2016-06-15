@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Achievement_L.cs" />
+    <Compile Include="Models\CustomCircle.cs" />
     <Compile Include="Models\Mensagem.cs" />
     <Compile Include="Models\Mensagem_L.cs" />
     <Compile Include="Models\ProfileInfo.cs" />

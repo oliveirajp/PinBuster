@@ -36,6 +36,8 @@ namespace PinBuster.Droid
         List<Marker> markers = new List<Marker>();
         CircleOptions warningCircle;
         Circle drawnCircle;
+        Circle userCircle;
+        int userRadius, fillColor, strokeColor;
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
@@ -62,6 +64,11 @@ namespace PinBuster.Droid
                 imageWarning = Bitmap.CreateScaledBitmap(imageBitmap, 120, 120, false);
 
                 infoClicked = false;
+                var c = Android.Graphics.Color.Argb(75, 255, 255, 255);
+                fillColor = c.GetHashCode();
+                c = Android.Graphics.Color.Argb(128, 27, 67, 76);
+                strokeColor = c.GetHashCode();
+                userRadius = App.radius * 1000;
             }
         }
 
@@ -125,7 +132,6 @@ namespace PinBuster.Droid
         private bool CheckIfExists(Models.Pin pin)
         {
             LatLng pos = new LatLng(pin.Latitude, pin.Longitude);
-            Marker ms = null;
 
             foreach (Models.Pin p in customPins)
             {
@@ -188,12 +194,25 @@ namespace PinBuster.Droid
             return icon;
         }
 
-        public void OnMapReady(GoogleMap googleMap)
-        {
-            map = googleMap;
-            map.InfoWindowClick += OnInfoWindowClick;
+        public void OnMapReady(GoogleMap googleMap) { 
 
-            //map.CameraChange += Map_CameraChange;
+            map = googleMap;
+
+            App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
+            {
+                var circleOptions = new CircleOptions();
+                circleOptions.InvokeCenter(new LatLng(e.lat,e.lng));
+                circleOptions.InvokeRadius(userRadius);
+                circleOptions.InvokeFillColor(fillColor);
+                circleOptions.InvokeStrokeColor(strokeColor);
+                circleOptions.InvokeStrokeWidth(5);
+                if (userCircle != null)
+                    userCircle.Remove();
+                userCircle = map.AddCircle(circleOptions);
+            };
+                
+
+            map.InfoWindowClick += OnInfoWindowClick;
             map.SetInfoWindowAdapter(this);
 
             map.UiSettings.MyLocationButtonEnabled = false;
