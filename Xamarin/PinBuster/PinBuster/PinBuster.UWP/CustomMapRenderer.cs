@@ -27,6 +27,7 @@ namespace PinBuster.UWP
         RandomAccessStreamReference imageSecret, imageNormal, imageReview, imageAchievement;
         List<MapIcon> markers = new List<MapIcon>();
         int userRadius;
+        MapPolygon userCircle;
 
         Models.Pin selectedPin;
 
@@ -77,12 +78,17 @@ namespace PinBuster.UWP
                         coordinates.Add(new BasicGeoposition { Latitude = position.Latitude, Longitude = position.Longitude });
                     }
 
-                    var polygon = new MapPolygon();
-                    polygon.FillColor = Windows.UI.Color.FromArgb(75, 255, 255, 255);
-                    polygon.StrokeColor = Windows.UI.Color.FromArgb(128, 27, 67, 76);
-                    polygon.StrokeThickness = 5;
-                    polygon.Path = new Geopath(coordinates);
-                    nativeMap.MapElements.Add(polygon);
+                    if(userCircle != null)
+                        nativeMap.MapElements.Remove(userCircle);
+
+                    userCircle = new MapPolygon();
+                    userCircle.FillColor = Windows.UI.Color.FromArgb(75, 255, 255, 255);
+                    userCircle.StrokeColor = Windows.UI.Color.FromArgb(128, 27, 67, 76);
+                    userCircle.StrokeThickness = 5;
+                    userCircle.Path = new Geopath(coordinates);
+                    userCircle.ZIndex = 1;
+                    nativeMap.MapElements.Add(userCircle);
+                    
                 };
                }
         }
@@ -179,7 +185,7 @@ namespace PinBuster.UWP
             mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
             mapIcon.Location = snPoint;
             mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
-
+            mapIcon.ZIndex = 10;
             nativeMap.MapElements.Add(mapIcon);
 
             var pinToAdd = (new Pin
