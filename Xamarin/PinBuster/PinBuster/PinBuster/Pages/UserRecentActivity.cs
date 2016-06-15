@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -18,11 +18,13 @@ namespace PinBuster
         {
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
+            App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
+            String userID = getCredentials.IGetCredentials()[0];
 
-            Task.Run(() => getUserRecentActivity(6));
+            Task.Run(() => getUserRecentActivity(userID));
         }
 
-        public async void getUserRecentActivity(int id)
+        public async void getUserRecentActivity(String id)
         {
             var mensagensUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/mensagem/" + id, string.Empty));
 
