@@ -20,7 +20,7 @@ using Android.App;
 using static Android.Gms.Maps.GoogleMap;
 using PinBuster.Models;
 
-[assembly: ExportRenderer(typeof(CustomMap), typeof(CustomRecentActMapRenderer))]
+[assembly: ExportRenderer(typeof(CustomRecentActMap), typeof(CustomRecentActMapRenderer))]
 namespace PinBuster.Droid
 {
     class CustomRecentActMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter, IOnMapReadyCallback
@@ -36,6 +36,7 @@ namespace PinBuster.Droid
         List<Marker> markers = new List<Marker>();
         CircleOptions warningCircle;
         Circle drawnCircle;
+        List<Models.Pin> temp;
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
@@ -49,7 +50,7 @@ namespace PinBuster.Droid
 
             if (e.NewElement != null)
             {
-                var formsMap = (CustomMap)e.NewElement;
+                var formsMap = (CustomRecentActMap)e.NewElement;
                 customPins = formsMap.CustomPins;
                 ((MapView)Control).GetMapAsync(this);
                 imageNormal = resizeMapIcons(Resource.Drawable.pin_normal, 100, 100);
@@ -57,6 +58,7 @@ namespace PinBuster.Droid
                 imageReview = resizeMapIcons(Resource.Drawable.pin_review, 100, 100);
                 imageAchiv = resizeMapIcons(Resource.Drawable.pin_achievements, 100, 100);
 
+                temp = new List<Models.Pin>();
                 Bitmap imageBitmap = BitmapFactory.DecodeResource(Resources, Resource.Drawable.warning);
                 imageWarning = Bitmap.CreateScaledBitmap(imageBitmap, 120, 120, false);
 
@@ -115,7 +117,8 @@ namespace PinBuster.Droid
                 Type = PinType.Place
             });
             pin.ActualPin = pinToAdd;
-            customPins.Add(pin);
+            //customPins.Add(pin);
+            temp.Add(pin);
             pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
@@ -151,6 +154,7 @@ namespace PinBuster.Droid
             {
                 positionPin(pin);
             }
+            customPins = temp;
         }
 
 

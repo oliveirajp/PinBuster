@@ -102,10 +102,10 @@ namespace PinBuster.Pages
 
             stack.Children.Add(recenterBtn, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
+                return parent.X + parent.Width - parent.Width * 0.4;
             }), Constraint.RelativeToParent((parent) =>
             {
-                return parent.Y * 0.95 + parent.Height * 0.9;
+                return parent.Y * 0.95 + parent.Height * 0.1;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Width * 0.5;
