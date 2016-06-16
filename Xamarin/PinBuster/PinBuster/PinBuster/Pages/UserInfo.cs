@@ -23,6 +23,8 @@ namespace PinBuster
         HttpClient client;
         public static StackLayout layoutPublic;
         public static Label labelPublic;
+        String userID;
+        private bool follow;
 
         public static String resultPublicString;
         public static UserInfo userinfoPublic;
@@ -42,13 +44,19 @@ namespace PinBuster
 
             var uri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/perfil_info/" + id, string.Empty));
             var uriUser = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
-
+            var followUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/follow", string.Empty));
+            
+            JArray followArray = null;
             try
             {
                 var response = await client.GetAsync(uriUser);
-                if (response.IsSuccessStatusCode)
+                var responseFollow = await client.GetAsync(followUri);
+                if (response.IsSuccessStatusCode && responseFollow.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
+                    var followContent = await responseFollow.Content.ReadAsStringAsync();
+                    JObject jsonFollow = JObject.Parse(followContent);
+                    followArray = JArray.Parse(jsonFollow["data"].ToString());
                     this.user = JsonConvert.DeserializeObject<User>(content);
                 }
             }
@@ -69,7 +77,7 @@ namespace PinBuster
                     {
                         //how to get credentials
                         IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
-                        String userID = getCredentials.IGetCredentials()[0];
+                        userID = getCredentials.IGetCredentials()[0];
                         String userName = getCredentials.IGetCredentials()[1];
 
                         var layout = new StackLayout() { VerticalOptions = LayoutOptions.FillAndExpand };
@@ -95,7 +103,7 @@ namespace PinBuster
 
                         grid.Children.Add(new Label { Text = info.nr_followers + " Followers" }, 1, 0);
                         grid.Children.Add(new Label { Text = info.nr_followed + " Followed" }, 2, 0);
-                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Messages" }, 3, 0);
+                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Pins" }, 3, 0);
 
                         // layout.Children.Add(logo);
                         layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
@@ -153,21 +161,60 @@ namespace PinBuster
                         }
                         else
                         {
-                            var bFollow = new Button { Text = "Follow - DO NOT CLICK THIS!", TextColor = Color.White, BackgroundColor = Color.FromHex("#333333"), VerticalOptions = LayoutOptions.End };
+                            follow = isFollow(followArray);
 
-                            bFollow.Clicked += async delegate
-                             {
+                            Button buttonFollow = new Button { Text = "Follow", BackgroundColor = Color.FromHex("#8ADD97"), VerticalOptions = LayoutOptions.End };
+                            Button buttonUnfollow = new Button { Text = "Unfollow", BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
 
-                                 var utilities = new Utilities();
-                                 var values = new Dictionary<string, string>
+                            Button bFollow = buttonFollow;
+                            if (follow)
                             {
-                                { "follower", userID },
-                                {"followed", user.face_id}
-                            };
+                                bFollow = buttonUnfollow;
+                            }
 
-                                 string result = await Utilities.MakePostRequest("https://pinbusterapi.azurewebsites.net/api/follow", values.ToString());
-                                 bFollow.Text = result;
-                             };
+
+                            bFollow.Clicked += delegate
+                            {
+                                using (var client2 = new HttpClient())
+                                {
+                                    client2.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
+                                    if (!follow)
+                                    {
+
+                                        var utilities = new Utilities();
+                                        var values = new Dictionary<string, string>
+                                    {
+                                        {"follower", userID },
+                                        {"followed", user.face_id}
+                                    };
+
+                                        var contentFollow = new FormUrlEncodedContent(values);
+                                        var result2 = client2.PostAsync("api/follow", contentFollow).Result;
+                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
+                                        Debug.WriteLine("POST RESULT:" + resultContent);
+
+                                        //if (resultContent == "done")
+                                        //{
+                                            follow = true;
+                                            bFollow = buttonUnfollow;                                        
+                                        //}
+
+                                    }
+                                    else
+                                    {
+
+                                        var result2 = client2.DeleteAsync("api/follow/" + userID + "?unfollow=" + user.face_id).Result;
+                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
+                                        JObject resultContentJson = JObject.Parse(resultContent);
+
+                                        //if (resultContentJson["data"].ToString() == "done")
+                                        //{
+                                            follow = false;
+                                            bFollow = buttonFollow;
+                                        //}
+                                    }
+                                }
+                            };
 
                             layout.Children.Add(bFollow);
                         }
@@ -287,6 +334,18 @@ namespace PinBuster
                 */
             });
 
+
+        }
+        private bool isFollow(JArray array)
+        {
+            foreach (JObject o in array)
+            {
+                if (o["follower"].ToString().Equals(userID) && o["followed"].ToString().Equals(user.face_id))
+                {
+                    return true;
+                }
+            }
+            return false;
 
         }
     }

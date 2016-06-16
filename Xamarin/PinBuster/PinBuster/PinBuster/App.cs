@@ -95,7 +95,8 @@ namespace PinBuster
             }
             else
             {
-                await App.Current.MainPage.Navigation.PushModalAsync(new DetailMessageList(pin));
+                //await App.Current.MainPage.Navigation.PushModalAsync(new DetailMessageList(pin));
+                return;
             }
         }
 

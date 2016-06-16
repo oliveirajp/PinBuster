@@ -158,7 +158,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="microsoft.png" />
     <EmbeddedResource Include="Pages\MessageListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -222,8 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="achievement-03.png" />
   </ItemGroup>
   <ItemGroup>

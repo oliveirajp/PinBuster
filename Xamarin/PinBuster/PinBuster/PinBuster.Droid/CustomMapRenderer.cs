@@ -227,12 +227,10 @@ namespace PinBuster.Droid
             }
         }
 
-
-
-        void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        async void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
             var customPin = GetCustomPin(e.Marker);
-
+            await App.NavigateToEditPost(customPin);
 
             var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
             var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
