@@ -25,18 +25,17 @@ namespace PinBuster
 
         public static String resultPublicString;
         public static UserInfo userinfoPublic;
-        public UserInfo()
-        {
+        public UserInfo(string id)
+        {            
             labelPublic = new Label { IsVisible = false, Text = "" };
-
             resultPublicString = "";
             userinfoPublic = this;
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
-            Task.Run(() => LoadInfo(6));
+            Task.Run(() => LoadInfo(id));
         }
 
-        public async void LoadInfo(int id)
+        public async void LoadInfo(string id)
         {
 
 
@@ -48,63 +47,27 @@ namespace PinBuster
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    user = JsonConvert.DeserializeObject<User>(content);
+                    this.user = JsonConvert.DeserializeObject<User>(content);
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        //how to get credentials
+                        IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+                        String userID = getCredentials.IGetCredentials()[0];
+                        String userName = getCredentials.IGetCredentials()[1];
+
                         var layout = new StackLayout() { VerticalOptions = LayoutOptions.FillAndExpand };
 
                         //var logo = new Image { Aspect = Aspect.AspectFit };
                         //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
                         //logo.RelScaleTo(0.3);
 
-                        var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
-                        var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
-                        var bFollow = new Button { Text = "Follow", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
-
-                        bLogout.Clicked += async delegate
-                        {
-                            // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
-
-
-                            IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
-                            DeleteCredentials.IDeleteCredentials();
-                            DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
-
-                            // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
-
-                        };
-
-
-                        bFollow.Clicked += async delegate
-                        {
-                            String followerId = DependencyService.Get<IGetCredentials>().IGetCredentials()[0];
-
-                            var utilities = new Utilities();
-                            var values = new Dictionary<string, string>
-                            {
-                                { "follower", followerId },
-                                {"followed", user.utilizador_id}
-                            };
-
-                            string result = await Utilities.MakePostRequest("follow", values.ToString());
-                            bFollow.Text = result;
-                        };
-
-
-
-
-                        //how to get credentials
-                        IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
-                        String userID = getCredentials.IGetCredentials()[0];
-                        String userName = getCredentials.IGetCredentials()[1];
-
                         var photo = new Image { Aspect = Aspect.AspectFit };
-                        photo.Source = "http://graph.facebook.com/" + userID + "/picture?width=200&height=200";
+                        photo.Source = "http://graph.facebook.com/" + user.face_id + "/picture?width=200&height=200";
                         photo.WidthRequest = 150;
                         photo.HeightRequest = 150;
 
-                        var name = new Label { Text = userName, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                        var name = new Label { Text = user.nome, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
 
                         var grid = new Grid();
                         grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -125,38 +88,79 @@ namespace PinBuster
                         layout.Children.Add(name);
                         layout.Children.Add(grid);
 
-                        layout.Children.Add(bFollowers);
-                        layout.Children.Add(bLogout);
+                        if (userID == user.face_id)
+                        {
+
+                            var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
+                            var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
+                            bLogout.Clicked += async delegate
+                            {
+                                // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
+
+
+                                IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
+                                DeleteCredentials.IDeleteCredentials();
+                                await DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
+
+                                await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
+
+                            };
+
+                            bFollowers.Clicked += async delegate
+                            {
+
+
+                                if (Device.OS == TargetPlatform.Windows)
+                                {
+                                    IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
+                                    FacebookFriends.IFacebookFriends(labelPublic);
+                                    Task t = new Task(InsertFollowersWindowsPhone);
+
+                                    t.Start();
+                                }
+                                else
+                                {
+                                    layoutPublic = layout;
+
+                                    Task t = new Task(InsertFollowers);
+                                    await Navigation.PushModalAsync(new FacebookFriends(layout));
+                                    t.Start();
+
+
+                                }
+                            };
+
+
+                            layout.Children.Add(bFollowers);
+                            layout.Children.Add(bLogout);
+
+                        }
+                        else
+                        {
+                            var bFollow = new Button { Text = "Follow - DO NOT CLICK THIS!", TextColor = Color.White, BackgroundColor = Color.FromHex("#333333"), VerticalOptions = LayoutOptions.End };
+
+                            bFollow.Clicked += async delegate
+                             { 
+
+                                var utilities = new Utilities();
+                                var values = new Dictionary<string, string>
+                            {
+                                { "follower", userID },
+                                {"followed", user.face_id}
+                            };
+
+                                string result = await Utilities.MakePostRequest("https://pinbusterapi.azurewebsites.net/api/follow", values.ToString());
+                                bFollow.Text = result;
+                            };
+
+                            layout.Children.Add(bFollow);
+                        }
+
 
 
 
 
                         Content = layout;
-
-
-                        bFollowers.Clicked += async delegate
-                        {
-
-
-                            if (Device.OS == TargetPlatform.Windows)
-                            {
-                                IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
-                                FacebookFriends.IFacebookFriends(labelPublic);
-                                Task t = new Task(InsertFollowersWindowsPhone);
-
-                                t.Start();
-                            }
-                            else
-                            {
-                                layoutPublic = layout;
-
-                                Task t = new Task(InsertFollowers);
-                                await Navigation.PushModalAsync(new FacebookFriends(layout));
-                                t.Start();
-
-
-                            }
-                        };
                     });
                 }
             }

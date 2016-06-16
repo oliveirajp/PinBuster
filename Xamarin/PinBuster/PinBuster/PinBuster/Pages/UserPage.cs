@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using PinBuster.Models;
 
 namespace PinBuster
 {
-    public partial class UserPage : TabbedPage
+  partial class UserPage : TabbedPage
     {
-        public UserPage()
+        public string userid;
+        public UserPage(string userid)
         {
-            var UserInfo = new UserInfo();
+            var UserInfo = new UserInfo(userid);
             UserInfo.Title = "Info";
 
             var Achievements = new UserAchievements();
