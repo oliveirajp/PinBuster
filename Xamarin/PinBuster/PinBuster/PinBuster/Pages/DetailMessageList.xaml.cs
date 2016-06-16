@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using static PinBuster.App;
 
 namespace PinBuster.Pages
 {
@@ -18,8 +19,9 @@ namespace PinBuster.Pages
      
             var picture = new Image()
             {
-                Source = temp_Item.Imagem
-            };
+                
+                Source = "http://graph.facebook.com/" + temp_Item.Face_id + "/picture?width=400&height=400"
+        };
 
 
             var name = new Label()
@@ -58,6 +60,26 @@ namespace PinBuster.Pages
                 FontFamily = Device.OnPlatform("HelveticaNeue", "sans-serif", "")
             };
 
+            var bShare = new Button { Text = "Post to Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
+
+            bShare.Clicked += delegate
+            {
+
+
+                IFacebookShare FacebookShare = DependencyService.Get<IFacebookShare>();
+                FacebookShare.IFacebookShare("secret message", "Porto");
+
+                DisplayAlert("Facebook", "Your post has been shared to Facebook", "OK");
+
+
+            };
+
+
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+            String  userID = getCredentials.IGetCredentials()[0];
+
+               
+
             var details = new StackLayout()
             {
                 Spacing = 10,
@@ -71,8 +93,13 @@ namespace PinBuster.Pages
             localizacao,
             latitude,
             longitude
-        }
+            }
             };
+
+            if (temp_Item.Face_id == userID)
+            {
+                details.Children.Add(bShare);
+            }
 
             layout.Children.Add(
                 picture,
@@ -99,6 +126,8 @@ namespace PinBuster.Pages
                     return parent.Height;
                 })
             );
+        
+
 
             ScrollView scrollView = new ScrollView()
             {

@@ -58,6 +58,9 @@ namespace PinBuster.Droid
                     var response2 = await request2.GetResponseAsync();
                     var obj2 = JObject.Parse(response2.GetResponseText());
 
+                    ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
+                    saveCredentials.ISaveCredentials(id, name, accessToken);
+
                     var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
                     var filename = Path.Combine(documents, "followers2.txt");
                     File.WriteAllText(filename, obj2.ToString());
@@ -78,7 +81,7 @@ namespace PinBuster.Droid
                 }
                 else
                 {
-                    await App.NavigateToProfile("Usuário Cancelou o login", "");
+                    await App.NavigateToApp();
                 }
             };
 
