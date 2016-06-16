@@ -17,28 +17,26 @@ namespace PinBuster.Pages
 {
     public class MapPage : ContentPage
     {
-        
+
         public CustomMap map;
         public bool update, isCentering;
         Button recenterBtn;
         public IEnumerable<String> town;
-
-        Label label;
-        int clickTotal = 0;
+        
 
         void postmessageaction(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(App.lat);
             System.Diagnostics.Debug.WriteLine(App.lng);
 
-            Navigation.PushAsync(new Post(App.lat,App.lng,App.town));
+            Navigation.PushAsync(new Post(App.lat, App.lng, App.town));
         }
 
         public MapPage()
         {
 
             BindingContext = App.Locator.Map;
-            
+
             map = new CustomMap
             {
                 IsShowingUser = true,
@@ -48,7 +46,7 @@ namespace PinBuster.Pages
             };
             map.MoveToRegion(
             MapSpan.FromCenterAndRadius(
-                    new Position(App.lat, App.lng), Distance.FromMiles(0.3)));
+                    new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
 
             update = true;
             isCentering = true;
@@ -57,11 +55,13 @@ namespace PinBuster.Pages
             {
                 App.loc.locationObtained += (object sender, ILocationEventArgs e) =>
                  {
+
                      if (update)
                      {
+                         System.Diagnostics.Debug.WriteLine("Centrando");
                          isCentering = true;
                          Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
-                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat,App.lng), Distance.FromMiles(0.1)));
+                         map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
                          if (App.town == null)
                          {
                              setTown();
@@ -86,31 +86,35 @@ namespace PinBuster.Pages
             button.Clicked += postmessageaction;
 
 
-            var stack = new RelativeLayout {  };
+            var stack = new RelativeLayout { };
 
             map.VerticalOptions = LayoutOptions.FillAndExpand;
             map.HeightRequest = 100;
             map.WidthRequest = 960;
 
-            stack.Children.Add(map, Constraint.RelativeToParent((parent) => {
+            stack.Children.Add(map, Constraint.RelativeToParent((parent) =>
+            {
                 return parent.X;
-            }), Constraint.RelativeToParent((parent) => {
+            }), Constraint.RelativeToParent((parent) =>
+            {
                 return parent.Y * .15;
-            }), Constraint.RelativeToParent((parent) => {
+            }), Constraint.RelativeToParent((parent) =>
+            {
                 return parent.Width;
-            }), Constraint.RelativeToParent((parent) => {
+            }), Constraint.RelativeToParent((parent) =>
+            {
                 return parent.Height;
             }));
 
             stack.Children.Add(button, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X + parent.Width/2 - parent.Width * 0.5 * 0.5;
+                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Y * .15;
             }), Constraint.RelativeToParent((parent) =>
             {
-                return parent.Width*0.5;
+                return parent.Width * 0.5;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Height * .1;
@@ -127,12 +131,13 @@ namespace PinBuster.Pages
             recenterBtn.Clicked += OnRecenterClicked;
             recenterBtn.IsVisible = false;
 
+
             stack.Children.Add(recenterBtn, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X + parent.Width / 2 - parent.Width * 0.5 * 0.5;
+                return parent.X + parent.Width - parent.Width * 0.4;
             }), Constraint.RelativeToParent((parent) =>
             {
-                return parent.Y * 0.95 + parent.Height * 0.9;
+                return parent.Y * 0.95 + parent.Height * 0.1;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Width * 0.5;
@@ -177,7 +182,10 @@ namespace PinBuster.Pages
             };
             stack.Children.Add(labelAll, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X - parent.Width * 0.205;
+                if (Device.OS.ToString() == "Android")
+                    return parent.X - parent.Width * 0.11;
+                else
+                    return parent.X - parent.Width * 0.205;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Y + parent.Height * 0.9;
@@ -223,7 +231,10 @@ namespace PinBuster.Pages
             };
             stack.Children.Add(labelSecret, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X - parent.Width * 0.205;
+                if (Device.OS.ToString() == "Android")
+                    return parent.X - parent.Width * 0.11;
+                else
+                    return parent.X - parent.Width * 0.205;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Y + parent.Height * 0.85;
@@ -269,7 +280,10 @@ namespace PinBuster.Pages
             };
             stack.Children.Add(labelReview, Constraint.RelativeToParent((parent) =>
             {
-                return parent.X - parent.Width * 0.205;
+                if (Device.OS.ToString() == "Android")
+                    return parent.X - parent.Width * 0.11;
+                else
+                    return parent.X - parent.Width * 0.205;
             }), Constraint.RelativeToParent((parent) =>
             {
                 return parent.Y + parent.Height * 0.8;
@@ -283,7 +297,7 @@ namespace PinBuster.Pages
 
             Content = stack;
         }
-        
+
         async private void setTown()
         {
             try
@@ -301,7 +315,7 @@ namespace PinBuster.Pages
         }
 
         private void parseTown(string first)
-        {           
+        {
             App.town = first.Split(' ')[0];
         }
 
@@ -317,12 +331,13 @@ namespace PinBuster.Pages
         private void OnRecenterClicked(object sender, EventArgs e)
         {
             update = isCentering = true;
-            
+            Device.StartTimer(new TimeSpan(0, 0, 2), () => { isCentering = false; return false; });
+
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(App.lat, App.lng), Distance.FromMiles(0.1)));
-            
+
             recenterBtn.IsVisible = false;
         }
-        
+
         private void PositionMap()
         {
             var mapPins = map.Pins;
@@ -342,48 +357,7 @@ namespace PinBuster.Pages
 
             map.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromMiles(distance * 1.5)));
         }
-
-        public void AddPin(PinBuster.Models.Pin pin)
-        {
-            var pinToAdd = (new Pin
-            {
-                Position = new Position(pin.Latitude, pin.Longitude),
-                Address = pin.Conteudo,
-                Label = pin.Nome,
-                Type = PinType.Place
-            });
-            pin.ActualPin = pinToAdd;
-            map.CustomPins.Add(pin);
-            map.Pins.Add(pin.ActualPin);
-           // this.PositionMap();
-        }
-
-        private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
-        {
-
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (var pin in e.NewItems)
-                {
-                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                    {
-                        this.AddPin((PinBuster.Models.Pin)pin);
-                    });
-                }
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Replace)
-            {
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Move)
-            {
-            }
-        }
+        
         private void switcher_Toggled(object sender, ToggledEventArgs e)
         {
             var s = (Switch)sender;

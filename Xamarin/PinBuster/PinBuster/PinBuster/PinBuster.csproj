@@ -36,15 +36,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Data\CalcDistance.cs" />
     <Compile Include="Data\PinCollection.cs" />
     <Compile Include="ListFollowers.xaml.cs">
       <DependentUpon>ListFollowers.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Achievement_L.cs" />
+    <Compile Include="Models\CustomCircle.cs" />
     <Compile Include="Models\Mensagem.cs" />
     <Compile Include="Models\Mensagem_L.cs" />
     <Compile Include="Models\ProfileInfo.cs" />
+    <Compile Include="Pages\CustomRecentActMap.cs" />
     <Compile Include="Pages\FacebookFriends.xaml.cs">
       <DependentUpon>FacebookFriends.xaml</DependentUpon>
     </Compile>
@@ -68,6 +71,7 @@
     <Compile Include="Pages\PostEdit.xaml.cs">
       <DependentUpon>PostEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\RecentActMapPage.cs" />
     <Compile Include="CLocation.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Pages\SearchPage.xaml.cs">
@@ -215,7 +219,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <AndroidResource Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="achievement-03.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\SearchPage.xaml">

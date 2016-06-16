@@ -376,7 +376,7 @@ router.route('/achievement')
 router.route('/achievement/:face_id')
 .get(function(req, res) {
 
-    getData("SELECT ac.face_id, ah.nome, ah.nr_mensagens as MessagesNeeded, ac.nr_mensagens as MessagesFound FROM (SELECT nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement WHERE face_id = 0 group by nome ) ah, (SELECT face_id, nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement group by face_id, nome) ac WHERE ah.nome = ac.nome and ac.face_id = '" + req.params.face_id +"'" , function(err, rows) {
+    getData("SELECT ac.face_id, ah.nome, ah.nr_mensagens as MessagesNeeded, coalesce(ac.nr_mensagens, 0) as MessagesFound FROM (SELECT nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement WHERE face_id = 0 group by nome ) ah left join (SELECT face_id, nome, COUNT(mensagem_id) as nr_mensagens FROM dbo.achievement group by face_id, nome) ac on ah.nome = ac.nome and face_id = '" + req.params.face_id +"'" , function(err, rows) {
         if (err) {
             // Handle the error
             res.json(err);

@@ -10,12 +10,12 @@ namespace PinBuster.Models
         public String data { get; set; }
         public int tempo_limite { get; set; }
         public int raio { get; set; }
-        public int face_id { get; set; }
+        public String face_id { get; set; }
         public String conteudo { get; set;  }
         public String localizacao { get; set; }
         public String categoria { get; set;  }
 
-        public Mensagem(int mensagem_id, double latitude, double longitude, String data, int tempo_limite, int raio, int face_id, String conteudo, String localizacao, String categoria)
+        public Mensagem(int mensagem_id, double latitude, double longitude, String data, int tempo_limite, int raio, String face_id, String conteudo, String localizacao, String categoria)
         {
             this.mensagem_id = mensagem_id;
             this.latitude = latitude;

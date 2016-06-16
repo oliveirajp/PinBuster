@@ -16,7 +16,7 @@ namespace PinBuster
 {
     public class App : Application
     {
-      
+
 
         private readonly static Locator _locator = new Locator();
 
@@ -26,39 +26,42 @@ namespace PinBuster
         {
             get { return _locator; }
         }
-        
+
         public static IGetCurrentPosition loc;
         public static double lat, lng;
+        private static double oldLat, oldLng;
         public static int screenWidth, screenHeight;
         public static ContentPage mapPage;
         public static MessageListView listView;
         public static string town;
-        
+        public static int radius = 10;
+        public static bool updatedPins;
 
         public interface ISaveCredentials
-        { void ISaveCredentials(string userid, string username);   }
+        { void ISaveCredentials(string userid, string username); }
 
         public interface IGetCredentials
-        {String[] IGetCredentials(); }
+        { String[] IGetCredentials(); }
 
         public interface IDeleteCredentials
-        {void IDeleteCredentials();  }
+        { void IDeleteCredentials(); }
 
         public interface IFacebookLogin
-        {void IFacebookLogin();}
+        { void IFacebookLogin(); }
 
         public interface IFacebookFriends
         { void IFacebookFriends(Label label); }
 
         public interface ISaveAndLoad
-        { void SaveText(string filename, string tex);
+        {
+            void SaveText(string filename, string tex);
             string LoadText(string filename);
             void DeleteFile(string filename);
         }
 
         public async static Task NavigateToProfile(string name, string id)
         {
-            
+
             //saving credentials
             ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
             saveCredentials.ISaveCredentials(id, name);
@@ -70,20 +73,14 @@ namespace PinBuster
 
             await App.Current.MainPage.Navigation.PushAsync(new TestPage(name, id));
 
-           // IGetCurrentPosition loctemp;
-            //loctemp = DependencyService.Get<IGetCurrentPosition>();
-            //PinsManager = new PinsManager();
-
-            //  await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
         }
 
         public async static Task NavigateToApp()
         {
             pinsManager = new PinsManager();
             App.Current.MainPage = new MasterDetail();
-            
 
-           // await App.Current.MainPage.Navigation.PushAsync(new MasterDetail(loctemp));
+
         }
 
         public async static Task NavigateToEditPost(Models.Pin pin)
@@ -95,7 +92,8 @@ namespace PinBuster
             if (pin.Face_id == userID)
             {
                 await App.Current.MainPage.Navigation.PushModalAsync(new PostEdit(pin));
-            } else
+            }
+            else
             {
                 await App.Current.MainPage.Navigation.PushModalAsync(new DetailMessageList(pin));
             }
@@ -105,21 +103,46 @@ namespace PinBuster
 
         public App()
         {
-            
+            oldLat = 0;
+            oldLng = 0;
+            updatedPins = true;
+
             loc = DependencyService.Get<IGetCurrentPosition>();
-            loc.locationObtained +=  (object sender, ILocationEventArgs e) =>
-            {
-                lat = e.lat;
-                lng = e.lng;
-                Locator.Map.LoadPins();
-            };
+            loc.locationObtained += async (object sender, ILocationEventArgs e) =>
+           {
+               List<PinBuster.Models.Pin> myList = Locator.Map.Pins.ToList();
+
+               foreach (PinBuster.Models.Pin x in myList)
+               {
+                   if (x.Raio != 0)
+                   {
+                       if (CalcDistance.findDistance(e.lat, e.lng, x.Latitude, x.Longitude) * 1000 <= x.Raio)
+                           x.Visivel = 1;
+                       else
+                           x.Visivel = 0;
+                   }
+                   
+               }
+               lat = e.lat;
+               lng = e.lng;
+
+               if (CalcDistance.findDistance(oldLat, oldLng, e.lat, e.lng) > 0.010)
+               {
+                   updatedPins = true;
+                   oldLat = e.lat;
+                   oldLng = e.lng;
+                   await Locator.Map.LoadPins();
+                   Device.StartTimer(new TimeSpan(0, 0, 7), () => { updatedPins = false; return false; });
+               }
+
+           };
             loc.IGetCurrentPosition();
 
             // The root page of your application
             pinsManager = new PinsManager();
             mapPage = new MapPage();
             listView = new MessageListView();
-           
+
 
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = null;
@@ -145,7 +168,7 @@ namespace PinBuster
         protected override void OnStart()
         {
             // Handle when your app starts
-            
+
         }
 
         protected override void OnSleep()
@@ -155,7 +178,7 @@ namespace PinBuster
 
         protected override void OnResume()
         {
-            
+
         }
     }
 }

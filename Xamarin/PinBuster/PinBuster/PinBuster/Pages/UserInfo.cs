@@ -18,6 +18,7 @@ namespace PinBuster
 
     class UserInfo : ContentPage
     {
+        public ProfileInfo info { get; set; }
         public User user { get; set; }
         HttpClient client;
         public static StackLayout layoutPublic;
@@ -26,7 +27,7 @@ namespace PinBuster
         public static String resultPublicString;
         public static UserInfo userinfoPublic;
         public UserInfo(string id)
-        {            
+        {
             labelPublic = new Label { IsVisible = false, Text = "" };
             resultPublicString = "";
             userinfoPublic = this;
@@ -39,7 +40,22 @@ namespace PinBuster
         {
 
 
-            var uri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
+            var uri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/perfil_info/" + id, string.Empty));
+            var uriUser = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
+
+            try
+            {
+                var response = await client.GetAsync(uriUser);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    this.user = JsonConvert.DeserializeObject<User>(content);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
 
             try
             {
@@ -47,7 +63,7 @@ namespace PinBuster
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    this.user = JsonConvert.DeserializeObject<User>(content);
+                    info = JsonConvert.DeserializeObject<ProfileInfo>(content);
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -77,9 +93,9 @@ namespace PinBuster
                         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-                        grid.Children.Add(new Label { Text = "5 Followers" }, 1, 0);
-                        grid.Children.Add(new Label { Text = "2 Followed" }, 2, 0);
-                        grid.Children.Add(new Label { Text = "15 Messages" }, 3, 0);
+                        grid.Children.Add(new Label { Text = info.nr_followers + " Followers" }, 1, 0);
+                        grid.Children.Add(new Label { Text = info.nr_followed + " Followed" }, 2, 0);
+                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Messages" }, 3, 0);
 
                         // layout.Children.Add(logo);
                         layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
@@ -140,18 +156,18 @@ namespace PinBuster
                             var bFollow = new Button { Text = "Follow - DO NOT CLICK THIS!", TextColor = Color.White, BackgroundColor = Color.FromHex("#333333"), VerticalOptions = LayoutOptions.End };
 
                             bFollow.Clicked += async delegate
-                             { 
+                             {
 
-                                var utilities = new Utilities();
-                                var values = new Dictionary<string, string>
+                                 var utilities = new Utilities();
+                                 var values = new Dictionary<string, string>
                             {
                                 { "follower", userID },
                                 {"followed", user.face_id}
                             };
 
-                                string result = await Utilities.MakePostRequest("https://pinbusterapi.azurewebsites.net/api/follow", values.ToString());
-                                bFollow.Text = result;
-                            };
+                                 string result = await Utilities.MakePostRequest("https://pinbusterapi.azurewebsites.net/api/follow", values.ToString());
+                                 bFollow.Text = result;
+                             };
 
                             layout.Children.Add(bFollow);
                         }

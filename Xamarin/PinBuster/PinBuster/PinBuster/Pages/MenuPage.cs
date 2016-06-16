@@ -23,16 +23,17 @@ namespace PinBuster.Pages
         public MenuPage()
         {
             Title = "Menu";
-
+            Icon = "hamburger.png";
             Padding = new Thickness(10, 20);
 
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
 
             var categories = new List<Menu>() {
-            new Menu("Pin list", () => App.listView),
-            new Menu("Map", () => App.mapPage),
-            new Menu("Profile", () => new UserPage(getCredentials.IGetCredentials()[0])),
-            new Menu("Search", () => new SearchPage())
+
+            new Menu("Map","vista_mapa.png",() => App.mapPage),
+            new Menu("Pin list","vista_lista.png", () => App.listView),
+            new Menu("Profile","perfil.png", () => new UserPage(getCredentials.IGetCredentials()[0])),
+            new Menu("Search","search.png", () => new SearchPage())
         };
 
             var dataTemplate = new DataTemplate(typeof(TextCell));
@@ -45,7 +46,8 @@ namespace PinBuster.Pages
             };
 
 
-            listView.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+            listView.ItemSelected += (object sender, SelectedItemChangedEventArgs e) =>
+            {
                 if (OnMenuSelect != null)
                 {
                     var category = (Menu)e.SelectedItem;

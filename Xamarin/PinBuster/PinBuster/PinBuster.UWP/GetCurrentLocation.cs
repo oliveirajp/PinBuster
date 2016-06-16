@@ -86,11 +86,12 @@ namespace PinBuster.UWP
         {
             if (pos != null)
             {
-                args.lat = pos.Coordinate.Point.Position.Latitude;
-                args.lng = pos.Coordinate.Point.Position.Longitude;
               
                 try
                 {
+
+                    args.lat = pos.Coordinate.Point.Position.Latitude;
+                    args.lng = pos.Coordinate.Point.Position.Longitude;
                     locationObtained(this, args);
                 }
                 catch (Exception e)

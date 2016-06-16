@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 
@@ -23,14 +24,30 @@ namespace PinBuster.UWP
         public XamarinMapOverlay(Models.Pin pin)
         {
             this.InitializeComponent();
-            this.pin = pin;
+            if (pin != null)
+                this.pin = pin;
             SetupData();
 
         }
         void SetupData()
         {
-            Label.Text = pin.Nome;
-            Address.Text = pin.Conteudo;
+            if (pin != null)
+            {
+                Label.Text = pin.Categoria;
+                Address.Text = pin.Conteudo;
+                Uri uri = new Uri(pin.Imagem);
+                BitmapImage bmi = new BitmapImage();
+                bmi.UriSource = uri;
+
+                UserImage.Source = bmi;
+            }
+            else
+            {
+                Label.Text = "Warning!";
+                Address.Text = "Get closer to read the pin";
+                InfoButton.Visibility = Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         async private void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
@@ -38,6 +55,6 @@ namespace PinBuster.UWP
             await PinBuster.App.NavigateToEditPost(pin);
         }
 
-     
+
     }
 }
