@@ -69,20 +69,21 @@ namespace PinBuster
           //  FacebookFriends.DeleteFile("followers2.txt");
             FacebookFriends.SaveText("followers2.txt", "");
             String result = FacebookFriends.LoadText("followers2.txt");
-
+            int milliseconds = 100;
             while (result == "")
             {
                  result = FacebookFriends.LoadText("followers2.txt");
                 Debug.WriteLine("result no ciclo"+result);
-                int milliseconds = 100;
+              
                 Task.Delay(milliseconds).Wait();
             }
-            Debug.WriteLine("here2222222222222222222222222222222222222222222222222222222222222");
             // Debug.WriteLine("result:" + result);
             //l.Navigation.PushAsync(new ListFollowers("ola"),false);
 
-            l.Navigation.PopModalAsync();
-          
+            
+             l.Navigation.PopModalAsync();
+
+
 
         }
 

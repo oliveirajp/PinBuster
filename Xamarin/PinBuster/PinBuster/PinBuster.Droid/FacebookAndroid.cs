@@ -42,6 +42,8 @@ namespace PinBuster.Droid
             auth.Completed += async (sender, eventArgs) => {
                 if (eventArgs.IsAuthenticated)
                 {
+                    AccountStore.Create().Save(eventArgs.Account, "Facebook");
+
                     var accessToken = eventArgs.Account.Properties["access_token"].ToString();
                     var expiresIn = Convert.ToDouble(eventArgs.Account.Properties["expires_in"]);
                     var expiryDate = DateTime.Now + TimeSpan.FromSeconds(expiresIn);
@@ -53,14 +55,14 @@ namespace PinBuster.Droid
                     var id = obj["id"].ToString().Replace("\"", "");
                     var name = obj["name"].ToString().Replace("\"", "");
 
-                    await App.NavigateToProfile(string.Format(name), string.Format(id));
+                    await App.NavigateToProfile(string.Format(name), string.Format(id), string.Format(accessToken));
 
                     System.Diagnostics.Debug.WriteLine(obj.ToString());
 
                 }
                 else
                 {
-                    await App.NavigateToProfile("Usuário Cancelou o login", "");
+                    await App.NavigateToApp();
                 }
             };
 
