@@ -5,13 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using PinBuster.Models;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using static PinBuster.App;
 using Newtonsoft.Json.Linq;
 using PinBuster.Data;
+
+using System.Net;
+using System.IO;
+using Java.Net;
+using Org.Apache.Http.Client.Methods;
+using Org.Apache.Http;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace PinBuster
 {
@@ -45,7 +52,7 @@ namespace PinBuster
             var uri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/perfil_info/" + id, string.Empty));
             var uriUser = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
             var followUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/follow", string.Empty));
-            
+
             JArray followArray = null;
             try
             {
@@ -124,7 +131,7 @@ namespace PinBuster
 
                                 IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
                                 DeleteCredentials.IDeleteCredentials();
-                                await DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
+                                await DisplayAlert("Alert", "Restart the app to complete logout", "OK");
 
                                 await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
@@ -136,21 +143,55 @@ namespace PinBuster
 
                                 if (Device.OS == TargetPlatform.Windows)
                                 {
-                                    IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
-                                    FacebookFriends.IFacebookFriends(labelPublic);
-                                    Task t = new Task(InsertFollowersWindowsPhone);
+                                    String accessTokenSaves = getCredentials.IGetCredentials()[2];
+                                    String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
+                                    HttpClient httpClient = new HttpClient();
+                                    Debug.WriteLine(urlString);
+                                    String streamAsync = "";
+                                    try
+                                    {
 
-                                    t.Start();
+                                        streamAsync = httpClient.GetStringAsync(urlString).Result;
+                                        Debug.WriteLine(streamAsync);
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new ListFollowers(streamAsync));
+                                        t.Start();
+                                    }
+                                    catch
+                                    {
+                                        IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
+                                        FacebookFriends.IFacebookFriends(labelPublic);
+                                        Task t = new Task(InsertFollowersWindowsPhone);
+                                        Debug.WriteLine("falied");
+
+                                        t.Start();
+                                    }
                                 }
                                 else
                                 {
                                     layoutPublic = layout;
+                                    String accessTokenSaves = getCredentials.IGetCredentials()[2];
+                                    String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
+                                    System.Diagnostics.Debug.WriteLine(urlString);
 
-                                    Task t = new Task(InsertFollowers);
-                                    await Navigation.PushModalAsync(new FacebookFriends(layout));
-                                    t.Start();
+                                    System.Diagnostics.Debug.WriteLine("hereeee");
 
+                                    HttpClient httpClient = new HttpClient();
+                                    String streamAsync = "";
+                                    try
+                                    {
+                                        streamAsync = httpClient.GetStringAsync(urlString).Result;
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new ListFollowers(streamAsync));
+                                        t.Start();
+                                    }
+                                    catch
+                                    {
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new FacebookFriends(layout));
+                                        t.Start();
 
+                                    }
                                 }
                             };
 
@@ -171,8 +212,7 @@ namespace PinBuster
                             {
                                 bFollow = buttonUnfollow;
                             }
-
-
+                            
                             bFollow.Clicked += delegate
                             {
                                 using (var client2 = new HttpClient())
@@ -192,12 +232,9 @@ namespace PinBuster
                                         var result2 = client2.PostAsync("api/follow", contentFollow).Result;
                                         string resultContent = result2.Content.ReadAsStringAsync().Result;
                                         Debug.WriteLine("POST RESULT:" + resultContent);
-
-                                        //if (resultContent == "done")
-                                        //{
-                                            follow = true;
-                                            bFollow = buttonUnfollow;                                        
-                                        //}
+                                        
+                                        follow = true;
+                                        bFollow = buttonUnfollow;
 
                                     }
                                     else
@@ -206,23 +243,15 @@ namespace PinBuster
                                         var result2 = client2.DeleteAsync("api/follow/" + userID + "?unfollow=" + user.face_id).Result;
                                         string resultContent = result2.Content.ReadAsStringAsync().Result;
                                         JObject resultContentJson = JObject.Parse(resultContent);
-
-                                        //if (resultContentJson["data"].ToString() == "done")
-                                        //{
-                                            follow = false;
-                                            bFollow = buttonFollow;
-                                        //}
+                                        
+                                        follow = false;
+                                        bFollow = buttonFollow;
                                     }
                                 }
                             };
 
                             layout.Children.Add(bFollow);
                         }
-
-
-
-
-
                         Content = layout;
                     });
                 }
@@ -279,59 +308,14 @@ namespace PinBuster
                 Task.Delay(milliseconds).Wait();
             }
             Debug.WriteLine("666666666666666666666666666666");
-            // Debug.WriteLine("result:" + result);
-
 
 
             TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
             Device.BeginInvokeOnMainThread(() =>
             {
+                int milliseconds = 100;
+                Task.Delay(milliseconds).Wait();
                 userinfoPublic.Navigation.PushAsync(new ListFollowers(result));
-
-                /*
-                try
-                {
-                    
-                   
-                    JObject friendListJson = JObject.Parse(result);
-                    List<string> strinArrayList = new List<string>();
-
-                    foreach (var friend in friendListJson["data"].Children())
-                    {
-                        String id = friend["id"].ToString().Replace("\"", "");
-                        String name = friend["name"].ToString().Replace("\"", "");
-                        var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
-                        Button button=new Button { Text="Follow", HorizontalOptions = LayoutOptions.CenterAndExpand};
-                        button.Clicked += delegate
-                        {
-                            var postData = new List<KeyValuePair<string, string>>();
-                            postData.Add(new KeyValuePair<string, string>("follower", id));
-                            postData.Add(new KeyValuePair<string, string>("followed", userid));
-
-                
-                                    using (var client = new System.Net.Http.HttpClient())
-                                    {
-                                        client.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
-                                        var content = new System.Net.Http.FormUrlEncodedContent(postData);
-                                        var result2 = client.PostAsync("api/follow", content).Result;
-                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
-                                        Debug.WriteLine(resultContent);
-                                        // NomeUser.Text = resultContent;
-                                    }
-                                
-
-                            
-                        };
-                        layoutPublic.Children.Add(nameLabel);
-                        layoutPublic.Children.Add(button);
-                    }
-                    tcs.SetResult(null);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-                */
             });
 
 

@@ -79,6 +79,7 @@ namespace PinBuster
                     Button button = new Button { Text = "Follow", HorizontalOptions = LayoutOptions.End, HeightRequest = 30 };
 
                     button.BackgroundColor = Color.FromHex("#8ADD97");
+                    button.HorizontalOptions = LayoutOptions.EndAndExpand;
 
                     Boolean following = false;
                     if (!noUsers)

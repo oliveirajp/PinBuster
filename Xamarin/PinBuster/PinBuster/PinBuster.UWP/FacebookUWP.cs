@@ -112,13 +112,22 @@ namespace PinBuster.UWP
                 String name = jsonId.ToString().Substring(1, jsonId.ToString().Length - 2);
 
 
-                Debug.WriteLine("Profile information:" + name + ";" + id);
+                Debug.WriteLine("Profile information:" + name + ";" + id + ";"+ AccessToken);
 
                 var vault = new PasswordVault();
                 Login.authFacebook.LoginName = name;
+                Login.authFacebook.AcessToken = AccessToken;
                 Login.authFacebook.LoginID = id;
+
+
+                Login.accessToken = AccessToken;
+                Debug.WriteLine("tokeeeen:" + Login.accessToken);
+                Debug.WriteLine("tokeeeen:" + Login.authFacebook.AcessToken);
+
+
                 Login.loginID = id;
                 Login.loginName = name;
+
 
                 Debug.WriteLine("here in Face");
 

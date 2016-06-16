@@ -14,12 +14,15 @@ namespace PinBuster
     {
         public static string loginID;
         public static string loginName;
+        public static string accessToken;
+
 
 
         public class Auth
         {
             public Login L;
             public string LoginName;
+            public string AcessToken;
             public string LoginID
             {
 
@@ -29,22 +32,15 @@ namespace PinBuster
                     loginID = value;
                     if (loginID != "")
                     {
-                      //  Debug.WriteLine("Changed");
-
-
                         ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
-                        saveCredentials.ISaveCredentials(LoginID, LoginName);
+                        saveCredentials.ISaveCredentials(LoginID, LoginName, AcessToken);
 
                         IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
                         String userID = getCredentials.IGetCredentials()[0];
-                      //  Debug.WriteLine("user id after saving:" + userID);
 
                         if (Device.OS == TargetPlatform.Windows)
                         {
-                             App.NavigateToProfile(LoginName,LoginID).Wait();
-
-                            // L.Navigation.PushModalAsync(new TestPage(LoginName, LoginID));
-                            //L.Navigation.RemovePage(L);
+                             App.NavigateToProfile(LoginName,LoginID, AcessToken).Wait();
                         }
 
 

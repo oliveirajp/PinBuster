@@ -19,7 +19,7 @@ namespace PinBuster.UWP
 {
     class SaveCredentials : ISaveCredentials
     {
-        public void ISaveCredentials(string userid, string username)
+        public void ISaveCredentials(string userid, string username, string accessToken)
         {
             /* var vault = new Windows.Security.Credentials.PasswordVault();
              vault.Add(new Windows.Security.Credentials.PasswordCredential(
@@ -30,6 +30,9 @@ namespace PinBuster.UWP
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             localSettings.Values["userID"] = userid;
             localSettings.Values["userName"] = username;
+            Debug.WriteLine("acessToken:" + accessToken);
+            localSettings.Values["accessToken"] = accessToken;
+
 
             Object value = localSettings.Values["userID"];
             Debug.WriteLine("userIDStored:" + value.ToString());
@@ -44,12 +47,16 @@ namespace PinBuster.UWP
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             Object id = localSettings.Values["userID"];
             Object name = localSettings.Values["userName"];
+            Object access = localSettings.Values["accessToken"];
+
             if (id == null)
                 return null;
             String userID = id.ToString();
             String userName = name.ToString();
+            String accessToken = access.ToString();
+
             Debug.WriteLine("userIDStored:" + userID);
-            String[] array = { userID, userName };
+            String[] array = { userID, userName, accessToken };
             return array;
         }
     }

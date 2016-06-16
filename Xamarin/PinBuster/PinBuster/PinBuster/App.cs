@@ -38,7 +38,7 @@ namespace PinBuster
         public static bool updatedPins;
 
         public interface ISaveCredentials
-        { void ISaveCredentials(string userid, string username); }
+        { void ISaveCredentials(string userid, string username, string accessToken); }
 
         public interface IGetCredentials
         { String[] IGetCredentials(); }
@@ -52,6 +52,9 @@ namespace PinBuster
         public interface IFacebookFriends
         { void IFacebookFriends(Label label); }
 
+        public interface IFacebookShare
+        { void IFacebookShare(String place, String message); }
+
         public interface ISaveAndLoad
         {
             void SaveText(string filename, string tex);
@@ -59,12 +62,12 @@ namespace PinBuster
             void DeleteFile(string filename);
         }
 
-        public async static Task NavigateToProfile(string name, string id)
+        public async static Task NavigateToProfile(string name, string id, string accessToken)
         {
 
             //saving credentials
             ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
-            saveCredentials.ISaveCredentials(id, name);
+            saveCredentials.ISaveCredentials(id, name, accessToken);
 
             //how to get credentials
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
@@ -148,6 +151,7 @@ namespace PinBuster
             IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
             String userID = null;
             String userName = null;
+            Debug.WriteLine("hereeeeeeeeeeeeeeeeeeeeee");
             if (getCredentials.IGetCredentials() != null)
             {
                 userID = getCredentials.IGetCredentials()[0];

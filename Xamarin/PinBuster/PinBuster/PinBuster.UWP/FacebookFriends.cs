@@ -66,14 +66,31 @@ namespace PinBuster.UWP
                     var access_token = match.Groups["access_token"];
                     var expires_in = match.Groups["expires_in"];
 
-                    Debug.WriteLine("token: " + access_token.Value.ToString());
+                    Debug.WriteLine("token000" + access_token.Value.ToString());
+                    Debug.WriteLine("token000" + access_token.Value.ToString());
+
                     // var fb = new FacebookClient(access_token.Value);
+
+
+                    //how to get credentials
+                    IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+                    String userID = getCredentials.IGetCredentials()[0];
+                    String userName = getCredentials.IGetCredentials()[1];
+
+                    ISaveCredentials saveCredentials = DependencyService.Get<ISaveCredentials>();
+                    saveCredentials.ISaveCredentials(userID, userName, access_token.Value.ToString());
+
+
+
+
+
 
 
                     var match2 = Regex.Match(result.ResponseData, "(?:=)(.*)(?:&)");
                     string token = match2.ToString().Substring(1);
                     token = token.Remove(token.Length - 1);
-                    Debug.WriteLine(".." + token);
+                    Debug.WriteLine("..." + token);
+                    Debug.WriteLine("CREDENTIALS:" + token);
 
 
                     GetData(token, "me?fields=friends");
@@ -100,23 +117,7 @@ namespace PinBuster.UWP
                     var json2 = await httpClient.GetStringAsync("https://graph.facebook.com/me/friends?access_token="+ AccessToken);
 
                     labelPublic.Text = json2.ToString();
-                    //Debug.WriteLine("datafromjson" + json2.ToString());
-                    //var jsonObject = Windows.Data.Json.JsonObject.Parse(json2);
-                    /*
-                    JObject friendListJson = JObject.Parse(json2.ToString());
-                    List<string> strinArrayList = new List<string>();
-
-                    foreach (var friend in friendListJson["data"].Children())
-                    {
-                        String id=friend["id"].ToString().Replace("\"", "");
-                        String name=friend["name"].ToString().Replace("\"", "");
-                        var nameLabel = new Label { Text = name, FontSize = 20, HorizontalOptions = LayoutOptions.CenterAndExpand };
-                        layoutPublic.Children.Add(nameLabel);
-                    }
-                    */
-
-                   // Debug.WriteLine("name:" + jsonName.ToString());
-                   // Now parse with JSON.Net
+                   
                 }
 
                 
