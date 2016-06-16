@@ -13,12 +13,10 @@ namespace PinBuster
         Achievement_L achievements;
         HttpClient client;
 
-        public UserAchievements()
+        public UserAchievements(string userID)
         {
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
-            App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
-            String userID = getCredentials.IGetCredentials()[0];
 
             Task.Run(() => getUserAchievements(userID));
         }

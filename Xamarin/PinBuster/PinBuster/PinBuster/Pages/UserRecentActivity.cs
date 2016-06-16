@@ -19,12 +19,10 @@ namespace PinBuster
         Pins_L lista_mensagens;
         List<Models.Pin> pinList;
 
-        public UserRecentActivity()
+        public UserRecentActivity(string userID)
         {
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
-            App.IGetCredentials getCredentials = DependencyService.Get<App.IGetCredentials>();
-            String userID = getCredentials.IGetCredentials()[0];
             u = new PinBuster.Data.Utilities();
             LoadAndDisplayPins(userID);
         }

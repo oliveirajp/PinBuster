@@ -16,10 +16,10 @@ namespace PinBuster
             var UserInfo = new UserInfo(userid);
             UserInfo.Title = "Info";
 
-            var Achievements = new UserAchievements();
+            var Achievements = new UserAchievements(userid);
             Achievements.Title = "Achievements";
 
-            var RecentActivity = new UserRecentActivity();
+            var RecentActivity = new UserRecentActivity(userid);
             RecentActivity.Title = "RecentActivity";
 
             Children.Add(UserInfo);
