@@ -15,10 +15,10 @@ using PinBuster.Pages;
 using System.Diagnostics;
 
 
-[assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
+[assembly: ExportRenderer(typeof(CustomRecentActMap), typeof(CustomRecentActMapRenderer))]
 namespace PinBuster.UWP
 {
-    class CustomMapRenderer : MapRenderer
+    class CustomRecentActMapRenderer : MapRenderer
     {
         const int EarthRadiusInMeteres = 6371000;
         MapControl nativeMap;
@@ -27,7 +27,8 @@ namespace PinBuster.UWP
         RandomAccessStreamReference imageSecret, imageNormal, imageReview, imageAchievement;
         List<MapIcon> markers = new List<MapIcon>();
         int userRadius;
-        MapPolygon userCircle, warningCircle;
+        MapPolygon warningCircle;
+        List<Models.Pin> temp;
 
         Models.Pin selectedPin;
 
@@ -50,7 +51,8 @@ namespace PinBuster.UWP
             if (e.NewElement != null)
             {
                 nativeMap = Control as MapControl;
-                customPins = new List<Models.Pin>();
+                var formsMap = (CustomRecentActMap)e.NewElement;
+                customPins = formsMap.CustomPins;
                 userRadius = PinBuster.App.radius * 1000;
 
                 nativeMap.Children.Clear();
@@ -61,33 +63,26 @@ namespace PinBuster.UWP
                 imageReview = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_review.png"));
                 imageAchievement = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin_achievement.png"));
 
-                foreach (var pin in PinBuster.App.Locator.Map.Pins)
+
+                temp = new List<Models.Pin>();
+                foreach (var pin in customPins)
                 {
                     positionPin(pin);
                 }
-
-                PinBuster.App.Locator.Map.Pins.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PinsChangedMethod);
+                customPins = temp;
 
                 PinBuster.App.loc.locationObtained += (object sender, ILocationEventArgs eLoc) =>
                 {
-                    var coordinates = new List<BasicGeoposition>();
-                    Position pos = new Position(eLoc.lat, eLoc.lng);
-                    var positions = GenerateCircleCoordinates(pos, userRadius);
-                    foreach (var position in positions)
+                    foreach (PinBuster.Models.Pin x in customPins)
                     {
-                        coordinates.Add(new BasicGeoposition { Latitude = position.Latitude, Longitude = position.Longitude });
+                        if (x.Raio != 0)
+                        {
+                            if (Data.CalcDistance.findDistance(eLoc.lat, eLoc.lng, x.Latitude, x.Longitude) * 1000 <= x.Raio)
+                                x.Visivel = 1;
+                            else
+                                x.Visivel = 0;
+                        }
                     }
-
-                    if (userCircle != null)
-                        nativeMap.MapElements.Remove(userCircle);
-
-                    userCircle = new MapPolygon();
-                    userCircle.FillColor = Windows.UI.Color.FromArgb(75, 255, 255, 255);
-                    userCircle.StrokeColor = Windows.UI.Color.FromArgb(128, 27, 67, 76);
-                    userCircle.StrokeThickness = 5;
-                    userCircle.Path = new Geopath(coordinates);
-                    userCircle.ZIndex = 1;
-                    nativeMap.MapElements.Add(userCircle);
 
                 };
             }
@@ -131,58 +126,6 @@ namespace PinBuster.UWP
             if (warningCircle != null)
                 nativeMap.MapElements.Remove(warningCircle);
         }
-
-        private void PinsChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (Models.Pin pin in e.NewItems)
-                    {
-                        if (!CheckIfExists(pin))
-                            positionPin(pin);
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (Models.Pin pin in e.OldItems)
-                    {
-                        pin.PropertyChanged -= this.OnItemPropertyChanged;
-                        MapIcon ms = null;
-                        foreach (var m in markers)
-                        {
-                            if (m.Location.Position.Latitude == pin.Latitude && m.Location.Position.Longitude == pin.Longitude)
-                            {
-                                ms = m;
-                                break;
-                            }
-                        }
-                        if (ms != null)
-                        {
-                            markers.Remove(ms);
-                            nativeMap.MapElements.Remove(ms);
-                        }
-                    }
-                    break;
-                default:
-                    break;
-
-            }
-        }
-
-        private bool CheckIfExists(Models.Pin pin)
-        {
-            foreach (Models.Pin p in customPins)
-            {
-                if (p.Longitude == pin.Longitude && p.Latitude == pin.Latitude && p.Conteudo == pin.Conteudo && p.Data == pin.Data)
-                {
-                    p.Visivel = pin.Visivel;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private void positionPin(Models.Pin pin)
         {
             var snPosition = new BasicGeoposition { Latitude = pin.Latitude, Longitude = pin.Longitude };
@@ -221,8 +164,8 @@ namespace PinBuster.UWP
                 Type = PinType.Place
             });
             pin.ActualPin = pinToAdd;
-            customPins.Add(pin);
-
+            //customPins.Add(pin);
+            temp.Add(pin);
             pin.PropertyChanged += this.OnItemPropertyChanged;
         }
 
@@ -318,20 +261,13 @@ namespace PinBuster.UWP
         {
             System.Diagnostics.Debug.WriteLine("Switch");
 
-            try
-            {
-                System.Diagnostics.Debug.WriteLine("Numero de elementos: " + this.nativeMap.MapElements.Count());
 
-                Models.Pin temp = (Models.Pin)sender;
-                foreach (MapIcon m in markers)
-                    if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
-                        m.Visible = temp.Show;
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine("Page not active");
-            }
-            
+            System.Diagnostics.Debug.WriteLine("Numero de elementos: " + this.nativeMap.MapElements.Count());
+
+            Models.Pin temp = (Models.Pin)sender;
+            foreach (MapIcon m in markers)
+                if (m.Location.Position.Latitude == temp.Latitude && m.Location.Position.Longitude == temp.Longitude)
+                    m.Visible = temp.Show;
         }
 
     }

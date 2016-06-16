@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PinBuster.Pages.SearchPage"
+             Title="Search for a user">
+  <StackLayout>
+    <SearchBar x:Name ="searchBar" SearchButtonPressed="OnSearch"/>
+    <Label x:Name = "notFoundLabel" Text =""/>
+    <ListView x:Name="UserView" ItemTapped="OnItemTapped">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ImageCell Text="{Binding nome}" ImageSource="http://graph.facebook.com/{Binding face_id}/picture?width=200&amp;height=200" />
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+   </StackLayout>
+
+</ContentPage>

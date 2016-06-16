@@ -33,7 +33,7 @@ namespace PinBuster.UWP
         {
             if (pin != null)
             {
-                Label.Text = pin.Nome;
+                Label.Text = pin.Categoria;
                 Address.Text = pin.Conteudo;
                 Uri uri = new Uri(pin.Imagem);
                 BitmapImage bmi = new BitmapImage();

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using static PinBuster.App;
 using Newtonsoft.Json.Linq;
+using PinBuster.Data;
 
 using System.Net;
 using System.IO;
@@ -25,28 +26,51 @@ namespace PinBuster
     class UserInfo : ContentPage
     {
         public ProfileInfo info { get; set; }
+        public User user { get; set; }
         HttpClient client;
         public static StackLayout layoutPublic;
         public static Label labelPublic;
+        String userID;
+        private bool follow;
 
         public static String resultPublicString;
         public static UserInfo userinfoPublic;
-        public UserInfo()
+        public UserInfo(string id)
         {
             labelPublic = new Label { IsVisible = false, Text = "" };
-
             resultPublicString = "";
             userinfoPublic = this;
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
-            Task.Run(() => LoadInfo(6));
+            Task.Run(() => LoadInfo(id));
         }
 
-        public async void LoadInfo(int id)
+        public async void LoadInfo(string id)
         {
 
 
             var uri = new Uri(string.Format("http://pinbusterapi.azurewebsites.net/api/perfil_info/" + id, string.Empty));
+            var uriUser = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/utilizador/" + id, string.Empty));
+            var followUri = new Uri(string.Format("https://pinbusterapi.azurewebsites.net/api/follow", string.Empty));
+
+            JArray followArray = null;
+            try
+            {
+                var response = await client.GetAsync(uriUser);
+                var responseFollow = await client.GetAsync(followUri);
+                if (response.IsSuccessStatusCode && responseFollow.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var followContent = await responseFollow.Content.ReadAsStringAsync();
+                    JObject jsonFollow = JObject.Parse(followContent);
+                    followArray = JArray.Parse(jsonFollow["data"].ToString());
+                    this.user = JsonConvert.DeserializeObject<User>(content);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
 
             try
             {
@@ -58,41 +82,23 @@ namespace PinBuster
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        //how to get credentials
+                        IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+                        userID = getCredentials.IGetCredentials()[0];
+                        String userName = getCredentials.IGetCredentials()[1];
+
                         var layout = new StackLayout() { VerticalOptions = LayoutOptions.FillAndExpand };
 
                         //var logo = new Image { Aspect = Aspect.AspectFit };
                         //logo.Source = ImageSource.FromResource("PinBuster.microsoft.png");
                         //logo.RelScaleTo(0.3);
 
-                        var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
-                        var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
-
-
-                        bLogout.Clicked += async delegate
-                        {
-                            // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
-
-
-                            IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
-                            DeleteCredentials.IDeleteCredentials();
-                            DisplayAlert("Alert", "Reinicia a app para acabar o logout", "OK");
-
-                            // await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
-
-                        };
-
-
-                        //how to get credentials
-                        IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
-                        String userID = getCredentials.IGetCredentials()[0];
-                        String userName = getCredentials.IGetCredentials()[1];
-
                         var photo = new Image { Aspect = Aspect.AspectFit };
-                        photo.Source = "http://graph.facebook.com/" + userID + "/picture?width=200&height=200";
+                        photo.Source = "http://graph.facebook.com/" + user.face_id + "/picture?width=200&height=200";
                         photo.WidthRequest = 150;
                         photo.HeightRequest = 150;
 
-                        var name = new Label { Text = userName, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
+                        var name = new Label { Text = user.nome, FontSize = 30, HorizontalOptions = LayoutOptions.CenterAndExpand };
 
                         var grid = new Grid();
                         grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -104,7 +110,7 @@ namespace PinBuster
 
                         grid.Children.Add(new Label { Text = info.nr_followers + " Followers" }, 1, 0);
                         grid.Children.Add(new Label { Text = info.nr_followed + " Followed" }, 2, 0);
-                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Messages" }, 3, 0);
+                        grid.Children.Add(new Label { Text = info.nr_mensagens + " Pins" }, 3, 0);
 
                         // layout.Children.Add(logo);
                         layout.Children.Add(new BoxView() { Color = Color.Gray, HeightRequest = 2 });
@@ -113,83 +119,140 @@ namespace PinBuster
                         layout.Children.Add(name);
                         layout.Children.Add(grid);
 
-                        layout.Children.Add(bFollowers);
-                        layout.Children.Add(bLogout);
-
-
-
-
-                        Content = layout;
-
-
-                        bFollowers.Clicked += async delegate
+                        if (userID == user.face_id)
                         {
 
-
-                            if (Device.OS == TargetPlatform.Windows)
+                            var bLogout = new Button { Text = "Logout", TextColor = Color.White, BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
+                            var bFollowers = new Button { Text = "Followers from Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
+                            bLogout.Clicked += async delegate
                             {
-                                String accessTokenSaves = getCredentials.IGetCredentials()[2];
-                                String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
-                                HttpClient httpClient = new HttpClient();
-                                Debug.WriteLine(urlString);
-                                String streamAsync = "";
-                                try
-                                {
-                                    
-                                    streamAsync = httpClient.GetStringAsync(urlString).Result;
-                                    Debug.WriteLine(streamAsync);
-                                    Task t = new Task(InsertFollowers);
-                                    await Navigation.PushModalAsync(new ListFollowers(streamAsync));
-                                    t.Start();
-                                }
-                                catch
-                                {
-                                    IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
-                                    FacebookFriends.IFacebookFriends(labelPublic);
-                                    Task t = new Task(InsertFollowersWindowsPhone);
-                                    Debug.WriteLine("falied");
+                                // CrossShare.Current.ShareLink("http://motzcod.es", "I just posted a scret message on Pinbuster", "Pinbuster");
 
-                                    t.Start();
-                                }
-                            }
-                            else
+
+                                IDeleteCredentials DeleteCredentials = DependencyService.Get<IDeleteCredentials>();
+                                DeleteCredentials.IDeleteCredentials();
+                                await DisplayAlert("Alert", "Restart the app to complete logout", "OK");
+
+                                await App.Current.MainPage.Navigation.PushAsync(new LoginPage());
+
+                            };
+
+                            bFollowers.Clicked += async delegate
                             {
-                                layoutPublic = layout;
-                                String accessTokenSaves = getCredentials.IGetCredentials()[2];
 
 
-                                String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
-                                System.Diagnostics.Debug.WriteLine(urlString);
-
-                                System.Diagnostics.Debug.WriteLine("hereeee");
-
-                                HttpClient httpClient = new HttpClient();
-                                String streamAsync = "";
-                                try
+                                if (Device.OS == TargetPlatform.Windows)
                                 {
-                                    streamAsync = httpClient.GetStringAsync(urlString).Result;
-                                    Task t = new Task(InsertFollowers);
-                                    await Navigation.PushModalAsync(new ListFollowers(streamAsync));
-                                    t.Start();
+                                    String accessTokenSaves = getCredentials.IGetCredentials()[2];
+                                    String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
+                                    HttpClient httpClient = new HttpClient();
+                                    Debug.WriteLine(urlString);
+                                    String streamAsync = "";
+                                    try
+                                    {
+
+                                        streamAsync = httpClient.GetStringAsync(urlString).Result;
+                                        Debug.WriteLine(streamAsync);
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new ListFollowers(streamAsync));
+                                        t.Start();
+                                    }
+                                    catch
+                                    {
+                                        IFacebookFriends FacebookFriends = DependencyService.Get<IFacebookFriends>();
+                                        FacebookFriends.IFacebookFriends(labelPublic);
+                                        Task t = new Task(InsertFollowersWindowsPhone);
+                                        Debug.WriteLine("falied");
+
+                                        t.Start();
+                                    }
                                 }
-                                catch
+                                else
                                 {
-                                     Task t = new Task(InsertFollowers);
-                                    await Navigation.PushModalAsync(new FacebookFriends(layout));
-                                    t.Start();
+                                    layoutPublic = layout;
+                                    String accessTokenSaves = getCredentials.IGetCredentials()[2];
+                                    String urlString = "https://graph.facebook.com/me/friends?access_token=" + accessTokenSaves;
+                                    System.Diagnostics.Debug.WriteLine(urlString);
 
+                                    System.Diagnostics.Debug.WriteLine("hereeee");
+
+                                    HttpClient httpClient = new HttpClient();
+                                    String streamAsync = "";
+                                    try
+                                    {
+                                        streamAsync = httpClient.GetStringAsync(urlString).Result;
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new ListFollowers(streamAsync));
+                                        t.Start();
+                                    }
+                                    catch
+                                    {
+                                        Task t = new Task(InsertFollowers);
+                                        await Navigation.PushModalAsync(new FacebookFriends(layout));
+                                        t.Start();
+
+                                    }
                                 }
-
-                               
-                                   
-                                
-
-    
-                                
+                            };
 
 
+                            layout.Children.Add(bFollowers);
+                            layout.Children.Add(bLogout);
+
+                        }
+                        else
+                        {
+                            follow = isFollow(followArray);
+
+                            Button buttonFollow = new Button { Text = "Follow", BackgroundColor = Color.FromHex("#8ADD97"), VerticalOptions = LayoutOptions.End };
+                            Button buttonUnfollow = new Button { Text = "Unfollow", BackgroundColor = Color.FromHex("#FF464D"), VerticalOptions = LayoutOptions.End };
+
+                            Button bFollow = buttonFollow;
+                            if (follow)
+                            {
+                                bFollow = buttonUnfollow;
                             }
-                        };
+                            
+                            bFollow.Clicked += delegate
+                            {
+                                using (var client2 = new HttpClient())
+                                {
+                                    client2.BaseAddress = new Uri("https://pinbusterapi.azurewebsites.net");
+                                    if (!follow)
+                                    {
+
+                                        var utilities = new Utilities();
+                                        var values = new Dictionary<string, string>
+                                    {
+                                        {"follower", userID },
+                                        {"followed", user.face_id}
+                                    };
+
+                                        var contentFollow = new FormUrlEncodedContent(values);
+                                        var result2 = client2.PostAsync("api/follow", contentFollow).Result;
+                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
+                                        Debug.WriteLine("POST RESULT:" + resultContent);
+                                        
+                                        follow = true;
+                                        bFollow = buttonUnfollow;
+
+                                    }
+                                    else
+                                    {
+
+                                        var result2 = client2.DeleteAsync("api/follow/" + userID + "?unfollow=" + user.face_id).Result;
+                                        string resultContent = result2.Content.ReadAsStringAsync().Result;
+                                        JObject resultContentJson = JObject.Parse(resultContent);
+                                        
+                                        follow = false;
+                                        bFollow = buttonFollow;
+                                    }
+                                }
+                            };
+
+                            layout.Children.Add(bFollow);
+                        }
+                        Content = layout;
                     });
                 }
             }
@@ -255,6 +318,18 @@ namespace PinBuster
                 userinfoPublic.Navigation.PushAsync(new ListFollowers(result));
             });
 
+
+        }
+        private bool isFollow(JArray array)
+        {
+            foreach (JObject o in array)
+            {
+                if (o["follower"].ToString().Equals(userID) && o["followed"].ToString().Equals(user.face_id))
+                {
+                    return true;
+                }
+            }
+            return false;
 
         }
     }

@@ -12,23 +12,39 @@ namespace PinBuster.Pages
 {
     public partial class DetailMessageList : ContentPage
     {
+        Pin currentPin;
+
         public DetailMessageList(Pin temp_Item)
         {
             var layout = new RelativeLayout();
 
-     
-            var picture = new Image()
+            currentPin = temp_Item;
+            Image picture;
+            if (temp_Item.Nome == "Admin")
             {
-                
-                Source = "http://graph.facebook.com/" + temp_Item.Face_id + "/picture?width=400&height=400"
-        };
+                picture = new Image()
+                {
+                    Source = temp_Item.Face_id,
+                    HeightRequest = 200,
+                    WidthRequest = 200
+                };
+            }
+            else
+            {
+                picture = new Image()
+                {
+                    Source = "http://graph.facebook.com/" + temp_Item.Face_id + "/picture?width=200&height=200",
+                    HeightRequest = 200,
+                    WidthRequest = 200
+                };
+            }
 
 
             var name = new Label()
             {
                 Text = temp_Item.Nome,
                 FontSize = 30,
-                TextColor = Color.FromHex("#003d99"),
+                TextColor = Color.Black,
                 FontFamily = Device.OnPlatform("HelveticaNeue-Medium", "sans-serif", "")
             };
 
@@ -43,7 +59,7 @@ namespace PinBuster.Pages
 
             var localizacao = new Label() { Text = temp_Item.Localizacao };
             var latitude = new Label() { Text = "Latitude: " + temp_Item.Latitude.ToString(), FontSize = 13 };
-            var longitude = new Label() { Text = "Longitude: "+ temp_Item.Longitude.ToString(), FontSize = 13};
+            var longitude = new Label() { Text = "Longitude: " + temp_Item.Longitude.ToString(), FontSize = 13 };
 
             var titulo_conteudo = new Label()
             {
@@ -59,6 +75,14 @@ namespace PinBuster.Pages
                 FontSize = 20,
                 FontFamily = Device.OnPlatform("HelveticaNeue", "sans-serif", "")
             };
+            var viewprofile = new Button
+            {
+                Text = "View profile",
+                TextColor = Color.FromHex("#8B8D8D"),
+                BackgroundColor = Color.FromHex("#1B434D"),
+                VerticalOptions = LayoutOptions.End
+            };
+            viewprofile.Clicked += ViewProfileAction;
 
             var bShare = new Button { Text = "Post to Facebook", TextColor = Color.White, BackgroundColor = Color.FromHex("#3b5998") };
 
@@ -87,6 +111,7 @@ namespace PinBuster.Pages
                 HorizontalOptions = LayoutOptions.StartAndExpand,
                 Children = {
             name,
+            viewprofile,
             titulo_conteudo,
             conteudo,
             titulo_localizacao,
@@ -103,26 +128,37 @@ namespace PinBuster.Pages
 
             layout.Children.Add(
                 picture,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => {
-                    return parent.Width;
+                Constraint.RelativeToParent((parent) =>
+                {
+                    return parent.Width * 0.5 - 100;
                 }),
-                Constraint.RelativeToParent((parent) => {
-                    return parent.Height * .5;
+                Constraint.RelativeToParent((parent) =>
+                {
+                    return parent.Height * 0.1;
+                }),
+                Constraint.RelativeToParent((parent) =>
+                {
+                    return 200;
+                }),
+                Constraint.RelativeToParent((parent) =>
+                {
+                    return 200;
                 })
             );
 
             layout.Children.Add(
                 details,
                 Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => {
-                    return parent.Height * .5;
+                Constraint.RelativeToParent((parent) =>
+                {
+                    return parent.Height * .1 + 300;
                 }),
-                Constraint.RelativeToParent((parent) => {
+                Constraint.RelativeToParent((parent) =>
+                {
                     return parent.Width;
                 }),
-                Constraint.RelativeToParent((parent) => {
+                Constraint.RelativeToParent((parent) =>
+                {
                     return parent.Height;
                 })
             );
@@ -135,6 +171,12 @@ namespace PinBuster.Pages
             };
 
             Content = scrollView;
+        }
+
+        async void ViewProfileAction(object sender, EventArgs args)
+        {
+            var User_page = new UserPage(currentPin.Face_id); // so the new page shows correct data
+            await Navigation.PushAsync(User_page);
         }
 
         async void OnDismissButtonClicked(object sender, EventArgs args)

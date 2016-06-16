@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using System.Text;
 
 using Xamarin.Forms;
+using static PinBuster.App;
 
 namespace PinBuster.Pages
 {
@@ -25,10 +26,13 @@ namespace PinBuster.Pages
             Icon = "hamburger.png";
             Padding = new Thickness(10, 20);
 
+            IGetCredentials getCredentials = DependencyService.Get<IGetCredentials>();
+
             var categories = new List<Menu>() {
-            new Menu("Pin list","vista_lista.png", () => App.listView),
+
             new Menu("Map","vista_mapa.png",() => App.mapPage),
-            new Menu("Profile","perfil.png", () => new UserPage()),
+            new Menu("Pin list","vista_lista.png", () => App.listView),
+            new Menu("Profile","perfil.png", () => new UserPage(getCredentials.IGetCredentials()[0])),
             new Menu("Search","search.png", () => new SearchPage())
         };
 
@@ -42,7 +46,8 @@ namespace PinBuster.Pages
             };
 
 
-            listView.ItemSelected += (object sender, SelectedItemChangedEventArgs e) => {
+            listView.ItemSelected += (object sender, SelectedItemChangedEventArgs e) =>
+            {
                 if (OnMenuSelect != null)
                 {
                     var category = (Menu)e.SelectedItem;

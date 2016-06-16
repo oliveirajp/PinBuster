@@ -47,6 +47,7 @@
     <Compile Include="Models\Mensagem.cs" />
     <Compile Include="Models\Mensagem_L.cs" />
     <Compile Include="Models\ProfileInfo.cs" />
+    <Compile Include="Pages\CustomRecentActMap.cs" />
     <Compile Include="Pages\FacebookFriends.xaml.cs">
       <DependentUpon>FacebookFriends.xaml</DependentUpon>
     </Compile>
@@ -70,9 +71,12 @@
     <Compile Include="Pages\PostEdit.xaml.cs">
       <DependentUpon>PostEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SearchPage.cs" />
+    <Compile Include="Pages\RecentActMapPage.cs" />
     <Compile Include="CLocation.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Pages\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\UserAchievements.cs" />
     <Compile Include="Pages\UserInfo.cs" />
     <Compile Include="Pages\UserPage.cs" />
@@ -154,7 +158,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="microsoft.png" />
     <EmbeddedResource Include="Pages\MessageListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -218,9 +221,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.png" />
+    <EmbeddedResource Include="achievement-03.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="achievement-03.png" />
+    <EmbeddedResource Include="Pages\SearchPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
 </Project>
