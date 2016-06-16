@@ -224,7 +224,7 @@ router.route('/mensagem')
 
 // create a bear (accessed at POST http://localhost:8080/api/test)
 .post(function(req, res) {
-    
+
     //console.log("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES ('"+req.body.latitude+"','"+req.body.longitude+"','convert(datetime,'" + req.body.data + "',5)','"+req.body.tempo_limite+"','"+req.body.raio+"','"+req.body.latitude+"','"+req.body.face_id+"','"+req.body.conteudo+"','"+req.body.localizacao+"','"+req.body.categoria+"');");
     getData("INSERT dbo.mensagem (latitude,longitude,data,tempo_limite,raio,face_id,conteudo,localizacao,categoria) OUTPUT INSERTED.mensagem_id VALUES ('"+req.body.latitude+"','"+req.body.longitude+"',convert(datetime,'" + req.body.data + "',5),'"+req.body.tempo_limite+"','"+req.body.raio+"','"+req.body.face_id+"','"+req.body.conteudo+"','"+req.body.localizacao+"','"+req.body.categoria+"');", function(err, rows) {
         if (err) {
